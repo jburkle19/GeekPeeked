@@ -12,7 +12,6 @@ namespace GeekPeeked.Common.Models
 
         public bool IsBackdrop { get; set; }
 
-        [Key]
         [Required]
         public string FilePath { get; set; }        // "file_path"
 

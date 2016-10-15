@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekPeeked.Common.Models
 {
@@ -10,11 +11,9 @@ namespace GeekPeeked.Common.Models
         [Required]
         public Guid Id { get; set; }
 
-        [Key]
         [Required]
         public int TmdbId { get; set; }                                    // "id"
 
-        [Key]
         [Required]
         public string ImdbId { get; set; }                                 // "imdb_id"
 
