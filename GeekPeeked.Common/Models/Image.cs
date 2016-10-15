@@ -1,32 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace GeekPeeked.Common.Models
 {
-    public class Image //: ITrackable
+    public class Image : ITrackable
     {
-        //    [Key]
-        //    [Required]
-        //    public int Id { get; set; }
+        [Key]
+        [Required]
+        public Guid Id { get; set; }
 
-        //    [Required]
-        //    public string FilePath { get; set; }        // "file_path"
+        public bool IsBackdrop { get; set; }
 
-        //    public int Width { get; set; }              // "width"
-        //    public int Height { get; set; }             // "height"
-        //    public double AspectRatio { get; set; }     // "aspect_ratio"
+        [Key]
+        [Required]
+        public string FilePath { get; set; }        // "file_path"
 
-        //    public DateTime? CreatedDate { get; set; }
-        //    public DateTime? ModifiedDate { get; set; }
+        public int Width { get; set; }              // "width"
+        public int Height { get; set; }             // "height"
+        public double AspectRatio { get; set; }     // "aspect_ratio"
 
-        //    public virtual ICollection<Movie> Movies { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
-        //    public Poster()
-        //    {
-        //        Movies = new HashSet<Movie>();
-        //    }
+        public virtual ICollection<Movie> Movies { get; set; }
+        public virtual ICollection<Person> People { get; set; }
+
+        public Image()
+        {
+            Movies = new HashSet<Movie>();
+            People = new HashSet<Person>();
+        }
     }
 }

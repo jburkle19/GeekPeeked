@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekPeeked.Common.Models
 {
@@ -11,7 +9,13 @@ namespace GeekPeeked.Common.Models
         [Key]
         [Required]
         public Guid Id { get; set; }
+
+        [Key]
+        [Required]
         public int TmdbId { get; set; }                                    // "id"
+
+        [Key]
+        [Required]
         public string ImdbId { get; set; }                                 // "imdb_id"
 
         [Required]
@@ -42,13 +46,16 @@ namespace GeekPeeked.Common.Models
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
 
-        //public virtual ICollection<Genre> Genres { get; set; }                             // "genre_ids" ([12,878])
-        //public virtual ICollection<Certification> Certifications { get; set; }
-        //public virtual ICollection<ProductionCompany> ProductionCompanies { get; set; }    // "production_companies": [ { "name": "20th Century Fox", "id": 25 }, { "name": "Fox 2000 Pictures", "id": 711 }, { "name": "Regency Enterprises", "id": 508 } ],
-        //public virtual ICollection<CastMember> CastMembers { get; set; }
-        //public virtual ICollection<CrewMember> CrewMembers { get; set; }
-        //public virtual ICollection<Poster> Posters { get; set; }
-        //public virtual ICollection<Video> Videos { get; set; }
+        public virtual ICollection<Genre> Genres { get; set; }                             // "genre_ids" ([12,878])
+        public virtual ICollection<ProductionCompany> ProductionCompanies { get; set; }    // "production_companies": [ { "name": "20th Century Fox", "id": 25 }, { "name": "Fox 2000 Pictures", "id": 711 }, { "name": "Regency Enterprises", "id": 508 } ],
+
+        public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<Video> Videos { get; set; }
+
+        public virtual ICollection<Certification> Certifications { get; set; }
+
+        //public virtual ICollection<CastCredit> Cast { get; set; }
+        //public virtual ICollection<CrewCredit> Crew { get; set; }
 
         public Movie()
         {
@@ -60,13 +67,16 @@ namespace GeekPeeked.Common.Models
             this.IsAdult = false;
             this.IsVideo = false;
             
-            //this.Genres = new HashSet<Genre>();
-            //this.Certifications = new HashSet<Certification>();
-            //this.ProductionCompanies = new HashSet<ProductionCompany>();
-            //this.CastMembers = new HashSet<CastMember>();
-            //this.CrewMembers = new HashSet<CrewMember>();
-            //this.Posters = new HashSet<Poster>();
-            //this.Videos = new HashSet<Video>();
+            this.Genres = new HashSet<Genre>();
+            this.ProductionCompanies = new HashSet<ProductionCompany>();
+
+            this.Images = new HashSet<Image>();
+            this.Videos = new HashSet<Video>();
+
+            this.Certifications = new HashSet<Certification>();
+
+            //this.Cast = new HashSet<CastCredit>();
+            //this.Crew = new HashSet<CrewCredit>();
         }
     }
 }

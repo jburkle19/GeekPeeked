@@ -177,7 +177,7 @@ namespace GeekPeeked.Common.Configuration
         public static string MovieDetailsTmdbUrl(string tmdbMovieId)
         {
             if (ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"].ToString()))
-                return string.Format("{0}&append_to_response=credits,images,keywords,release_dates,videos,similar", string.Format(ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"].ToString(), TmdbApiKey, tmdbMovieId));
+                return string.Format("{0}&append_to_response=credits,images,keywords,release_dates,videos", string.Format(ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"].ToString(), TmdbApiKey, tmdbMovieId));
             else
                 return string.Empty;
         }
