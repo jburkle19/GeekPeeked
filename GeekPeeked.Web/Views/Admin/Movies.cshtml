@@ -1,0 +1,172 @@
+﻿@model MoviesViewModel
+
+@{
+    ViewBag.Title = "Movies";
+}
+
+@using (Html.BeginForm("Movies", "Admin", FormMethod.Get, new { @class = "search-form", role = "form" }))
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <div class="row">
+                        <div class="col-md-2"><strong>Start Date:</strong></div>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control", placeholder = "Enter Start Date" })
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-2"><strong>End Date:</strong></div>
+                        <div class="col-md-3">
+                            @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control", placeholder = "Enter End Date" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-3">
+                            <hr />
+                            <input type="submit" class="btn btn-primary site-btn-md" name="search" value="Find Movies" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <h2>TMDb Movies (@Model.TMDbMovies.Count results)</h2>
+                <div>From <strong>@Model.StartDate</strong> to <strong>@Model.EndDate</strong></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table table-striped results">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Poster</th>
+                                <th>Title</th>
+                                <th>Release Date</th>
+                                <th>Popularity</th>
+                                <th>Avg. Vote</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var movie in Model.TMDbMovies.OrderBy(m => m.ReleaseDate))
+                            {
+                                <tr>
+                                    <td align="center" valign="middle">
+                                        <a href="@Url.Action("Details", new { Id = movie.Id })" class="btn btn-block btn-primary">View</a>
+                                        <hr />
+                                        <a type="button" href="#" onclick="return addMovie(this);" class="btn btn-block btn-success" data-Id="@movie.Id">Add</a>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(movie.PosterUrl))
+                                        {
+                                            <img src="@movie.PosterUrl" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @movie.Title
+                                    </td>
+                                    <td>
+                                        @movie.ReleaseDate.ToShortDateString()
+                                    </td>
+                                    <td>
+                                        @movie.Popularity
+                                    </td>
+                                    <td>
+                                        @movie.AverageVote (@movie.VoteCount)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <h2>GeekPeeked Movies (@Model.GeekPeekedMovies.Count results)</h2>
+                <div>From <strong>@Model.StartDate</strong> to <strong>@Model.EndDate</strong></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped results">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Poster</th>
+                                <th>Title</th>
+                                <th>Release Date</th>
+                                <th>Popularity</th>
+                                <th>Avg. Vote</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var movie in Model.GeekPeekedMovies.OrderBy(m => m.ReleaseDate))
+                            {
+                                <tr>
+                                    <td align="center" valign="middle">
+                                        <a href="@Url.Action("Details", new { Id = movie.Id })" class="btn btn-block btn-primary">View</a>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(movie.PosterUrl))
+                                        {
+                                            <img src="@movie.PosterUrl" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @movie.Title
+                                    </td>
+                                    <td>
+                                        @movie.ReleaseDate.ToShortDateString()
+                                    </td>
+                                    <td>
+                                        @movie.Popularity
+                                    </td>
+                                    <td>
+                                        @movie.AverageVote (@movie.VoteCount)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+        });
+
+        function addMovie(obj) {
+            var _id = $(obj).attr('data-Id');
+            alert(_id);
+
+            $.ajax({
+                url: '/Admin/AddMovie/',
+                data: { id: _id },
+                cache: false,
+                type: 'POST',
+                success: function (data) {
+                    alert(data);
+                },
+                error: function (reponse) {
+                    alert(reponse);
+                }
+            });
+        }
+    </script>
+}

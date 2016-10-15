@@ -1,0 +1,82 @@
+﻿@model GenresViewModel
+
+@{
+    ViewBag.Title = "Genres List";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>TMDb Genres List (@Model.GeekPeekedGenres.Count results)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped results">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Id</th>
+                            <th>Movie Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var genre in Model.GeekPeekedGenres.OrderBy(g => g.Name))
+                        {
+                            <tr>
+                                <td>
+                                    @genre.Name
+                                </td>
+                                <td>
+                                    @genre.Id
+                                </td>
+                                <td>
+                                    @genre.Movies.Count
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>TMDb Genres List (@Model.TMDbGenres.Count results)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped results">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Id</th>
+                            <th>Movie Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var genre in Model.TMDbGenres.OrderBy(g => g.Name))
+                        {
+                            <tr>
+                                <td>
+                                    @genre.Name
+                                </td>
+                                <td>
+                                    @genre.Id
+                                </td>
+                                <td>
+                                    @genre.Movies.Count
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,172 @@
+﻿@model NowPlayingViewModel
+
+@{
+    ViewBag.Title = "Now Playing Movies";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>GeekPeeked Now Playing Movies (@Model.GeekPeekedMovies.Count results)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped results">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Poster</th>
+                            <th>Title</th>
+                            <th>Release Date</th>
+                            <th>Popularity</th>
+                            <th>Avg. Vote</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var movie in Model.GeekPeekedMovies.OrderBy(m => m.ReleaseDate))
+                        {
+                            <tr>
+                                <td align="center" valign="middle">
+                                    <a href="@Url.Action("Details", new { Id = movie.Id })" class="btn btn-block btn-primary">View</a>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(movie.PosterUrl))
+                                    {
+                                        <img src="@movie.PosterUrl" />
+                                    }
+                                </td>
+                                <td>
+                                    @movie.Title
+                                </td>
+                                <td>
+                                    @movie.ReleaseDate.ToShortDateString()
+                                </td>
+                                <td>
+                                    @movie.Popularity
+                                </td>
+                                <td>
+                                    @movie.AverageVote (@movie.VoteCount)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>TMDb Now Playing Movies (@Model.TMDbMovies.Count results)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped results">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Poster</th>
+                            <th>Title</th>
+                            <th>Release Date</th>
+                            <th>Popularity</th>
+                            <th>Avg. Vote</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var movie in Model.TMDbMovies.OrderBy(m => m.ReleaseDate))
+                        {
+                            <tr>
+                                <td align="center" valign="middle">
+                                    <a href="@Url.Action("Details", new { Id = movie.Id })" class="btn btn-block btn-primary">View</a>
+                                </td>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(movie.PosterUrl))
+                                    {
+                                        <img src="@movie.PosterUrl" />
+                                    }
+                                </td>
+                                <td>
+                                    @movie.Title
+                                </td>
+                                <td>
+                                    @movie.ReleaseDate.ToShortDateString()
+                                </td>
+                                <td>
+                                    @movie.Popularity
+                                </td>
+                                <td>
+                                    @movie.AverageVote (@movie.VoteCount)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+        });
+
+        function acceptMovie(_id) {
+            //var procemessage = "<option value=''>Getting Speeds...</option>";
+            //$('#ddlShippingAgentServices').html(procemessage).show();
+
+            //$.ajax({
+            //    url: '/Shopping/GetShippingAgentServiceByShippingAgentCode/',
+            //    data: { shippingAgentCode: _shippingAgentCode },
+            //    cache: false,
+            //    type: 'POST',
+            //    success: function (data) {
+            //        var markup = "<option value=''>Select Carrier Speed</option>";
+            //        for (var x = 0; x < data.length; x++) {
+            //            markup += "<option value='" + data[x].Value + "'>" + data[x].Text + "</option>";
+            //        }
+
+            //        $('#ddlShippingAgentServices').html(markup).show();
+
+            //        // call GetShippingAgentAccountNumber method when complete
+            //        GetShippingAgentAccountNumber();
+            //    },
+            //    error: function (reponse) {
+            //        // AJAX ERROR HANDLING?
+            //    }
+            //});
+        }
+
+        function ignoreMovie(_id) {
+            //var procemessage = "<option value=''>Getting Speeds...</option>";
+            //$('#ddlShippingAgentServices').html(procemessage).show();
+
+            //$.ajax({
+            //    url: '/Shopping/GetShippingAgentServiceByShippingAgentCode/',
+            //    data: { shippingAgentCode: _shippingAgentCode },
+            //    cache: false,
+            //    type: 'POST',
+            //    success: function (data) {
+            //        var markup = "<option value=''>Select Carrier Speed</option>";
+            //        for (var x = 0; x < data.length; x++) {
+            //            markup += "<option value='" + data[x].Value + "'>" + data[x].Text + "</option>";
+            //        }
+
+            //        $('#ddlShippingAgentServices').html(markup).show();
+
+            //        // call GetShippingAgentAccountNumber method when complete
+            //        GetShippingAgentAccountNumber();
+            //    },
+            //    error: function (reponse) {
+            //        // AJAX ERROR HANDLING?
+            //    }
+            //});
+        }
+    </script>
+}

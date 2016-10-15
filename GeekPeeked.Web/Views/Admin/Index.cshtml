@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Administration";
+}
+
+<h2>Administration Functions</h2>
+
+<div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Find Movies", "Movies")
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Now Playing Movies", "NowPlaying")
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Genre List", "Genres")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @Html.ActionLink("Certification List", "Certifications")
+            </div>
+        </div>
+
+</div>

@@ -1,0 +1,210 @@
+﻿@model Movie
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<h2>@Model.Title</h2>
+
+<div>
+    <h4>Movie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TmdbId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TmdbId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ImdbId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ImdbId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OriginalTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OriginalTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tagline)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tagline)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Runtime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Runtime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PosterPath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PosterPath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HomePage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HomePage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Budget)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Budget)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Revenue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Revenue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReleaseDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Rating)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rating)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVisible)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsVisible)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsAdult)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsAdult)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HasVideos)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HasVideos)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsComingSoon)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsComingSoon)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsInTheaters)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsInTheaters)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsOnDVD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsOnDVD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsMajorRelease)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsMajorRelease)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OldMovieId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OldMovieId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
