@@ -97,8 +97,14 @@
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
     <Compile Include="Models\Api\v1\_BaseApiModel.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Certification.cs" />
     <Compile Include="Models\GeekPeekedDbContext.cs" />
-    <Compile Include="Models\MovieModels.cs" />
+    <Compile Include="Models\Genre.cs" />
+    <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Person.cs" />
+    <Compile Include="Models\Image.cs" />
+    <Compile Include="Models\ProductionCompany.cs" />
     <Compile Include="Models\TMDb\Response\CertificationListResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\DiscoverMovieResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\GenreListResponseModel.cs" />

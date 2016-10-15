@@ -4,6 +4,6 @@ namespace GeekPeeked.Common.Repositories.TMDb
 {
     public class BaseRepository
     {
-        public string ApiKey = CoreConfiguration.TmdbApiKey;
+        public string ApiKey = TMDbCoreConfiguration.TmdbApiKey;
     }
 }

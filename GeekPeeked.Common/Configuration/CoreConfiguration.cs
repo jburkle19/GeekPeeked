@@ -99,6 +99,10 @@ namespace GeekPeeked.Common.Configuration
                     return string.Empty;
             }
         }
+    }
+
+    public class TMDbCoreConfiguration
+    {
         public static string TmdbApiKey
         {
             get
@@ -110,108 +114,72 @@ namespace GeekPeeked.Common.Configuration
             }
         }
 
-        //public static string TmdbImageBaseUrl
-        //{
-        //    get
-        //    {
-        //        if (ConfigurationManager.AppSettings["TmdbImageBaseUrl"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["TmdbImageBaseUrl"].ToString()))
-        //            return ConfigurationManager.AppSettings["TmdbImageBaseUrl"].ToString();
-        //        else
-        //            return string.Empty;
-        //    }
-        //}
-        //public static string TmdbGenreListBaseUrl
-        //{
-        //    get
-        //    {
-        //        if (ConfigurationManager.AppSettings["TmdbGenreListBaseUrl"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["TmdbGenreListBaseUrl"].ToString()))
-        //            return ConfigurationManager.AppSettings["TmdbGenreListBaseUrl"].ToString();
-        //        else
-        //            return string.Empty;
-        //    }
-        //}
-        //public static string TmdbCertificationListBaseUrl
-        //{
-        //    get
-        //    {
-        //        if (ConfigurationManager.AppSettings["TmdbCertificationListBaseUrl"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["TmdbCertificationListBaseUrl"].ToString()))
-        //            return ConfigurationManager.AppSettings["TmdbCertificationListBaseUrl"].ToString();
-        //        else
-        //            return string.Empty;
-        //    }
-        //}
+        public static string ImageTmdbUrlFormatString(string imagePath)
+        {
+            if (ConfigurationManager.AppSettings["ImageTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["ImageTmdbUrlFormatString"].ToString()))
+                return string.Format(ConfigurationManager.AppSettings["ImageTmdbUrlFormatString"].ToString(), imagePath);
+            else
+                return string.Empty;
+        }
 
-        //public static string DiscoverMoviesTmdbBaseUrl
-        //{
-        //    get
-        //    {
-        //        if (ConfigurationManager.AppSettings["DiscoverMoviesTmdbBaseUrl"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["DiscoverMoviesTmdbBaseUrl"].ToString()))
-        //            return ConfigurationManager.AppSettings["DiscoverMoviesTmdbBaseUrl"].ToString();
-        //        else
-        //            return string.Empty;
-        //    }
-        //}
-        //public static string UpcomingMoviesTmdbBaseUrl
-        //{
-        //    get
-        //    {
-        //        if (ConfigurationManager.AppSettings["UpcomingMoviesTmdbBaseUrl"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["UpcomingMoviesTmdbBaseUrl"].ToString()))
-        //            return ConfigurationManager.AppSettings["UpcomingMoviesTmdbBaseUrl"].ToString();
-        //        else
-        //            return string.Empty;
-        //    }
-        //}
-        //public static string NowPlayingTmdbBaseUrl
-        //{
-        //    get
-        //    {
-        //        if (ConfigurationManager.AppSettings["NowPlayingTmdbBaseUrl"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["NowPlayingTmdbBaseUrl"].ToString()))
-        //            return ConfigurationManager.AppSettings["NowPlayingTmdbBaseUrl"].ToString();
-        //        else
-        //            return string.Empty;
-        //    }
-        //}
-
-        //public static string MovieDetailsTmdbBaseUrl(string movieId)
-        //{
-        //    if (ConfigurationManager.AppSettings["MovieDetailsTmdbBaseUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MovieDetailsTmdbBaseUrlFormatString"].ToString()))
-        //        return string.Format(ConfigurationManager.AppSettings["MovieDetailsTmdbBaseUrlFormatString"].ToString(), movieId);
-        //    else
-        //        return string.Empty;
-        //}
-
-        /*
-
-            public static string MovieVideosTmdbUrlFormatString
+        public static string GenreListTmdbUrl
         {
             get
             {
-                if (ConfigurationManager.AppSettings["MovieVideosTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MovieVideosTmdbUrlFormatString"].ToString()))
-                    return ConfigurationManager.AppSettings["MovieVideosTmdbUrlFormatString"].ToString();
+                if (ConfigurationManager.AppSettings["GenreListTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["GenreListTmdbUrlFormatString"].ToString()))
+                    return string.Format(ConfigurationManager.AppSettings["GenreListTmdbUrlFormatString"].ToString(), TmdbApiKey);
                 else
                     return string.Empty;
             }
         }
-            public static string MovieImagesTmdbUrlFormatString
+        public static string CertificationListTmdbUrl
         {
             get
             {
-                if (ConfigurationManager.AppSettings["MovieImagesTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MovieImagesTmdbUrlFormatString"].ToString()))
-                    return ConfigurationManager.AppSettings["MovieImagesTmdbUrlFormatString"].ToString();
+                if (ConfigurationManager.AppSettings["CertificationListTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["CertificationListTmdbUrlFormatString"].ToString()))
+                    return string.Format(ConfigurationManager.AppSettings["CertificationListTmdbUrlFormatString"].ToString(), TmdbApiKey);
                 else
                     return string.Empty;
             }
         }
-            public static string MovieCreditsTmdbUrlFormatString
+        public static string JobListTmdbUrl
         {
             get
             {
-                if (ConfigurationManager.AppSettings["MovieCreditsTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MovieCreditsTmdbUrlFormatString"].ToString()))
-                    return ConfigurationManager.AppSettings["MovieCreditsTmdbUrlFormatString"].ToString();
+                if (ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"].ToString()))
+                    return string.Format(ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"].ToString(), TmdbApiKey);
                 else
                     return string.Empty;
             }
         }
-        */
+
+        public static string PersonDetailsTmdbUrl(string personId)
+        {
+            if (ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"].ToString()))
+                return string.Format("{0}&append_to_response=movie_credits,external_ids,images", string.Format(ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"].ToString(), TmdbApiKey, personId));
+            else
+                return string.Empty;
+        }
+        public static string DiscoverMovieTmdbUrl(int pageNumber)
+        {
+            if (ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString()))
+                return string.Format(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString(), TmdbApiKey, pageNumber);
+            else
+                return string.Empty;
+        }
+        public static string FindImdbObjectTmdbUrl(string imdbObjectId)
+        {
+            if (ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"].ToString()))
+                return string.Format("{0}&external_source=imdb_id", string.Format(ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"].ToString(), TmdbApiKey, imdbObjectId));
+            else
+                return string.Empty;
+        }
+        public static string MovieDetailsTmdbUrl(string tmdbMovieId)
+        {
+            if (ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"].ToString()))
+                return string.Format("{0}&append_to_response=credits,images,keywords,release_dates,videos,similar", string.Format(ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"].ToString(), TmdbApiKey, tmdbMovieId));
+            else
+                return string.Empty;
+        }
     }
 }
