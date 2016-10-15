@@ -1,33 +1,23 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GeekPeeked.Common.Models;
-using TMDBRepository = GeekPeeked.Common.Repositories.TMDb;
-using GeekPeekedRepository = GeekPeeked.Common.Repositories;
+using GeekPeeked.Common.Repositories;
 
 namespace GeekPeeked.UtilityApplication.Processors
 {
     public class MovieProcessor
     {
-        private TMDBRepository.MovieRepository _tmdbMovieRepo;
-        private GeekPeekedRepository.MovieRepository _dbMovieRepo;
+        private TmdbRepository _tmdbMovieRepo;
+        private MovieRepository _dbMovieRepo;
 
         public MovieProcessor()
         {
-            _tmdbMovieRepo = new TMDBRepository.MovieRepository();
-            _dbMovieRepo = new GeekPeekedRepository.MovieRepository(new GeekPeekedDbContext());
+            _tmdbMovieRepo = new TmdbRepository();
+            _dbMovieRepo = new MovieRepository(new GeekPeekedDbContext());
         }
 
         //public async Task ProcessMovieGenres()
         //{
-        //    var response = await Task.Run(() => _tmdbMovieRepo.AllGenres());
-
-        //    foreach (var genre in response.genres)
-        //    {
-        //        Console.WriteLine(string.Format("Adding Genre:\t{0} ({1})", genre.name, genre.id));
-        //        _dbMovieRepo.AddGenre(new Genre() { Id = genre.id, Name = genre.name });
-        //    }
-
-        //    _dbMovieRepo.Save();
         //}
 
         //public async Task ProcessMovieCertifications()

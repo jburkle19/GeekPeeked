@@ -5,21 +5,20 @@ using System.Threading.Tasks;
 using GeekPeeked.Web.App_Start;
 using GeekPeeked.Web.ViewModels;
 using GeekPeeked.Common.Models;
+using GeekPeeked.Common.Repositories;
 using GeekPeeked.Common.Configuration;
-using TMDBRepository = GeekPeeked.Common.Repositories.TMDb;
-using GeekPeekedRepository = GeekPeeked.Common.Repositories;
 
 namespace GeekPeeked.Web.Controllers.Admin
 {
     public class AdminController : Controller
     {
-        private TMDBRepository.MovieRepository _tmdbMovieRepo;
-        private GeekPeekedRepository.MovieRepository _dbMovieRepo;
+        private TmdbRepository _tmdbMovieRepo;
+        private GenreRepository _dbGenreRepo;
 
         public AdminController()
         {
-            _tmdbMovieRepo = new TMDBRepository.MovieRepository();
-            _dbMovieRepo = new GeekPeekedRepository.MovieRepository(new GeekPeekedDbContext());
+            _tmdbMovieRepo = new TmdbRepository();
+            _dbGenreRepo = new GenreRepository(new GeekPeekedDbContext());
         }
 
         // GET: Admin
@@ -27,6 +26,35 @@ namespace GeekPeeked.Web.Controllers.Admin
         public ActionResult Index()
         {
             return View();
+        }
+
+        // GET: Admin/Genres
+        public async Task<ActionResult> Genres()
+        {
+            // TODO - Import Genres from Tmdb
+            // TODO - Import Genres from Tmdb
+
+            GenresViewModel viewModel = new GenresViewModel();
+
+            var response = await _tmdbMovieRepo.AllGenres();
+
+            foreach (var genre in response.genres)
+            {
+                viewModel.TMDbGenres.Add(new Genre()
+                {
+                    Id = genre.id,
+                    Name = genre.name
+                });
+            }
+
+            var genres = await _dbGenreRepo.AllGenres();
+
+            foreach (var genre in genres)
+            {
+                viewModel.GeekPeekedGenres.Add(genre);
+            }
+
+            return View(viewModel);
         }
 
         //// GET: Admin/Movies
@@ -105,32 +133,6 @@ namespace GeekPeeked.Web.Controllers.Admin
         //                }
         //            }
         //        }
-        //    }
-
-        //    return View(viewModel);
-        //}
-
-        //// GET: Admin/Genres
-        //public async Task<ActionResult> Genres()
-        //{
-        //    GenresViewModel viewModel = new GenresViewModel();
-
-        //    var response = await _tmdbMovieRepo.AllGenres();
-
-        //    foreach (var genre in response.genres)
-        //    {
-        //        viewModel.TMDbGenres.Add(new Genre()
-        //        {
-        //            Id = genre.id,
-        //            Name = genre.name
-        //        });
-        //    }
-
-        //    var genres = await _dbMovieRepo.AllGenres();
-
-        //    foreach (var genre in genres)
-        //    {
-        //        viewModel.GeekPeekedGenres.Add(genre);
         //    }
 
         //    return View(viewModel);

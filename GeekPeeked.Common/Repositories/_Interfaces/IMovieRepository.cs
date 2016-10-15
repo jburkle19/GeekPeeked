@@ -10,10 +10,6 @@ namespace GeekPeeked.Common.Repositories
         //Task<Movie> CreateMovie(TMDbMovie.ResponseModel tmdbMovie);
         //void RemoveMovie(Movie movie);
 
-        //Task<IEnumerable<Genre>> AllGenres();
-        //void AddGenre(Genre genre);
-        //void RemoveGenre(Genre genre);
-
         //Task<IEnumerable<Certification>> AllCertifications();
         //void AddCertification(Certification genre);
         //void RemoveCertification(Certification genre);

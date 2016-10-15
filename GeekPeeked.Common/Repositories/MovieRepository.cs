@@ -156,21 +156,7 @@ namespace GeekPeeked.Common.Repositories
         //    _context.Movies.Remove(movie);
         //}
 
-        //public async Task<IEnumerable<Genre>> AllGenres()
-        //{
-        //    var genres = from g in _context.Genres select g;
-
-        //    return await (genres.ToListAsync());
-        //}
-        //public void AddGenre(Genre genre)
-        //{
-        //    genre.CreatedDate = DateTime.Now;
-        //    _context.Genres.Add(genre);
-        //}
-        //public void RemoveGenre(Genre genre)
-        //{
-        //    _context.Genres.Remove(genre);
-        //}
+        
 
         //public async Task<IEnumerable<Certification>> AllCertifications()
         //{

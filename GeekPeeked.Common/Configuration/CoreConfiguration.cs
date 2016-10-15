@@ -114,6 +114,17 @@ namespace GeekPeeked.Common.Configuration
             }
         }
 
+        public static string TmdbBaseUrl
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["TmdbBaseUrl"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["TmdbBaseUrl"].ToString()))
+                    return string.Format(ConfigurationManager.AppSettings["TmdbBaseUrl"].ToString());
+                else
+                    return string.Empty;
+            }
+        }
+
         public static string ImageTmdbUrlFormatString(string imagePath)
         {
             if (ConfigurationManager.AppSettings["ImageTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["ImageTmdbUrlFormatString"].ToString()))

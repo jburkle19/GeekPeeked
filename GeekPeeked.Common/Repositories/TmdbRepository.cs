@@ -1,15 +1,59 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using GeekPeeked.Common.Configuration;
+using GenreList = GeekPeeked.Common.Models.TMDb.Response.GenreList;
 
-namespace GeekPeeked.Common.Repositories.TMDb
+namespace GeekPeeked.Common.Repositories
 {
-    public class MovieRepository : BaseRepository, IMovieRepository
+    public class TmdbRepository : BaseRepository, ITmdbRepository
     {
+        public async Task<GenreList.ResponseModel> AllGenres()
+        {
+            var result = new GenreList.ResponseModel();
+
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(TMDbCoreConfiguration.TmdbBaseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = await client.GetAsync(TMDbCoreConfiguration.GenreListTmdbUrl);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string jsonResponse = response.Content.ReadAsStringAsync().Result;
+
+                        if (!string.IsNullOrWhiteSpace(jsonResponse))
+                        {
+                            try
+                            {
+                                result = JToken.Parse(jsonResponse).ToObject<GenreList.ResponseModel>();
+                            }
+                            catch (JsonSerializationException jsex)
+                            {
+                                Console.WriteLine(jsex.ToString());
+                            }
+                        }
+                    }
+                    else
+                        Console.WriteLine(response.ReasonPhrase);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+            return result;
+        }
+
         //public async Task<IEnumerable<DiscoverMovie.ResponseModel>> AllMovies(int year)
         //{
         //    int totalPageCount = 1;
@@ -269,48 +313,7 @@ namespace GeekPeeked.Common.Repositories.TMDb
         //    return result;
         //}
 
-        //public async Task<GenreList.ResponseModel> AllGenres()
-        //{
-        //    var result = new GenreList.ResponseModel();
 
-        //    await Task.Delay(1);
-
-        //    try
-        //    {
-        //        using (var client = new HttpClient())
-        //        {
-        //            client.BaseAddress = new Uri(CoreConfiguration.TmdbGenreListBaseUrl);
-        //            client.DefaultRequestHeaders.Accept.Clear();
-
-        //            var response = client.GetAsync(string.Format("{0}?api_key={1}", CoreConfiguration.TmdbGenreListBaseUrl, CoreConfiguration.TmdbApiKey)).Result;
-
-        //            if (response.IsSuccessStatusCode)
-        //            {
-        //                string jsonResponse = response.Content.ReadAsStringAsync().Result;
-
-        //                if (!string.IsNullOrWhiteSpace(jsonResponse))
-        //                {
-        //                    try
-        //                    {
-        //                        result = JToken.Parse(jsonResponse).ToObject<GenreList.ResponseModel>();
-        //                    }
-        //                    catch (JsonSerializationException jsex)
-        //                    {
-        //                        Console.WriteLine(jsex.ToString());
-        //                    }
-        //                }
-        //            }
-        //            else
-        //                Console.WriteLine(response.ReasonPhrase);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.ToString());
-        //    }
-
-        //    return result;
-        //}
         //public async Task<CertificationList.ResponseModel> AllCertifications()
         //{
         //    var result = new CertificationList.ResponseModel();
