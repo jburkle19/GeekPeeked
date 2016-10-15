@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeekPeeked.Common.Models
+namespace GeekPeeked.Common.Repositories.LegacyGeekPeeked
 {
-    public class Job //: ITrackable
+    public interface IMovieRepository
     {
+        // TODO
     }
 }

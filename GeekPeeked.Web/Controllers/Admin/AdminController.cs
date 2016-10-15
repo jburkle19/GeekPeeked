@@ -13,21 +13,21 @@ namespace GeekPeeked.Web.Controllers.Admin
 {
     public class AdminController : Controller
     {
-        //private TMDBRepository.MovieRepository _tmdbMovieRepo;
-        //private GeekPeekedRepository.MovieRepository _dbMovieRepo;
+        private TMDBRepository.MovieRepository _tmdbMovieRepo;
+        private GeekPeekedRepository.MovieRepository _dbMovieRepo;
 
-        //public AdminController()
-        //{
-        //    _tmdbMovieRepo = new TMDBRepository.MovieRepository();
-        //    _dbMovieRepo = new GeekPeekedRepository.MovieRepository(new GeekPeekedDbContext());
-        //}
+        public AdminController()
+        {
+            _tmdbMovieRepo = new TMDBRepository.MovieRepository();
+            _dbMovieRepo = new GeekPeekedRepository.MovieRepository(new GeekPeekedDbContext());
+        }
 
-        //// GET: Admin
-        //[Authorization(Roles = "Administrator")]
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        // GET: Admin
+        [Authorization(Roles = "Administrator")]
+        public ActionResult Index()
+        {
+            return View();
+        }
 
         //// GET: Admin/Movies
         //public async Task<ActionResult> Movies(MoviesViewModel viewModel)

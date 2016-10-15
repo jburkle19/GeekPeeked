@@ -6,22 +6,25 @@ using System.Threading.Tasks;
 
 namespace GeekPeeked.Common.Models
 {
-    public class Genre //: ITrackable
+    public class Video //: ITrackable
     {
         //    [Key]
         //    [Required]
         //    [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        //    public int Id { get; set; }         // "id"
+        //    public string Id { get; set; }      // "id"
 
-        //    [Required]
+        //    public string Key { get; set; }     // "key"
         //    public string Name { get; set; }    // "name"
+        //    public string Site { get; set; }    // "site"
+        //    public int Size { get; set; }       // "size"
+        //    public string Type { get; set; }    // "type"
 
         //    public DateTime? CreatedDate { get; set; }
         //    public DateTime? ModifiedDate { get; set; }
 
         //    public virtual ICollection<Movie> Movies { get; set; }
 
-        //    public Genre()
+        //    public Video()
         //    {
         //        Movies = new HashSet<Movie>();
         //    }

@@ -16,39 +16,39 @@ namespace GeekPeeked.UtilityApplication
 
             do
             {
-                //Console.WriteLine("\t1: process Movie Genres");
-                //Console.WriteLine("\t2: process Movie Certifications");
-                //Console.WriteLine("\t0: Exit");
+                Console.WriteLine("\t1: process Movie Genres");
+                Console.WriteLine("\t2: process Movie Certifications");
+                Console.WriteLine("\t0: Exit");
                 Console.Write("=> ");
                 string selection = Console.ReadLine();
                 Console.WriteLine(string.Empty);
 
-                //MovieProcessor movieProcessor = new MovieProcessor();
+                MovieProcessor movieProcessor = new MovieProcessor();
 
                 switch (selection)
                 {
-                    //case "1": // process Movie Genres
+                    case "1": // process Movie Genres
 
-                    //    Console.WriteLine("Processing Movie Genres...");
-                    //    Console.WriteLine(string.Empty);
+                        Console.WriteLine("Processing Movie Genres...");
+                        Console.WriteLine(string.Empty);
 
-                    //    movieProcessor.ProcessMovieGenres().Wait();
+                        //movieProcessor.ProcessMovieGenres().Wait();
 
-                    //    Console.WriteLine(string.Empty);
-                    //    Console.WriteLine("Movie Genres processed!");
+                        Console.WriteLine(string.Empty);
+                        Console.WriteLine("Movie Genres processed!");
 
-                    //    break;
-                    //case "2": // process Movie Certifications
+                        break;
+                    case "2": // process Movie Certifications
 
-                    //    Console.WriteLine("Processing Movie Certifications...");
-                    //    Console.WriteLine(string.Empty);
+                        Console.WriteLine("Processing Movie Certifications...");
+                        Console.WriteLine(string.Empty);
 
-                    //    movieProcessor.ProcessMovieCertifications().Wait();
+                        //movieProcessor.ProcessMovieCertifications().Wait();
 
-                    //    Console.WriteLine(string.Empty);
-                    //    Console.WriteLine("Movie Certifications processed!");
+                        Console.WriteLine(string.Empty);
+                        Console.WriteLine("Movie Certifications processed!");
 
-                    //    break;
+                        break;
                     case "0":
                         keepRunning = false;
                         break;

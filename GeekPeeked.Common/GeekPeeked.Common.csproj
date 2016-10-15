@@ -93,6 +93,10 @@
     <Compile Include="Configuration\CoreConfiguration.cs" />
     <Compile Include="Configuration\IdentityConfiguration.cs" />
     <Compile Include="Helpers\DataHelpers.cs" />
+    <Compile Include="Migrations\201610151839574_Initialization.cs" />
+    <Compile Include="Migrations\201610151839574_Initialization.Designer.cs">
+      <DependentUpon>201610151839574_Initialization.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
     <Compile Include="Models\Api\v1\_BaseApiModel.cs" />
@@ -112,8 +116,12 @@
     <Compile Include="Models\TMDb\Response\JobListResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\MovieDetailsResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\PersonDetailsResponseModel.cs" />
+    <Compile Include="Models\Video.cs" />
     <Compile Include="Models\_Interfaces\ITrackable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\LegacyGeekPeeked\MovieRepository.cs" />
+    <Compile Include="Repositories\LegacyGeekPeeked\_BaseRepository.cs" />
+    <Compile Include="Repositories\LegacyGeekPeeked\_Interfaces\IMovieRepository.cs" />
     <Compile Include="Repositories\MovieRepository.cs" />
     <Compile Include="Repositories\TMDb\MovieRepository.cs" />
     <Compile Include="Repositories\TMDb\_BaseRepository.cs" />
@@ -139,6 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\Api\v1\Request\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201610151839574_Initialization.resx">
+      <DependentUpon>201610151839574_Initialization.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

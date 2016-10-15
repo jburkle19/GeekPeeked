@@ -8,14 +8,14 @@ namespace GeekPeeked.UtilityApplication.Processors
 {
     public class MovieProcessor
     {
-        //private TMDBRepository.MovieRepository _tmdbMovieRepo;
-        //private GeekPeekedRepository.MovieRepository _dbMovieRepo;
+        private TMDBRepository.MovieRepository _tmdbMovieRepo;
+        private GeekPeekedRepository.MovieRepository _dbMovieRepo;
 
-        //public MovieProcessor()
-        //{
-        //    _tmdbMovieRepo = new TMDBRepository.MovieRepository();
-        //    _dbMovieRepo = new GeekPeekedRepository.MovieRepository(new GeekPeekedDbContext());
-        //}
+        public MovieProcessor()
+        {
+            _tmdbMovieRepo = new TMDBRepository.MovieRepository();
+            _dbMovieRepo = new GeekPeekedRepository.MovieRepository(new GeekPeekedDbContext());
+        }
 
         //public async Task ProcessMovieGenres()
         //{

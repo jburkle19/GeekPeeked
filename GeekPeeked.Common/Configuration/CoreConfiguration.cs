@@ -182,4 +182,18 @@ namespace GeekPeeked.Common.Configuration
                 return string.Empty;
         }
     }
+
+    public class LegacyGeekPeekedConfiguration
+    {
+        public static string LegacyGeekPeekedConnectionString
+        {
+            get
+            {
+                if (ConfigurationManager.ConnectionStrings["LegacyGeekPeekedDdConnection"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.ConnectionStrings["LegacyGeekPeekedDdConnection"].ToString()))
+                    return ConfigurationManager.ConnectionStrings["LegacyGeekPeekedDdConnection"].ToString();
+                else
+                    return string.Empty;
+            }
+        }
+    }
 }
