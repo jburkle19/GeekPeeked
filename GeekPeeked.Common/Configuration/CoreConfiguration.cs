@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.Collections.Generic;
 
 namespace GeekPeeked.Common.Configuration
 {
@@ -133,6 +135,16 @@ namespace GeekPeeked.Common.Configuration
                 return string.Empty;
         }
 
+        public static string JobListTmdbUrl
+        {
+            get
+            {
+                if (ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"].ToString()))
+                    return string.Format(ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"].ToString(), TmdbApiKey);
+                else
+                    return string.Empty;
+            }
+        }
         public static string GenreListTmdbUrl
         {
             get
@@ -153,35 +165,11 @@ namespace GeekPeeked.Common.Configuration
                     return string.Empty;
             }
         }
-        public static string JobListTmdbUrl
-        {
-            get
-            {
-                if (ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"].ToString()))
-                    return string.Format(ConfigurationManager.AppSettings["JobListTmdbUrlFormatString"].ToString(), TmdbApiKey);
-                else
-                    return string.Empty;
-            }
-        }
 
         public static string PersonDetailsTmdbUrl(string personId)
         {
             if (ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"].ToString()))
                 return string.Format("{0}&append_to_response=movie_credits,external_ids,images", string.Format(ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"].ToString(), TmdbApiKey, personId));
-            else
-                return string.Empty;
-        }
-        public static string DiscoverMovieTmdbUrl(int pageNumber)
-        {
-            if (ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString()))
-                return string.Format(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString(), TmdbApiKey, pageNumber);
-            else
-                return string.Empty;
-        }
-        public static string FindImdbObjectTmdbUrl(string imdbObjectId)
-        {
-            if (ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"].ToString()))
-                return string.Format("{0}&external_source=imdb_id", string.Format(ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"].ToString(), TmdbApiKey, imdbObjectId));
             else
                 return string.Empty;
         }
@@ -192,6 +180,89 @@ namespace GeekPeeked.Common.Configuration
             else
                 return string.Empty;
         }
+        public static string FindImdbObjectTmdbUrl(string imdbObjectId)
+        {
+            if (ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"].ToString()))
+                return string.Format("{0}&external_source=imdb_id", string.Format(ConfigurationManager.AppSettings["FindImdbObjectTmdbUrlFormatString"].ToString(), TmdbApiKey, imdbObjectId));
+            else
+                return string.Empty;
+        }
+
+        #region DiscoverMovie Url String with Options
+
+        public class DiscoverMovieSearchOptions
+        {
+            public int PageNumber { get; set; }
+            public int? Year { get; set; }
+            public DateTime? StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public List<int> GenreIds { get; set; }
+            public List<int> PeopleIds { get; set; }
+            public List<int> ProductionCompanyIds { get; set; }
+            public List<string> Keywords { get; set; }
+            public int? ExactCertificationId { get; set; }
+            public int? GTE_CertificationId { get; set; }
+            public int? LTE_CertificationId { get; set; }
+
+            public DiscoverMovieSearchOptions()
+            {
+                PageNumber = 1;
+                Year = null;
+                StartDate = null;
+                EndDate = null;
+                GenreIds = new List<int>();
+                PeopleIds = new List<int>();
+                ProductionCompanyIds = new List<int>();
+                Keywords = new List<string>();
+                ExactCertificationId = null;
+                GTE_CertificationId = null;
+                LTE_CertificationId = null;
+            }
+
+            public string DiscoverMovieTmdbUrl(DiscoverMovieSearchOptions options)
+            {
+                string url = string.Empty;
+
+                if (ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString()))
+                {
+                    url = string.Format(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString(), TmdbApiKey);
+
+                    if (PageNumber > 0)
+                        url += string.Format("&page={0}", PageNumber);
+                    else
+                        url += string.Format("&page=1"); // defaults to 1
+
+                    #region Optional Filters
+
+                    if (Year != null && Convert.ToInt32(Year) > 0)
+                        url += string.Format("&year={0}", Year);
+                    if (StartDate != null)
+                        url += string.Format("&release_date.gte={0}", StartDate);
+                    if (EndDate != null)
+                        url += string.Format("&release_date.lte={0}", EndDate);
+                    if (GenreIds.Count > 0)
+                        url += string.Format("&with_genres={0}", string.Join(",", GenreIds));
+                    if (PeopleIds.Count > 0)
+                        url += string.Format("&with_people={0}", string.Join(",", PeopleIds));
+                    if (ProductionCompanyIds.Count > 0)
+                        url += string.Format("&with_companies={0}", string.Join(",", ProductionCompanyIds));
+                    if (Keywords.Count > 0)
+                        url += string.Format("&with_keywords={0}", System.Web.HttpUtility.HtmlEncode(string.Join(",",Keywords)));
+                    if (ExactCertificationId != null)
+                        url += string.Format("&certification_country=US&certification={0}", ExactCertificationId);
+                    if (GTE_CertificationId != null)
+                        url += string.Format("&certification_country=US&certification.gte={0}", GTE_CertificationId);
+                    if (LTE_CertificationId != null)
+                        url += string.Format("&certification_country=US&certification.lte={0}", LTE_CertificationId);
+
+                    #endregion Optional Filters
+                }
+
+                return url;
+            }
+        }
+
+        #endregion DiscoverMovie Url String with Options
     }
 
     public class LegacyGeekPeekedConfiguration

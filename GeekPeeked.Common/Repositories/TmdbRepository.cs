@@ -6,15 +6,21 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using GeekPeeked.Common.Configuration;
+using JobList = GeekPeeked.Common.Models.TMDb.Response.JobList;
 using GenreList = GeekPeeked.Common.Models.TMDb.Response.GenreList;
+using ImdbDetails = GeekPeeked.Common.Models.TMDb.Response.ImdbDetails;
+using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
+using PersonDetails = GeekPeeked.Common.Models.TMDb.Response.PersonDetails;
+using DiscoverMovie = GeekPeeked.Common.Models.TMDb.Response.DiscoverMovie;
+using CertificationList = GeekPeeked.Common.Models.TMDb.Response.CertificationList;
 
 namespace GeekPeeked.Common.Repositories
 {
     public class TmdbRepository : BaseRepository, ITmdbRepository
     {
-        public async Task<GenreList.ResponseModel> AllGenres()
+        private async Task<T> CallTmdbAPI<T>(string url)
         {
-            var result = new GenreList.ResponseModel();
+            T result = default(T);
 
             try
             {
@@ -24,8 +30,7 @@ namespace GeekPeeked.Common.Repositories
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    HttpResponseMessage response = await client.GetAsync(TMDbCoreConfiguration.GenreListTmdbUrl);
-
+                    HttpResponseMessage response = await client.GetAsync(url);
                     if (response.IsSuccessStatusCode)
                     {
                         string jsonResponse = response.Content.ReadAsStringAsync().Result;
@@ -34,7 +39,7 @@ namespace GeekPeeked.Common.Repositories
                         {
                             try
                             {
-                                result = JToken.Parse(jsonResponse).ToObject<GenreList.ResponseModel>();
+                                result = JToken.Parse(jsonResponse).ToObject<T>();
                             }
                             catch (JsonSerializationException jsex)
                             {
@@ -52,6 +57,17 @@ namespace GeekPeeked.Common.Repositories
             }
 
             return result;
+        }
+
+
+        public async Task<JobList.ResponseModel> AllJobs()
+        {
+            return await CallTmdbAPI<JobList.ResponseModel>(TMDbCoreConfiguration.JobListTmdbUrl);
+        }
+
+        public async Task<GenreList.ResponseModel> AllGenres()
+        {
+            return await CallTmdbAPI<GenreList.ResponseModel>(TMDbCoreConfiguration.GenreListTmdbUrl);
         }
 
         //public async Task<IEnumerable<DiscoverMovie.ResponseModel>> AllMovies(int year)

@@ -1,0 +1,74 @@
+﻿@model JobsViewModel
+
+@{
+    ViewBag.Title = "Jobs List";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>TMDb Jobs List (@Model.GeekPeekedJobs.Count results)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped results">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Job Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var job in Model.GeekPeekedJobs.OrderBy(j => j.Department))
+                        {
+                            <tr>
+                                <td>
+                                    @job.Department
+                                </td>
+                                <td>
+                                    @job.JobTitle
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xs-12">
+            <h2>TMDb Jobs List (@Model.TMDbJobs.Count results)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table table-striped results">
+                    <thead>
+                        <tr>
+                            <th>Department</th>
+                            <th>Job Title</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var job in Model.TMDbJobs.OrderBy(j => j.Department))
+                        {
+                            <tr>
+                                <td>
+                                    @job.Department
+                                </td>
+                                <td>
+                                    @job.JobTitle
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

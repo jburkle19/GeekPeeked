@@ -13,11 +13,13 @@ namespace GeekPeeked.Web.Controllers.Admin
     public class AdminController : Controller
     {
         private TmdbRepository _tmdbMovieRepo;
+        private JobRepository _dbJobRepo;
         private GenreRepository _dbGenreRepo;
 
         public AdminController()
         {
             _tmdbMovieRepo = new TmdbRepository();
+            _dbJobRepo = new JobRepository(new GeekPeekedDbContext());
             _dbGenreRepo = new GenreRepository(new GeekPeekedDbContext());
         }
 
@@ -26,6 +28,38 @@ namespace GeekPeeked.Web.Controllers.Admin
         public ActionResult Index()
         {
             return View();
+        }
+
+        // GET: Admin/Jobs
+        public async Task<ActionResult> Jobs()
+        {
+            // TODO - Import Jobs from Tmdb
+            // TODO - Import Jobs from Tmdb
+
+            JobsViewModel viewModel = new JobsViewModel();
+
+            var response = await _tmdbMovieRepo.AllJobs();
+
+            foreach (var department in response.jobs)
+            {
+                foreach (var job in department.job_list)
+                {
+                    viewModel.TMDbJobs.Add(new Job()
+                    {
+                        Department = department.department,
+                        JobTitle = job
+                    });
+                }
+            }
+
+            var jobs = await _dbJobRepo.AllJobs();
+
+            foreach (var job in jobs)
+            {
+                viewModel.GeekPeekedJobs.Add(job);
+            }
+
+            return View(viewModel);
         }
 
         // GET: Admin/Genres

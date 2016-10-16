@@ -14,8 +14,8 @@ namespace GeekPeeked.Common.Models
         public DbSet<Certification> Certifications { get; set; }
         public DbSet<ProductionCompany> ProductionCompanies { get; set; }
 
+        public DbSet<Job> Jobs { get; set; }
         public DbSet<Person> People { get; set; }
-        //public DbSet<Job> Jobs { get; set; }
 
         public DbSet<Image> Images { get; set; }
         public DbSet<Video> Videos { get; set; }

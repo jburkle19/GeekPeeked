@@ -4,6 +4,51 @@ using GeekPeeked.Common.Models;
 
 namespace GeekPeeked.Web.ViewModels
 {
+    public class GenresViewModel
+    {
+        public List<Genre> TMDbGenres { get; set; }
+        public List<Genre> GeekPeekedGenres { get; set; }
+
+        public GenresViewModel()
+        {
+            TMDbGenres = new List<Genre>();
+            GeekPeekedGenres = new List<Genre>();
+        }
+    }
+
+    public class JobsViewModel
+    {
+        public List<Job> TMDbJobs { get; set; }
+        public List<Job> GeekPeekedJobs { get; set; }
+
+        public JobsViewModel()
+        {
+            TMDbJobs = new List<Job>();
+            GeekPeekedJobs = new List<Job>();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public class SimpleMovieViewModel
     {
         public int Id { get; set; }
@@ -40,18 +85,6 @@ namespace GeekPeeked.Web.ViewModels
         {
             TMDbMovies = new List<SimpleMovieViewModel>();
             GeekPeekedMovies = new List<SimpleMovieViewModel>();
-        }
-    }
-
-    public class GenresViewModel
-    {
-        public List<Genre> TMDbGenres { get; set; }
-        public List<Genre> GeekPeekedGenres { get; set; }
-
-        public GenresViewModel()
-        {
-            TMDbGenres = new List<Genre>();
-            GeekPeekedGenres = new List<Genre>();
         }
     }
 
