@@ -3,7 +3,7 @@ namespace GeekPeeked.Common.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class PersonAndMovieRelationshipModelCreation : DbMigration
+    public partial class Initialization : DbMigration
     {
         public override void Up()
         {
@@ -25,7 +25,7 @@ namespace GeekPeeked.Common.Migrations
                 "dbo.Movies",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         TmdbId = c.Int(nullable: false),
                         ImdbId = c.String(nullable: false),
                         Title = c.String(nullable: false),
@@ -63,7 +63,7 @@ namespace GeekPeeked.Common.Migrations
                 "dbo.Images",
                 c => new
                     {
-                        Id = c.Guid(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
                         IsBackdrop = c.Boolean(nullable: false),
                         FilePath = c.String(nullable: false),
                         Width = c.Int(nullable: false),
@@ -123,10 +123,96 @@ namespace GeekPeeked.Common.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.Jobs",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Department = c.String(nullable: false),
+                        JobTitle = c.String(nullable: false),
+                        CreatedDate = c.DateTime(),
+                        ModifiedDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.AspNetRoles",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(nullable: false, maxLength: 256),
+                    })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
+            
+            CreateTable(
+                "dbo.AspNetUserRoles",
+                c => new
+                    {
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        RoleId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.UserId, t.RoleId })
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.RoleId);
+            
+            CreateTable(
+                "dbo.AspNetUsers",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        DisplayName = c.String(),
+                        FirstName = c.String(nullable: false),
+                        LastName = c.String(nullable: false),
+                        OldProfileId = c.Guid(),
+                        CreatedDate = c.DateTime(),
+                        ModifiedDate = c.DateTime(),
+                        Email = c.String(maxLength: 256),
+                        EmailConfirmed = c.Boolean(nullable: false),
+                        PasswordHash = c.String(),
+                        SecurityStamp = c.String(),
+                        PhoneNumber = c.String(),
+                        PhoneNumberConfirmed = c.Boolean(nullable: false),
+                        TwoFactorEnabled = c.Boolean(nullable: false),
+                        LockoutEndDateUtc = c.DateTime(),
+                        LockoutEnabled = c.Boolean(nullable: false),
+                        AccessFailedCount = c.Int(nullable: false),
+                        UserName = c.String(nullable: false, maxLength: 256),
+                    })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.UserName, unique: true, name: "UserNameIndex");
+            
+            CreateTable(
+                "dbo.AspNetUserClaims",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        ClaimType = c.String(),
+                        ClaimValue = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
+            
+            CreateTable(
+                "dbo.AspNetUserLogins",
+                c => new
+                    {
+                        LoginProvider = c.String(nullable: false, maxLength: 128),
+                        ProviderKey = c.String(nullable: false, maxLength: 128),
+                        UserId = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .Index(t => t.UserId);
+            
+            CreateTable(
                 "dbo.MovieCertificationRelationship",
                 c => new
                     {
-                        MovieId = c.Guid(nullable: false),
+                        MovieId = c.Int(nullable: false),
                         CertificationId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.MovieId, t.CertificationId })
@@ -139,7 +225,7 @@ namespace GeekPeeked.Common.Migrations
                 "dbo.MovieGenreRelationship",
                 c => new
                     {
-                        MovieId = c.Guid(nullable: false),
+                        MovieId = c.Int(nullable: false),
                         GenreId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.MovieId, t.GenreId })
@@ -153,7 +239,7 @@ namespace GeekPeeked.Common.Migrations
                 c => new
                     {
                         Persond = c.Int(nullable: false),
-                        ImageId = c.Guid(nullable: false),
+                        ImageId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Persond, t.ImageId })
                 .ForeignKey("dbo.People", t => t.Persond, cascadeDelete: true)
@@ -165,8 +251,8 @@ namespace GeekPeeked.Common.Migrations
                 "dbo.MoviePosterRelationship",
                 c => new
                     {
-                        MovieId = c.Guid(nullable: false),
-                        PosterId = c.Guid(nullable: false),
+                        MovieId = c.Int(nullable: false),
+                        PosterId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.MovieId, t.PosterId })
                 .ForeignKey("dbo.Movies", t => t.MovieId, cascadeDelete: true)
@@ -178,7 +264,7 @@ namespace GeekPeeked.Common.Migrations
                 "dbo.MovieProductionCompanyRelationship",
                 c => new
                     {
-                        MovieId = c.Guid(nullable: false),
+                        MovieId = c.Int(nullable: false),
                         ProductionCompanyId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.MovieId, t.ProductionCompanyId })
@@ -191,7 +277,7 @@ namespace GeekPeeked.Common.Migrations
                 "dbo.MovieVideoRelationship",
                 c => new
                     {
-                        MovieId = c.Guid(nullable: false),
+                        MovieId = c.Int(nullable: false),
                         VideoId = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => new { t.MovieId, t.VideoId })
@@ -204,6 +290,10 @@ namespace GeekPeeked.Common.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.MovieVideoRelationship", "VideoId", "dbo.Videos");
             DropForeignKey("dbo.MovieVideoRelationship", "MovieId", "dbo.Movies");
             DropForeignKey("dbo.MovieProductionCompanyRelationship", "ProductionCompanyId", "dbo.ProductionCompanies");
@@ -228,12 +318,24 @@ namespace GeekPeeked.Common.Migrations
             DropIndex("dbo.MovieGenreRelationship", new[] { "MovieId" });
             DropIndex("dbo.MovieCertificationRelationship", new[] { "CertificationId" });
             DropIndex("dbo.MovieCertificationRelationship", new[] { "MovieId" });
+            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
+            DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
+            DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
+            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
+            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropTable("dbo.MovieVideoRelationship");
             DropTable("dbo.MovieProductionCompanyRelationship");
             DropTable("dbo.MoviePosterRelationship");
             DropTable("dbo.PersonImageRelationship");
             DropTable("dbo.MovieGenreRelationship");
             DropTable("dbo.MovieCertificationRelationship");
+            DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.AspNetUserClaims");
+            DropTable("dbo.AspNetUsers");
+            DropTable("dbo.AspNetUserRoles");
+            DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Jobs");
             DropTable("dbo.Videos");
             DropTable("dbo.ProductionCompanies");
             DropTable("dbo.People");

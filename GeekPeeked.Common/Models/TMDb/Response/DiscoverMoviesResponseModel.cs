@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GeekPeeked.Common.Models.TMDb.Response.DiscoverMovie
+namespace GeekPeeked.Common.Models.TMDb.Response.DiscoverMovies
 {
     public class ResponseModel
     {

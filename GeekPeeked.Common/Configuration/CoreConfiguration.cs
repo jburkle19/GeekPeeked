@@ -166,14 +166,14 @@ namespace GeekPeeked.Common.Configuration
             }
         }
 
-        public static string PersonDetailsTmdbUrl(string personId)
+        public static string PersonDetailsTmdbUrl(int personId)
         {
             if (ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"].ToString()))
                 return string.Format("{0}&append_to_response=movie_credits,external_ids,images", string.Format(ConfigurationManager.AppSettings["PersonDetailsTmdbUrlFormatString"].ToString(), TmdbApiKey, personId));
             else
                 return string.Empty;
         }
-        public static string MovieDetailsTmdbUrl(string tmdbMovieId)
+        public static string MovieDetailsTmdbUrl(int tmdbMovieId)
         {
             if (ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"].ToString()))
                 return string.Format("{0}&append_to_response=credits,images,keywords,release_dates,videos", string.Format(ConfigurationManager.AppSettings["MovieDetailsTmdbUrlFormatString"].ToString(), TmdbApiKey, tmdbMovieId));
@@ -188,10 +188,10 @@ namespace GeekPeeked.Common.Configuration
                 return string.Empty;
         }
 
-        #region DiscoverMovie Url String with Options
-
-        public class DiscoverMovieSearchOptions
+        public class DiscoverMoviesSearchOptions
         {
+            #region DiscoverMovies Url Options
+
             public int PageNumber { get; set; }
             public int? Year { get; set; }
             public DateTime? StartDate { get; set; }
@@ -204,7 +204,9 @@ namespace GeekPeeked.Common.Configuration
             public int? GTE_CertificationId { get; set; }
             public int? LTE_CertificationId { get; set; }
 
-            public DiscoverMovieSearchOptions()
+            #endregion DiscoverMovies Url Options
+
+            public DiscoverMoviesSearchOptions()
             {
                 PageNumber = 1;
                 Year = null;
@@ -219,50 +221,51 @@ namespace GeekPeeked.Common.Configuration
                 LTE_CertificationId = null;
             }
 
-            public string DiscoverMovieTmdbUrl(DiscoverMovieSearchOptions options)
+            public string DiscoverMoviesTmdbUrl
             {
-                string url = string.Empty;
-
-                if (ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString()))
+                get
                 {
-                    url = string.Format(ConfigurationManager.AppSettings["DiscoverMovieTmdbUrlFormatString"].ToString(), TmdbApiKey);
+                    string url = string.Empty;
 
-                    if (PageNumber > 0)
-                        url += string.Format("&page={0}", PageNumber);
-                    else
-                        url += string.Format("&page=1"); // defaults to 1
+                    if (ConfigurationManager.AppSettings["DiscoverMoviesTmdbUrlFormatString"] != null && !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["DiscoverMoviesTmdbUrlFormatString"].ToString()))
+                    {
+                        url = string.Format(ConfigurationManager.AppSettings["DiscoverMoviesTmdbUrlFormatString"].ToString(), TmdbApiKey);
 
-                    #region Optional Filters
+                        if (PageNumber > 0)
+                            url += string.Format("&page={0}", PageNumber);
+                        else
+                            url += string.Format("&page=1"); // defaults to 1
 
-                    if (Year != null && Convert.ToInt32(Year) > 0)
-                        url += string.Format("&year={0}", Year);
-                    if (StartDate != null)
-                        url += string.Format("&release_date.gte={0}", StartDate);
-                    if (EndDate != null)
-                        url += string.Format("&release_date.lte={0}", EndDate);
-                    if (GenreIds.Count > 0)
-                        url += string.Format("&with_genres={0}", string.Join(",", GenreIds));
-                    if (PeopleIds.Count > 0)
-                        url += string.Format("&with_people={0}", string.Join(",", PeopleIds));
-                    if (ProductionCompanyIds.Count > 0)
-                        url += string.Format("&with_companies={0}", string.Join(",", ProductionCompanyIds));
-                    if (Keywords.Count > 0)
-                        url += string.Format("&with_keywords={0}", System.Web.HttpUtility.HtmlEncode(string.Join(",",Keywords)));
-                    if (ExactCertificationId != null)
-                        url += string.Format("&certification_country=US&certification={0}", ExactCertificationId);
-                    if (GTE_CertificationId != null)
-                        url += string.Format("&certification_country=US&certification.gte={0}", GTE_CertificationId);
-                    if (LTE_CertificationId != null)
-                        url += string.Format("&certification_country=US&certification.lte={0}", LTE_CertificationId);
+                        #region Optional Filters
 
-                    #endregion Optional Filters
+                        if (Year != null && Convert.ToInt32(Year) > 0)
+                            url += string.Format("&year={0}", Year);
+                        if (StartDate != null)
+                            url += string.Format("&release_date.gte={0}", StartDate);
+                        if (EndDate != null)
+                            url += string.Format("&release_date.lte={0}", EndDate);
+                        if (GenreIds.Count > 0)
+                            url += string.Format("&with_genres={0}", string.Join(",", GenreIds));
+                        if (PeopleIds.Count > 0)
+                            url += string.Format("&with_people={0}", string.Join(",", PeopleIds));
+                        if (ProductionCompanyIds.Count > 0)
+                            url += string.Format("&with_companies={0}", string.Join(",", ProductionCompanyIds));
+                        if (Keywords.Count > 0)
+                            url += string.Format("&with_keywords={0}", System.Web.HttpUtility.HtmlEncode(string.Join(",", Keywords)));
+                        if (ExactCertificationId != null)
+                            url += string.Format("&certification_country=US&certification={0}", ExactCertificationId);
+                        if (GTE_CertificationId != null)
+                            url += string.Format("&certification_country=US&certification.gte={0}", GTE_CertificationId);
+                        if (LTE_CertificationId != null)
+                            url += string.Format("&certification_country=US&certification.lte={0}", LTE_CertificationId);
+
+                        #endregion Optional Filters
+                    }
+
+                    return url;
                 }
-
-                return url;
             }
         }
-
-        #endregion DiscoverMovie Url String with Options
     }
 
     public class LegacyGeekPeekedConfiguration

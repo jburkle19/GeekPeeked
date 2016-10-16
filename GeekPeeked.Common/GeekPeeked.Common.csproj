@@ -95,17 +95,13 @@
     <Compile Include="Configuration\CoreConfiguration.cs" />
     <Compile Include="Configuration\IdentityConfiguration.cs" />
     <Compile Include="Helpers\DataHelpers.cs" />
-    <Compile Include="Migrations\201610151839574_Initialization.cs" />
-    <Compile Include="Migrations\201610151839574_Initialization.Designer.cs">
-      <DependentUpon>201610151839574_Initialization.cs</DependentUpon>
+    <Compile Include="Migrations\201610160200447_Initialization.cs" />
+    <Compile Include="Migrations\201610160200447_Initialization.Designer.cs">
+      <DependentUpon>201610160200447_Initialization.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610152129097_PersonAndMovieRelationshipModelCreation.cs" />
-    <Compile Include="Migrations\201610152129097_PersonAndMovieRelationshipModelCreation.Designer.cs">
-      <DependentUpon>201610152129097_PersonAndMovieRelationshipModelCreation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610160031585_JobModelCreation.cs" />
-    <Compile Include="Migrations\201610160031585_JobModelCreation.Designer.cs">
-      <DependentUpon>201610160031585_JobModelCreation.cs</DependentUpon>
+    <Compile Include="Migrations\201610160347585_MovieImdbIdRequiredRemoved.cs" />
+    <Compile Include="Migrations\201610160347585_MovieImdbIdRequiredRemoved.Designer.cs">
+      <DependentUpon>201610160347585_MovieImdbIdRequiredRemoved.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
@@ -121,7 +117,7 @@
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ProductionCompany.cs" />
     <Compile Include="Models\TMDb\Response\CertificationListResponseModel.cs" />
-    <Compile Include="Models\TMDb\Response\DiscoverMovieResponseModel.cs" />
+    <Compile Include="Models\TMDb\Response\DiscoverMoviesResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\GenreListResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\ImdbDetailsResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\JobListResponseModel.cs" />
@@ -130,19 +126,15 @@
     <Compile Include="Models\Video.cs" />
     <Compile Include="Models\_Interfaces\ITrackable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\JobRepository.cs" />
-    <Compile Include="Repositories\GenreRepository.cs" />
     <Compile Include="Repositories\LegacyGeekPeeked\MovieRepository.cs" />
     <Compile Include="Repositories\LegacyGeekPeeked\_BaseRepository.cs" />
     <Compile Include="Repositories\LegacyGeekPeeked\_Interfaces\IMovieRepository.cs" />
-    <Compile Include="Repositories\MovieRepository.cs" />
+    <Compile Include="Repositories\MovieRepositories.cs" />
     <Compile Include="Repositories\TmdbRepository.cs" />
-    <Compile Include="Repositories\_Interfaces\IJobRepository.cs" />
     <Compile Include="Repositories\_Interfaces\ITmdbRepository.cs" />
     <Compile Include="Repositories\_BaseRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Repositories\_Interfaces\IGenreRepository.cs" />
-    <Compile Include="Repositories\_Interfaces\IMovieRepository.cs" />
+    <Compile Include="Repositories\_Interfaces\IMovieRepositories.cs" />
     <Compile Include="Repositories\_Interfaces\IUserRepository.cs" />
     <Compile Include="Repositories\_Interfaces\_IBaseRepository.cs" />
     <Compile Include="Services\EmailService.cs" />
@@ -163,14 +155,11 @@
     <Folder Include="Models\Api\v1\Request\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610151839574_Initialization.resx">
-      <DependentUpon>201610151839574_Initialization.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610160200447_Initialization.resx">
+      <DependentUpon>201610160200447_Initialization.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610152129097_PersonAndMovieRelationshipModelCreation.resx">
-      <DependentUpon>201610152129097_PersonAndMovieRelationshipModelCreation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610160031585_JobModelCreation.resx">
-      <DependentUpon>201610160031585_JobModelCreation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610160347585_MovieImdbIdRequiredRemoved.resx">
+      <DependentUpon>201610160347585_MovieImdbIdRequiredRemoved.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

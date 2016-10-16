@@ -9,12 +9,11 @@ namespace GeekPeeked.Common.Models
     {
         [Key]
         [Required]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         [Required]
         public int TmdbId { get; set; }                                    // "id"
-
-        [Required]
         public string ImdbId { get; set; }                                 // "imdb_id"
 
         [Required]
