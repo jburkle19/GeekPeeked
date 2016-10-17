@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
+using PersonDetails = GeekPeeked.Common.Models.TMDb.Response.PersonDetails;
 
 namespace GeekPeeked.Common.Models
 {
@@ -29,8 +31,37 @@ namespace GeekPeeked.Common.Models
 
         public Image()
         {
+            this.IsBackdrop = false;
+
             Movies = new HashSet<Movie>();
             People = new HashSet<Person>();
+        }
+
+        public Image(MovieDetails.Backdrop tmdbBackdrop)
+        {
+            this.IsBackdrop = true;
+            this.FilePath = tmdbBackdrop.file_path;
+            this.Width = tmdbBackdrop.width;
+            this.Height = tmdbBackdrop.height;
+            this.AspectRatio = tmdbBackdrop.aspect_ratio;
+        }
+
+        public Image(MovieDetails.Poster tmdbPoster)
+        {
+            this.IsBackdrop = false;
+            this.FilePath = tmdbPoster.file_path;
+            this.Width = tmdbPoster.width;
+            this.Height = tmdbPoster.height;
+            this.AspectRatio = tmdbPoster.aspect_ratio;
+        }
+
+        public Image(PersonDetails.Profile tmdbProfile)
+        {
+            this.IsBackdrop = false;
+            this.FilePath = tmdbProfile.file_path;
+            this.Width = tmdbProfile.width;
+            this.Height = tmdbProfile.height;
+            this.AspectRatio = tmdbProfile.aspect_ratio;
         }
     }
 }

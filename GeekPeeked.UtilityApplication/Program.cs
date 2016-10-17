@@ -22,7 +22,8 @@ namespace GeekPeeked.UtilityApplication
                 Helpers.OutputMessage("4: process TMDb Movies By Year", ConsoleColor.Magenta);
                 Helpers.OutputMessage("5: process TMDb Movies By Month", ConsoleColor.Magenta);
                 Helpers.OutputMessage("6: process TMDb Movies By Day", ConsoleColor.Magenta);
-                Helpers.OutputMessage("19: process IMDb Movies", ConsoleColor.Magenta);
+                Helpers.OutputMessage("7: process IMDb Movie", ConsoleColor.Magenta);
+                Helpers.OutputMessage("8: process All IMDb Movies", ConsoleColor.Magenta);
                 Helpers.OutputMessage("0: Exit", ConsoleColor.Magenta);
                 Helpers.OutputMessage();
                 Helpers.RequestInput("Option", ConsoleColor.Magenta);
@@ -138,7 +139,30 @@ namespace GeekPeeked.UtilityApplication
                         }
 
                         break;
-                    case "19": // process IMDb Movies
+                    case "7": // process IMDb Movie
+
+                        Helpers.RequestInput("IMDb Movie Id", ConsoleColor.Magenta);
+                        string imdbId = Console.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(imdbId))
+                        {
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("Processing IMDb Movie {0}...", imdbId), ConsoleColor.Yellow);
+                            Helpers.OutputMessage();
+
+                            processor.ProcessImdbMovie(imdbId).Wait();
+
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("IMDb Movie {0} processed!", imdbId), ConsoleColor.Yellow);
+                        }
+                        else
+                        {
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage("!!! Invalid IMDb Id entered !!!", ConsoleColor.Red);
+                            Helpers.OutputMessage();
+                        }
+
+                        break;
+                    case "8": // process All IMDb Movies
 
                             Helpers.OutputMessage("Processing IMDb Movies", ConsoleColor.Yellow);
                             Helpers.OutputMessage();

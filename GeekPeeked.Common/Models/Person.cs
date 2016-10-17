@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using PersonDetails = GeekPeeked.Common.Models.TMDb.Response.PersonDetails;
 namespace GeekPeeked.Common.Models
 {
     public class Person : ITrackable
@@ -44,6 +44,30 @@ namespace GeekPeeked.Common.Models
 
             CastCredits = new HashSet<CastCredit>();
             CrewCredits = new HashSet<CrewCredit>();
+        }
+
+        public Person(PersonDetails.ResponseModel tmdbPerson)
+        {
+            this.Id = tmdbPerson.id;
+            this.Name = tmdbPerson.name;
+
+            DateTime birthday = new DateTime();
+            DateTime.TryParse(tmdbPerson.birthday, out birthday);
+            this.Birthday = birthday;
+
+            DateTime deathday = new DateTime();
+            DateTime.TryParse(tmdbPerson.deathday, out deathday);
+            this.Deathday = deathday;
+
+            this.Gender = tmdbPerson.gender;
+            this.Biography = tmdbPerson.biography;
+            this.HomePage = tmdbPerson.homepage;
+            this.ImdbId = tmdbPerson.imdb_id;
+            this.FacebookId = tmdbPerson.external_ids.facebook_id.ToString();
+            this.InstagramId = tmdbPerson.external_ids.instagram_id.ToString();
+            this.TwitterId = tmdbPerson.external_ids.twitter_id.ToString();
+            this.BirthPlace = tmdbPerson.place_of_birth;
+            this.ProfilePath = tmdbPerson.profile_path;
         }
     }
 }

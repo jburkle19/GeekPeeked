@@ -82,6 +82,7 @@
       <HintPath>..\packages\System.Linq.Dynamic.1.0.6\lib\net40\System.Linq.Dynamic.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
@@ -95,9 +96,9 @@
     <Compile Include="Configuration\CoreConfiguration.cs" />
     <Compile Include="Configuration\IdentityConfiguration.cs" />
     <Compile Include="Helpers\DataHelpers.cs" />
-    <Compile Include="Migrations\201610170051513_Initialization.cs" />
-    <Compile Include="Migrations\201610170051513_Initialization.Designer.cs">
-      <DependentUpon>201610170051513_Initialization.cs</DependentUpon>
+    <Compile Include="Migrations\201610171509069_Initialization.cs" />
+    <Compile Include="Migrations\201610171509069_Initialization.Designer.cs">
+      <DependentUpon>201610171509069_Initialization.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
@@ -152,8 +153,8 @@
     <Folder Include="Models\Api\v1\Request\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610170051513_Initialization.resx">
-      <DependentUpon>201610170051513_Initialization.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610171509069_Initialization.resx">
+      <DependentUpon>201610171509069_Initialization.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

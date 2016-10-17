@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
 
 namespace GeekPeeked.Common.Models
 {
@@ -26,6 +27,16 @@ namespace GeekPeeked.Common.Models
         public Video()
         {
             Movies = new HashSet<Movie>();
+        }
+
+        public Video(MovieDetails.VideoResult tmdbVideo)
+        {
+            this.Id = tmdbVideo.id;
+            this.Key = tmdbVideo.key;
+            this.Name = tmdbVideo.name;
+            this.Site = tmdbVideo.site;
+            this.Size = tmdbVideo.size;
+            this.Type = tmdbVideo.type;
         }
     }
 }

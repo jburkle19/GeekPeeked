@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
 
 namespace GeekPeeked.Common.Models
 {
@@ -77,6 +78,48 @@ namespace GeekPeeked.Common.Models
 
             this.CastCredits = new HashSet<CastCredit>();
             this.CrewCredits = new HashSet<CrewCredit>();
+        }
+
+        public Movie(MovieDetails.ResponseModel tmdbMovie)
+        {
+            this.TmdbId = tmdbMovie.id;
+            this.ImdbId = tmdbMovie.imdb_id;
+            this.Title = tmdbMovie.title;
+            this.OriginalTitle = tmdbMovie.original_title;
+            this.Description = tmdbMovie.overview;
+            this.Tagline = tmdbMovie.tagline;
+            this.PosterPath = tmdbMovie.poster_path;
+            this.HomePage = tmdbMovie.homepage;
+
+            int tempRuntime = 0;
+            Int32.TryParse(tmdbMovie.runtime, out tempRuntime);
+            this.Runtime = tempRuntime;
+
+            int tempBudget = 0;
+            Int32.TryParse(tmdbMovie.budget, out tempBudget);
+            this.Budget = tempBudget;
+
+            int tempRevenue = 0;
+            Int32.TryParse(tmdbMovie.revenue, out tempRevenue);
+            this.Revenue = tempRevenue;
+
+            DateTime releaseDate = new DateTime();
+            DateTime.TryParse(tmdbMovie.release_date, out releaseDate);
+            this.ReleaseDate = releaseDate;
+
+            this.Status = tmdbMovie.status;
+
+            if (tmdbMovie.vote_count >= 10 ||
+                (!string.IsNullOrWhiteSpace(tmdbMovie.poster_path) && tmdbMovie.popularity >= 2) ||
+                (!string.IsNullOrWhiteSpace(tmdbMovie.poster_path) && tmdbMovie.original_language == "en" && tmdbMovie.vote_count >= 5))
+            {
+                this.IsVisible = true;
+            }
+            else
+                this.IsVisible = false;
+
+            this.IsAdult = tmdbMovie.adult;
+            this.IsVideo = tmdbMovie.video;
         }
     }
 }

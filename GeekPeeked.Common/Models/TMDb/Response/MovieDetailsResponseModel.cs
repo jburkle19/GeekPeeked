@@ -143,7 +143,7 @@ namespace GeekPeeked.Common.Models.TMDb.Response.MovieDetails
         public int type { get; set; }
     }
 
-    public class Result
+    public class ReleaseDateResult
     {
         public string iso_3166_1 { get; set; }
         public List<ReleaseDate> release_dates { get; set; }
@@ -151,10 +151,10 @@ namespace GeekPeeked.Common.Models.TMDb.Response.MovieDetails
 
     public class ReleaseDates
     {
-        public List<Result> results { get; set; }
+        public List<ReleaseDateResult> results { get; set; }
     }
 
-    public class Result2
+    public class VideoResult
     {
         public string id { get; set; }
         public string iso_639_1 { get; set; }
@@ -168,6 +168,6 @@ namespace GeekPeeked.Common.Models.TMDb.Response.MovieDetails
 
     public class Videos
     {
-        public List<Result2> results { get; set; }
+        public List<VideoResult> results { get; set; }
     }
 }

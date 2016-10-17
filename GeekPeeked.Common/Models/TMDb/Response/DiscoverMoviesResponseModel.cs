@@ -5,12 +5,12 @@ namespace GeekPeeked.Common.Models.TMDb.Response.DiscoverMovies
     public class ResponseModel
     {
         public int page { get; set; }
-        public List<Result> results { get; set; }
+        public List<MovieResult> results { get; set; }
         public int total_results { get; set; }
         public int total_pages { get; set; }
     }
 
-    public class Result
+    public class MovieResult
     {
         public string poster_path { get; set; }
         public bool adult { get; set; }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using GeekPeeked.Common.Models;
-using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
 
 namespace GeekPeeked.Common.Repositories
 {
@@ -51,7 +50,6 @@ namespace GeekPeeked.Common.Repositories
         IEnumerable<Movie> AllMovies();
 
         void AddMovie(Movie movie);
-        void AddMovie(MovieDetails.ResponseModel tmdbMovie);
         void RemoveMovie(Movie movie);
     }
 

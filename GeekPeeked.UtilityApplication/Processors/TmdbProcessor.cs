@@ -37,22 +37,24 @@ namespace GeekPeeked.UtilityApplication.Processors
             {
                 foreach (var job in department.job_list)
                 {
-                    try
+                    var myJob = _context.Jobs.FirstOrDefault(j => j.Department == department.department && j.JobTitle == job);
+                    if (myJob == null)
                     {
-                        var myJob = _context.Jobs.FirstOrDefault(j => j.Department == department.department && j.JobTitle == job);
+                        myJob = new Job() { Department = department.department, JobTitle = job };
+                        _dbJobRepo.AddJob(myJob);
 
-                        if (myJob == null)
-                        {
-                            _dbJobRepo.AddJob(new Job() { Department = department.department, JobTitle = job });
-                            _dbJobRepo.Save();
-                            Helpers.OutputMessage(string.Format("\tJob: {0} - {1}", department.department, job), ConsoleColor.Cyan);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+                        Helpers.OutputMessage(string.Format("\tJob: {0} - {1}", department.department, job), ConsoleColor.Cyan);
                     }
                 }
+            }
+
+            try
+            {
+                _dbJobRepo.Save();
+            }
+            catch (Exception ex)
+            {
+                Helpers.OutputMessage(string.Format("\tException: {0}", ex.ToString()), ConsoleColor.Red);
             }
         }
         public async Task ProcessTmdbGenres()
@@ -61,21 +63,23 @@ namespace GeekPeeked.UtilityApplication.Processors
 
             foreach (var genre in response.genres)
             {
-                try
-                {
                     var myGenre = _context.Genres.FirstOrDefault(g => g.Id == genre.id);
-
                     if (myGenre == null)
                     {
-                        _dbGenreRepo.AddGenre(new Genre() { Id = genre.id, Name = genre.name });
-                        _dbGenreRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tGenre:{0} ({1})", genre.name, genre.id), ConsoleColor.Cyan);
-                    }
+                        myGenre = new Genre(genre);
+                        _dbGenreRepo.AddGenre(myGenre);
+
+                    Helpers.OutputMessage(string.Format("\tGenre:{0} ({1})", genre.name, genre.id), ConsoleColor.Cyan);
                 }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
+            }
+
+            try
+            {
+                _dbGenreRepo.Save();
+            }
+            catch (Exception ex)
+            {
+                Helpers.OutputMessage(string.Format("\tException: {0}", ex.ToString()), ConsoleColor.Red);
             }
         }
         public async Task ProcessTmdbCertifications()
@@ -84,274 +88,282 @@ namespace GeekPeeked.UtilityApplication.Processors
 
             foreach (var certification in response.certifications.US)
             {
-                try
-                {
+                
                     var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "US");
-
                     if (myCertification == null)
                     {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "US", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
+                        myCertification = new Certification(certification);
+                        _dbCertificationRepo.AddCertification(myCertification);
+
                         Helpers.OutputMessage(string.Format("\tCertification: US - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
                 }
             }
-            foreach (var certification in response.certifications.AU)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "AU");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "AU", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: AU - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.BG)
+            try
             {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "BG");
-
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "BG", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: BG - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
+                _dbCertificationRepo.Save();
             }
-            foreach (var certification in response.certifications.BR)
+            catch (Exception ex)
             {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "BR");
-
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "BR", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: BR - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
+                Helpers.OutputMessage(string.Format("\tException: {0}", ex.ToString()), ConsoleColor.Red);
             }
-            foreach (var certification in response.certifications.CA)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "CA");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "CA", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: CA - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.DE)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "DE");
+            #region Non-US Certifications
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "DE", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: DE - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.ES)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "ES");
+            //foreach (var certification in response.certifications.AU)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "AU");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "ES", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: ES - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.FI)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "FI");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "AU", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: AU - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.BG)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "BG");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "FI", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: FI - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.FR)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "FR");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "BG", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: BG - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.BR)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "BR");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "FR", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: FR - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.GB)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "GB");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "BR", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: BR - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.CA)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "CA");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "GB", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: GB - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.IN)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "IN");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "CA", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: CA - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.DE)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "DE");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "IN", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: IN - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.NL)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "NL");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "DE", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: DE - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.ES)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "ES");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "NL", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: NL - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.NZ)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "NZ");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "ES", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: ES - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.FI)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "FI");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "NZ", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: NZ - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.PH)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "PH");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "FI", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: FI - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.FR)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "FR");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "PH", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: PH - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
-            foreach (var certification in response.certifications.PT)
-            {
-                try
-                {
-                    var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "PT");
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "FR", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: FR - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.GB)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "GB");
 
-                    if (myCertification == null)
-                    {
-                        _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "PT", Name = certification.certification, Description = certification.meaning });
-                        _dbCertificationRepo.Save();
-                        Helpers.OutputMessage(string.Format("\tCertification: PT - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
-            }
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "GB", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: GB - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.IN)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "IN");
+
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "IN", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: IN - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.NL)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "NL");
+
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "NL", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: NL - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.NZ)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "NZ");
+
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "NZ", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: NZ - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.PH)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "PH");
+
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "PH", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: PH - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+            //foreach (var certification in response.certifications.PT)
+            //{
+            //    try
+            //    {
+            //        var myCertification = _context.Certifications.FirstOrDefault(c => c.TypeId == certification.order && c.Country == "PT");
+
+            //        if (myCertification == null)
+            //        {
+            //            _dbCertificationRepo.AddCertification(new Certification() { TypeId = certification.order, Country = "PT", Name = certification.certification, Description = certification.meaning });
+            //            _dbCertificationRepo.Save();
+            //            Helpers.OutputMessage(string.Format("\tCertification: PT - {0} ({1})", certification.certification, certification.order), ConsoleColor.Cyan);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+            //    }
+            //}
+
+            #endregion Non-US Certifications
         }
 
         public async Task ProcessTmdbMoviesByYear(int year)
@@ -365,33 +377,40 @@ namespace GeekPeeked.UtilityApplication.Processors
             {
                 foreach (var result in response.results)
                 {
-                    await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
-
-                    try
-                    {
-                        var movie = await Task.Run(() => _tmdbMovieRepo.MovieDetails(result.id));
-
-                        _dbMovieRepo.AddMovie(movie);
-                        _dbMovieRepo.Save();
-                        Helpers.OutputMessage(string.Format("\t{0} of {1}: {2} ({3})", currentMovie, totalMovies, result.title, result.id), ConsoleColor.Cyan);
-                    }
-                    catch (DbEntityValidationException dbEx)
-                    {
-                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    
+                        var myMovie = _context.Movies.FirstOrDefault(m => m.TmdbId == result.id);
+                        if (myMovie == null)
                         {
-                            foreach (var validationError in validationErrors.ValidationErrors)
-                            {
-                                Helpers.OutputMessage(string.Format("!!!! Property: {0} ({1})", validationError.PropertyName, validationError.ErrorMessage), ConsoleColor.Red);
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+                            await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
+
+                            var movie = await Task.Run(() => _tmdbMovieRepo.MovieDetails(result.id));
+                            myMovie = new Movie(movie);
+                            _dbMovieRepo.AddMovie(myMovie);
+
+                        Helpers.OutputMessage(string.Format("\t{0} of {1}: {2} ({3})", currentMovie, totalMovies, result.title, result.id), ConsoleColor.Cyan);
                     }
 
                     currentMovie++;
                 }
+            }
+
+            try
+            {
+                _dbMovieRepo.Save();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Helpers.OutputMessage(string.Format("\tInvalid Property: {0} ({1})", validationError.PropertyName, validationError.ErrorMessage), ConsoleColor.Red);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helpers.OutputMessage(string.Format("\tException: {0}", ex.ToString()), ConsoleColor.Red);
             }
         }
         public async Task ProcessTmdbMoviesByDates(DateTime startDate, DateTime endDate)
@@ -405,13 +424,18 @@ namespace GeekPeeked.UtilityApplication.Processors
             {
                 foreach (var result in response.results)
                 {
-                    await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
-
                     try
                     {
-                        var movie = await Task.Run(() => _tmdbMovieRepo.MovieDetails(result.id));
+                        var myMovie = _context.Movies.FirstOrDefault(m => m.TmdbId == result.id);
+                        if (myMovie == null)
+                        {
+                            await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
 
-                        _dbMovieRepo.AddMovie(movie);
+                            var movie = await Task.Run(() => _tmdbMovieRepo.MovieDetails(result.id));
+                            myMovie = new Movie(movie);
+                            _dbMovieRepo.AddMovie(myMovie);
+                        }
+
                         _dbMovieRepo.Save();
                         Helpers.OutputMessage(string.Format("\t{0} of {1}: {2} ({3})", currentMovie, totalMovies, result.title, result.id), ConsoleColor.Cyan);
                     }
@@ -421,13 +445,13 @@ namespace GeekPeeked.UtilityApplication.Processors
                         {
                             foreach (var validationError in validationErrors.ValidationErrors)
                             {
-                                Helpers.OutputMessage(string.Format("!!!! Property: {0} ({1})", validationError.PropertyName, validationError.ErrorMessage), ConsoleColor.Red);
+                                Helpers.OutputMessage(string.Format("\tInvalid Property: {0} ({1})", validationError.PropertyName, validationError.ErrorMessage), ConsoleColor.Red);
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
+                        Helpers.OutputMessage(string.Format("\tException: {0}", ex.ToString()), ConsoleColor.Red);
                     }
 
                     currentMovie++;
@@ -435,6 +459,49 @@ namespace GeekPeeked.UtilityApplication.Processors
             }
         }
 
+        public async Task ProcessImdbMovie(string imdbId)
+        {
+            await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
+
+            var response = await Task.Run(() => _tmdbMovieRepo.MovieDetailsByImdbId(imdbId));
+            var imdbMovie = response.movie_results.FirstOrDefault();
+
+            if (imdbMovie != null)
+            {
+                var myMovie = _context.Movies.FirstOrDefault(m => m.TmdbId == imdbMovie.id);
+                if (myMovie == null)
+                {
+                    await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
+
+                    var movie = await Task.Run(() => _tmdbMovieRepo.MovieDetails(imdbMovie.id));
+                    myMovie = new Movie(movie);
+                    _dbMovieRepo.AddMovie(myMovie);
+
+                    Helpers.OutputMessage(string.Format("\t{0} ({1})", imdbMovie.title, imdbMovie.id), ConsoleColor.Cyan);
+                }
+            }
+            else
+                Helpers.OutputMessage(string.Format("\tImdb Id {0} not found!", imdbId), ConsoleColor.Red);
+
+            try
+            {
+                _dbMovieRepo.Save();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Helpers.OutputMessage(string.Format("\tInvalid Property: {0} ({1})", validationError.PropertyName, validationError.ErrorMessage), ConsoleColor.Red);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helpers.OutputMessage(string.Format("\tException: {0}", ex.ToString()), ConsoleColor.Red);
+            }
+        }
         public async Task ProcessImdbMovies()
         {
             List<string> imdbIds = new List<string>();
@@ -1865,40 +1932,48 @@ namespace GeekPeeked.UtilityApplication.Processors
 
             foreach (var imdbId in imdbIds)
             {
-                await Task.Delay(501); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
+                await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
 
-                try
+                var response = await Task.Run(() => _tmdbMovieRepo.MovieDetailsByImdbId(imdbId));
+                var imdbMovie = response.movie_results.FirstOrDefault();
+
+                if (imdbMovie != null)
                 {
-                    var response = await Task.Run(() => _tmdbMovieRepo.MovieDetailsByImdbId(imdbId));
-                    var imdbMovie = response.movie_results.FirstOrDefault();
-
-                    if (imdbMovie != null)
+                    var myMovie = _context.Movies.FirstOrDefault(m => m.TmdbId == imdbMovie.id);
+                    if (myMovie == null)
                     {
-                        var movie = await Task.Run(() => _tmdbMovieRepo.MovieDetails(imdbMovie.id));
+                        await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
 
-                        _dbMovieRepo.AddMovie(movie);
-                        _dbMovieRepo.Save();
+                        var movie = await Task.Run(() => _tmdbMovieRepo.MovieDetails(imdbMovie.id));
+                        myMovie = new Movie(movie);
+                        _dbMovieRepo.AddMovie(myMovie);
+
                         Helpers.OutputMessage(string.Format("\t{0} of {1}: {2} ({3})", currentMovie, totalMovies, imdbMovie.title, imdbMovie.id), ConsoleColor.Cyan);
                     }
-                    else
-                        Helpers.OutputMessage(string.Format("!!!! Imdb Id {0} not found!", imdbId), ConsoleColor.Red);
                 }
-                catch (DbEntityValidationException dbEx)
-                {
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
-                    {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            Helpers.OutputMessage(string.Format("!!!! Property: {0} ({1})", validationError.PropertyName, validationError.ErrorMessage), ConsoleColor.Red);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Helpers.OutputMessage(string.Format("!!!! Exception: {0}", ex.ToString()), ConsoleColor.Red);
-                }
+                else
+                    Helpers.OutputMessage(string.Format("\tImdb Id {0} not found!", imdbId), ConsoleColor.Red);
 
                 currentMovie++;
+            }
+
+            try
+            {
+                _dbMovieRepo.Save();
+            }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Helpers.OutputMessage(string.Format("\tInvalid Property: {0} ({1})", validationError.PropertyName, validationError.ErrorMessage), ConsoleColor.Red);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helpers.OutputMessage(string.Format("\tException: {0}", ex.ToString()), ConsoleColor.Red);
             }
         }
     }

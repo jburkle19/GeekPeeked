@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+using GenreList = GeekPeeked.Common.Models.TMDb.Response.GenreList;
 namespace GeekPeeked.Common.Models
 {
     public class Genre : ITrackable
@@ -23,6 +23,12 @@ namespace GeekPeeked.Common.Models
         public Genre()
         {
             Movies = new HashSet<Movie>();
+        }
+
+        public Genre(GenreList.Genre tmdbGenre)
+        {
+            this.Id = tmdbGenre.id;
+            this.Name = tmdbGenre.name;
         }
     }
 }
