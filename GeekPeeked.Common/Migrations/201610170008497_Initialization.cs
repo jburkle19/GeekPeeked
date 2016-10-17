@@ -27,7 +27,7 @@ namespace GeekPeeked.Common.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         TmdbId = c.Int(nullable: false),
-                        ImdbId = c.String(nullable: false),
+                        ImdbId = c.String(),
                         Title = c.String(nullable: false),
                         OriginalTitle = c.String(),
                         Description = c.String(),
@@ -91,6 +91,17 @@ namespace GeekPeeked.Common.Migrations
                         TwitterId = c.String(),
                         BirthPlace = c.String(),
                         ProfilePath = c.String(),
+                        CreatedDate = c.DateTime(),
+                        ModifiedDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Keywords",
+                c => new
+                    {
+                        Id = c.Int(nullable: false),
+                        Name = c.String(nullable: false),
                         CreatedDate = c.DateTime(),
                         ModifiedDate = c.DateTime(),
                     })
@@ -261,6 +272,19 @@ namespace GeekPeeked.Common.Migrations
                 .Index(t => t.PosterId);
             
             CreateTable(
+                "dbo.MovieKeywordRelationship",
+                c => new
+                    {
+                        MovieId = c.Int(nullable: false),
+                        KeywordId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.MovieId, t.KeywordId })
+                .ForeignKey("dbo.Movies", t => t.MovieId, cascadeDelete: true)
+                .ForeignKey("dbo.Keywords", t => t.KeywordId, cascadeDelete: true)
+                .Index(t => t.MovieId)
+                .Index(t => t.KeywordId);
+            
+            CreateTable(
                 "dbo.MovieProductionCompanyRelationship",
                 c => new
                     {
@@ -298,6 +322,8 @@ namespace GeekPeeked.Common.Migrations
             DropForeignKey("dbo.MovieVideoRelationship", "MovieId", "dbo.Movies");
             DropForeignKey("dbo.MovieProductionCompanyRelationship", "ProductionCompanyId", "dbo.ProductionCompanies");
             DropForeignKey("dbo.MovieProductionCompanyRelationship", "MovieId", "dbo.Movies");
+            DropForeignKey("dbo.MovieKeywordRelationship", "KeywordId", "dbo.Keywords");
+            DropForeignKey("dbo.MovieKeywordRelationship", "MovieId", "dbo.Movies");
             DropForeignKey("dbo.MoviePosterRelationship", "PosterId", "dbo.Images");
             DropForeignKey("dbo.MoviePosterRelationship", "MovieId", "dbo.Movies");
             DropForeignKey("dbo.PersonImageRelationship", "ImageId", "dbo.Images");
@@ -310,6 +336,8 @@ namespace GeekPeeked.Common.Migrations
             DropIndex("dbo.MovieVideoRelationship", new[] { "MovieId" });
             DropIndex("dbo.MovieProductionCompanyRelationship", new[] { "ProductionCompanyId" });
             DropIndex("dbo.MovieProductionCompanyRelationship", new[] { "MovieId" });
+            DropIndex("dbo.MovieKeywordRelationship", new[] { "KeywordId" });
+            DropIndex("dbo.MovieKeywordRelationship", new[] { "MovieId" });
             DropIndex("dbo.MoviePosterRelationship", new[] { "PosterId" });
             DropIndex("dbo.MoviePosterRelationship", new[] { "MovieId" });
             DropIndex("dbo.PersonImageRelationship", new[] { "ImageId" });
@@ -326,6 +354,7 @@ namespace GeekPeeked.Common.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropTable("dbo.MovieVideoRelationship");
             DropTable("dbo.MovieProductionCompanyRelationship");
+            DropTable("dbo.MovieKeywordRelationship");
             DropTable("dbo.MoviePosterRelationship");
             DropTable("dbo.PersonImageRelationship");
             DropTable("dbo.MovieGenreRelationship");
@@ -338,6 +367,7 @@ namespace GeekPeeked.Common.Migrations
             DropTable("dbo.Jobs");
             DropTable("dbo.Videos");
             DropTable("dbo.ProductionCompanies");
+            DropTable("dbo.Keywords");
             DropTable("dbo.People");
             DropTable("dbo.Images");
             DropTable("dbo.Genres");

@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GeekPeeked.Common.Models;
 using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
 
@@ -7,54 +6,68 @@ namespace GeekPeeked.Common.Repositories
 {
     public interface IJobRepository
     {
-        Task<IEnumerable<Job>> AllJobs();
+        IEnumerable<Job> AllJobs();
+
         void AddJob(Job job);
         void RemoveJob(Job job);
     }
 
     public interface IGenreRepository
     {
-        Task<IEnumerable<Genre>> AllGenres();
+        IEnumerable<Genre> AllGenres();
+
         void AddGenre(Genre genre);
         void RemoveGenre(Genre genre);
     }
 
+    public interface IKeywordRepository
+    {
+        IEnumerable<Keyword> AllKeywords();
+
+        void AddKeyword(Keyword keyword);
+        void RemoveKeyword(Keyword keyword);
+    }
+
     public interface ICertificationRepository
     {
-        Task<IEnumerable<Certification>> AllCertifications();
+        IEnumerable<Certification> AllCertifications();
+
         void AddCertification(Certification certification);
         void RemoveCertification(Certification certification);
     }
 
+    public interface IProductionCompanyRepository
+    {
+        IEnumerable<ProductionCompany> AllProductionCompanies();
+
+        void AddProductionCompany(ProductionCompany productCompany);
+        void RemoveProductionCompany(ProductionCompany productCompany);
+    }
+
     public interface IMovieRepository : IBaseRepository
     {
-        Task<IEnumerable<Movie>> AllMovies();
-        Task<Movie> Find(int id);
+        Movie Find(int id);
+
+        IEnumerable<Movie> AllMovies();
+
+        void AddMovie(Movie movie);
         void AddMovie(MovieDetails.ResponseModel tmdbMovie);
         void RemoveMovie(Movie movie);
     }
 
-    //Task<IEnumerable<Certification>> AllCertifications();
-    //void AddCertification(Certification genre);
-    //void RemoveCertification(Certification genre);
+    public interface IImageRepository : IBaseRepository
+    {
+        IEnumerable<Image> AllImages();
 
-    //Task<IEnumerable<ProductionCompany>> AllProductionCompanies();
-    //void AddProductionCompany(ProductionCompany productCompany);
-    //void RemoveProductionCompany(ProductionCompany productCompany);
+        void AddImage(Image image);
+        void RemoveImage(Image image);
+    }
 
-    ////Task<IEnumerable<CastMember>> AllCastMembers();
-    ////void AddCastMember(CastMember castMember);
-    ////void RemoveCastMember(CastMember castMember);
+    public interface IVideoRepository : IBaseRepository
+    {
+        IEnumerable<Video> AllVideos();
 
-    ////Task<IEnumerable<CrewMember>> AllCrewMembers();
-    ////void AddCrewMember(CrewMember crewMember);
-    ////void RemoveCrewMember(CrewMember crewMember);
-
-    //Task<IEnumerable<Poster>> AllPosters();
-    //void AddPoster(Poster poster);
-    //void RemovePoster(Poster poster);
-
-    //Task<IEnumerable<Video>> AllVideos();
-    //void AddVideo(Video video);
-    //void RemoveVideo(Video video);
+        void AddVideo(Video video);
+        void RemoveVideo(Video video);
+    }
 }

@@ -5,7 +5,7 @@ namespace GeekPeeked.Common.Models.TMDb.Response.PersonDetails
     public class ResponseModel
     {
         public bool adult { get; set; }
-        public List<object> also_known_as { get; set; }
+        public List<string> also_known_as { get; set; }
         public string biography { get; set; }
         public string birthday { get; set; }
         public string deathday { get; set; }
@@ -34,21 +34,34 @@ namespace GeekPeeked.Common.Models.TMDb.Response.PersonDetails
         public string title { get; set; }
     }
 
+    public class Crew
+    {
+        public bool adult { get; set; }
+        public string credit_id { get; set; }
+        public string department { get; set; }
+        public int id { get; set; }
+        public string job { get; set; }
+        public string original_title { get; set; }
+        public string poster_path { get; set; }
+        public string release_date { get; set; }
+        public string title { get; set; }
+    }
+
     public class MovieCredits
     {
         public List<Cast> cast { get; set; }
-        public List<object> crew { get; set; }
+        public List<Crew> crew { get; set; }
     }
 
     public class ExternalIds
     {
-        public string facebook_id { get; set; }
+        public object facebook_id { get; set; }
         public string freebase_mid { get; set; }
         public string freebase_id { get; set; }
         public string imdb_id { get; set; }
-        public string instagram_id { get; set; }
+        public object instagram_id { get; set; }
         public int tvrage_id { get; set; }
-        public string twitter_id { get; set; }
+        public object twitter_id { get; set; }
     }
 
     public class Profile

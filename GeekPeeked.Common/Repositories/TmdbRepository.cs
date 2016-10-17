@@ -67,6 +67,8 @@ namespace GeekPeeked.Common.Repositories
 
             while (options.PageNumber <= totalPageCount)
             {
+                await Task.Delay(251); // added delay in order to not violate the TMDb limit of 40 requests / 10 seconds (4 requests per 1 second == 1 request per 250 milliseconds)
+
                 try
                 {
                     using (var client = new HttpClient())
@@ -149,6 +151,11 @@ namespace GeekPeeked.Common.Repositories
         public async Task<MovieDetails.ResponseModel> MovieDetails(int id)
         {
             return await CallTmdbApi<MovieDetails.ResponseModel>(TMDbCoreConfiguration.MovieDetailsTmdbUrl(id));
+        }
+
+        public async Task<ImdbDetails.ResponseModel> MovieDetailsByImdbId(string imdbId)
+        {
+            return await CallTmdbApi<ImdbDetails.ResponseModel>(TMDbCoreConfiguration.FindImdbObjectTmdbUrl(imdbId));
         }
     }
 }

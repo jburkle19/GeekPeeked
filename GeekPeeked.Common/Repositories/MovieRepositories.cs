@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Data.Entity;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using GeekPeeked.Common.Models;
 using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
@@ -12,11 +11,11 @@ namespace GeekPeeked.Common.Repositories
     {
         public JobRepository(GeekPeekedDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Job>> AllJobs()
+        public IEnumerable<Job> AllJobs()
         {
             var jobs = from j in _context.Jobs select j;
 
-            return await (jobs.ToListAsync());
+            return jobs.ToList();
         }
 
         public void AddJob(Job job)
@@ -24,7 +23,6 @@ namespace GeekPeeked.Common.Repositories
             job.CreatedDate = DateTime.Now;
             _context.Jobs.Add(job);
         }
-
         public void RemoveJob(Job job)
         {
             _context.Jobs.Remove(job);
@@ -35,11 +33,11 @@ namespace GeekPeeked.Common.Repositories
     {
         public GenreRepository(GeekPeekedDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Genre>> AllGenres()
+        public IEnumerable<Genre> AllGenres()
         {
             var genres = from g in _context.Genres select g;
 
-            return await (genres.ToListAsync());
+            return genres.ToList();
         }
 
         public void AddGenre(Genre genre)
@@ -47,10 +45,31 @@ namespace GeekPeeked.Common.Repositories
             genre.CreatedDate = DateTime.Now;
             _context.Genres.Add(genre);
         }
-
         public void RemoveGenre(Genre genre)
         {
             _context.Genres.Remove(genre);
+        }
+    }
+
+    public class KeywordRepository : BaseRepository, IKeywordRepository
+    {
+        public KeywordRepository(GeekPeekedDbContext context) : base(context) { }
+
+        public IEnumerable<Keyword> AllKeywords()
+        {
+            var keywords = from k in _context.Keywords select k;
+
+            return keywords.ToList();
+        }
+
+        public void AddKeyword(Keyword keyword)
+        {
+            keyword.CreatedDate = DateTime.Now;
+            _context.Keywords.Add(keyword);
+        }
+        public void RemoveKeyword(Keyword keyword)
+        {
+            _context.Keywords.Remove(keyword);
         }
     }
 
@@ -58,11 +77,11 @@ namespace GeekPeeked.Common.Repositories
     {
         public CertificationRepository(GeekPeekedDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Certification>> AllCertifications()
+        public IEnumerable<Certification> AllCertifications()
         {
             var certifications = from c in _context.Certifications select c;
 
-            return await (certifications.ToListAsync());
+            return certifications.ToList();
         }
 
         public void AddCertification(Certification certification)
@@ -70,10 +89,31 @@ namespace GeekPeeked.Common.Repositories
             certification.CreatedDate = DateTime.Now;
             _context.Certifications.Add(certification);
         }
-
         public void RemoveCertification(Certification certification)
         {
             _context.Certifications.Remove(certification);
+        }
+    }
+
+    public class ProductionCompanyRepository : BaseRepository, IProductionCompanyRepository
+    {
+        public ProductionCompanyRepository(GeekPeekedDbContext context) : base(context) { }
+
+        public IEnumerable<ProductionCompany> AllProductionCompanies()
+        {
+            var productionCompanies = from pc in _context.ProductionCompanies select pc;
+
+            return productionCompanies.ToList();
+        }
+
+        public void AddProductionCompany(ProductionCompany productionCompany)
+        {
+            productionCompany.CreatedDate = DateTime.Now;
+            _context.ProductionCompanies.Add(productionCompany);
+        }
+        public void RemoveProductionCompany(ProductionCompany productionCompany)
+        {
+            _context.ProductionCompanies.Remove(productionCompany);
         }
     }
 
@@ -81,22 +121,29 @@ namespace GeekPeeked.Common.Repositories
     {
         public MovieRepository(GeekPeekedDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Movie>> AllMovies()
+        public Movie Find(int id)
+        {
+            var movie = _context.Movies.FirstOrDefault(m => m.Id == id);
+
+            return movie;
+        }
+
+        public IEnumerable<Movie> AllMovies()
         {
             var movies = from m in _context.Movies select m;
 
-            return await (movies.ToListAsync());
+            return movies.ToList();
         }
-        public async Task<Movie> Find(int id)
-        {
-            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.Id == id);
 
-            return movie;
+        public void AddMovie(Movie movie)
+        {
+            movie.CreatedDate = DateTime.Now;
+            _context.Movies.Add(movie);
         }
         public void AddMovie(MovieDetails.ResponseModel tmdbMovie)
         {
             bool isNewMovie = false;
-            var movie = _context.Movies.FirstOrDefault(m => m.TmdbId == tmdbMovie.id);
+            var movie =  _context.Movies.FirstOrDefault(m => m.TmdbId == tmdbMovie.id);
 
             if (movie == null)
             {
@@ -143,89 +190,79 @@ namespace GeekPeeked.Common.Repositories
             movie.IsAdult = tmdbMovie.adult;
             movie.IsVideo = tmdbMovie.video;
 
-            //#region Set Genres
+            #region Set Genres
 
-            //foreach (var genre in tmdbMovie.genres)
-            //{
-            //    var myGenre = _context.Genres.FirstOrDefault(g => g.Id == genre.id);
-            //    if (myGenre == null)
-            //        movie.Genres.Add(new Genre() { Id = genre.id, Name = genre.name });
-            //    else
-            //        movie.Genres.Add(myGenre);
-            //}
+            foreach (var genre in tmdbMovie.genres)
+            {
+                var myGenre = _context.Genres.FirstOrDefault(g => g.Id == genre.id);
+                if (myGenre == null)
+                    movie.Genres.Add(new Genre() { Id = genre.id, Name = genre.name, CreatedDate = DateTime.Now });
+                else
+                    movie.Genres.Add(myGenre);
+            }
 
-            //_context.SaveChanges();
+            #endregion Set Genres
 
-            //#endregion Set Genres
+            #region Set Production Companies
 
-            //#region Set Production Companies
+            foreach (var company in tmdbMovie.production_companies)
+            {
+                var myCompany = _context.ProductionCompanies.FirstOrDefault(pc => pc.Id == company.id);
+                if (myCompany == null)
+                    movie.ProductionCompanies.Add(new ProductionCompany() { Id = company.id, Name = company.name, CreatedDate = DateTime.Now });
+                else
+                    movie.ProductionCompanies.Add(myCompany);
+            }
 
-            //foreach (var company in tmdbMovie.production_companies)
-            //{
-            //    var myCompany = _context.ProductionCompanies.FirstOrDefault(pc => pc.Id == company.id);
-            //    if (myCompany == null)
-            //        movie.ProductionCompanies.Add(new ProductionCompany() { Id = company.id, Name = company.name });
-            //    else
-            //        movie.ProductionCompanies.Add(myCompany);
-            //}
+            #endregion Set Production Companies
 
-            //#endregion Set Production Companies
+            #region Set Keywords
 
-            //#region Set Videos
+            foreach (var keyword in tmdbMovie.keywords.keywords)
+            {
+                var myKeyword = _context.Keywords.FirstOrDefault(k => k.Id == keyword.id);
+                if (myKeyword == null)
+                    movie.Keywords.Add(new Keyword() { Id = keyword.id, Name = keyword.name, CreatedDate = DateTime.Now });
+                else
+                    movie.Keywords.Add(myKeyword);
+            }
 
-            //foreach (var video in tmdbMovie.videos.results)
-            //{
-            //    var myVideo = _context.Videos.FirstOrDefault(v => v.Id == video.id);
-            //    if (myVideo == null)
-            //        movie.Videos.Add(new Video() { Id = video.id, Key = video.key, Name = video.name, Site = video.site, Size = video.size, Type = video.type });
-            //    else
-            //        movie.Videos.Add(myVideo);
-            //}
+            #endregion Set Keywords
 
+            #region Set Videos
 
-            //#endregion Set Videos
+            foreach (var video in tmdbMovie.videos.results)
+            {
+                var myVideo = _context.Videos.FirstOrDefault(v => v.Id == video.id);
+                if (myVideo == null)
+                    movie.Videos.Add(new Video() { Id = video.id, Key = video.key, Name = video.name, Site = video.site, Size = video.size, Type = video.type, CreatedDate = DateTime.Now });
+                else
+                    movie.Videos.Add(myVideo);
+            }
 
-            //#region Set Images
+            #endregion Set Videos
 
-            //foreach (var poster in tmdbMovie.images.posters)
-            //{
-            //    var myPoster = _context.Posters.FirstOrDefault(p => p.FilePath == poster.file_path);
-            //    if (myPoster == null)
-            //        movie.Posters.Add(new Poster() { AspectRatio = poster.aspect_ratio, FilePath = poster.file_path, Height = poster.height, Width = poster.width });
-            //    else
-            //        movie.Posters.Add(myPoster);
-            //}
+            #region Set Images
 
-            //#endregion Set Images
+            foreach (var poster in tmdbMovie.images.posters)
+            {
+                var myPoster = _context.Images.FirstOrDefault(p => p.FilePath == poster.file_path);
+                if (myPoster == null)
+                    movie.Images.Add(new Image() { IsBackdrop = false, AspectRatio = poster.aspect_ratio, FilePath = poster.file_path, Height = poster.height, Width = poster.width, CreatedDate = DateTime.Now });
+                else
+                    movie.Images.Add(myPoster);
+            }
 
-            //#region Set Crew Members
+            foreach (var backDrops in tmdbMovie.images.backdrops)
+            {
+                var myBackDrop = _context.Images.FirstOrDefault(p => p.FilePath == backDrops.file_path);
+                if (myBackDrop == null)
+                    movie.Images.Add(new Image() { IsBackdrop = true, AspectRatio = backDrops.aspect_ratio, FilePath = backDrops.file_path, Height = backDrops.height, Width = backDrops.width, CreatedDate = DateTime.Now });
+                else
+                    movie.Images.Add(myBackDrop);
+            }
 
-            //foreach (var crew in tmdbMovie.credits.crew)
-            //{
-            //    var myCrew = _context.CrewMembers.FirstOrDefault(c => c.Id == crew.id);
-            //    if (myCrew == null)
-            //        movie.CrewMembers.Add(new CrewMember() { Id = crew.id, CreditId = crew.credit_id, Department = crew.department, Job = crew.job, Name = crew.name, ProfilePath = crew.profile_path });
-            //    else
-            //        movie.CrewMembers.Add(myCrew);
-            //}
-
-
-            //#endregion Set Crew Members
-
-            //#region Set Cast Members
-
-            //foreach (var cast in tmdbMovie.credits.cast)
-            //{
-            //    var myCast = _context.CastMembers.FirstOrDefault(c => c.Id == cast.id);
-            //    if (myCast == null)
-            //        movie.CastMembers.Add(new CastMember() { Id = cast.id, CastId = cast.cast_id, CharacterName = cast.character, CreditId = cast.credit_id, Name = cast.name, Sequence = cast.order, ProfilePath = cast.profile_path });
-            //    else
-            //        movie.CastMembers.Add(myCast);
-            //}
-
-            //#endregion Set Cast Members
-
-            //await _context.SaveChangesAsync();
+            #endregion Set Images
 
             if (isNewMovie)
             {
@@ -241,86 +278,47 @@ namespace GeekPeeked.Common.Repositories
         }
     }
 
+    public class ImageRepository : BaseRepository, IImageRepository
+    {
+        public ImageRepository(GeekPeekedDbContext context) : base(context) { }
 
+        public IEnumerable<Image> AllImages()
+        {
+            var images = from i in _context.Images select i;
 
+            return images.ToList();
+        }
 
-    //public async Task<IEnumerable<ProductionCompany>> AllProductionCompanies()
-    //{
-    //    var productionCompanies = from pc in _context.ProductionCompanies select pc;
+        public void AddImage(Image image)
+        {
+            image.CreatedDate = DateTime.Now;
+            _context.Images.Add(image);
+        }
+        public void RemoveImage(Image image)
+        {
+            _context.Images.Remove(image);
+        }
+    }
 
-    //    return await (productionCompanies.ToListAsync());
-    //}
-    //public void AddProductionCompany(ProductionCompany productionCompany)
-    //{
-    //    productionCompany.CreatedDate = DateTime.Now;
-    //    _context.ProductionCompanies.Add(productionCompany);
-    //}
-    //public void RemoveProductionCompany(ProductionCompany productionCompany)
-    //{
-    //    _context.ProductionCompanies.Remove(productionCompany);
-    //}
+    public class VideoRepository : BaseRepository, IVideoRepository
+    {
+        public VideoRepository(GeekPeekedDbContext context) : base(context) { }
 
-    ////public async Task<IEnumerable<CastMember>> AllCastMembers()
-    ////{
-    ////    var castMembers = from c in _context.CastMembers select c;
+        public IEnumerable<Video> AllVideos()
+        {
+            var videos = from v in _context.Videos select v;
 
-    ////    return await (castMembers.ToListAsync());
-    ////}
-    ////public void AddCastMember(CastMember castMember)
-    ////{
-    ////    castMember.CreatedDate = DateTime.Now;
-    ////    _context.CastMembers.Add(castMember);
-    ////}
-    ////public void RemoveCastMember(CastMember castMember)
-    ////{
-    ////    _context.CastMembers.Remove(castMember);
-    ////}
+            return videos.ToList();
+        }
 
-    ////public async Task<IEnumerable<CrewMember>> AllCrewMembers()
-    ////{
-    ////    var crewMembers = from c in _context.CrewMembers select c;
-
-    ////    return await (crewMembers.ToListAsync());
-    ////}
-    ////public void AddCrewMember(CrewMember crewMember)
-    ////{
-    ////    crewMember.CreatedDate = DateTime.Now;
-    ////    _context.CrewMembers.Add(crewMember);
-    ////}
-    ////public void RemoveCrewMember(CrewMember crewMember)
-    ////{
-    ////    _context.CrewMembers.Remove(crewMember);
-    ////}
-
-    //public async Task<IEnumerable<Poster>> AllPosters()
-    //{
-    //    var posters = from p in _context.Posters select p;
-
-    //    return await (posters.ToListAsync());
-    //}
-    //public void AddPoster(Poster poster)
-    //{
-    //    poster.CreatedDate = DateTime.Now;
-    //    _context.Posters.Add(poster);
-    //}
-    //public void RemovePoster(Poster poster)
-    //{
-    //    _context.Posters.Remove(poster);
-    //}
-
-    //public async Task<IEnumerable<Video>> AllVideos()
-    //{
-    //    var videos = from v in _context.Videos select v;
-
-    //    return await (videos.ToListAsync());
-    //}
-    //public void AddVideo(Video video)
-    //{
-    //    video.CreatedDate = DateTime.Now;
-    //    _context.Videos.Add(video);
-    //}
-    //public void RemoveVideo(Video video)
-    //{
-    //    _context.Videos.Remove(video);
-    //}
+        public void AddVideo(Video video)
+        {
+            video.CreatedDate = DateTime.Now;
+            _context.Videos.Add(video);
+        }
+        public void RemoveVideo(Video video)
+        {
+            _context.Videos.Remove(video);
+        }
+    }
 }

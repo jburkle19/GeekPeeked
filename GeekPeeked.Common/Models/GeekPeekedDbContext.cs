@@ -11,6 +11,7 @@ namespace GeekPeeked.Common.Models
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Certification> Certifications { get; set; }
         public DbSet<ProductionCompany> ProductionCompanies { get; set; }
 
@@ -38,6 +39,18 @@ namespace GeekPeeked.Common.Models
                             mg.ToTable("MovieGenreRelationship");
                         });
             #endregion Movie / Genre Many-to-Many Relationship 
+
+            #region Movie / Keyword Many-to-Many Relationship 
+            modelBuilder.Entity<Movie>()
+                        .HasMany<Keyword>(k => k.Keywords)
+                        .WithMany(m => m.Movies)
+                        .Map(mg =>
+                        {
+                            mg.MapLeftKey("MovieId");
+                            mg.MapRightKey("KeywordId");
+                            mg.ToTable("MovieKeywordRelationship");
+                        });
+            #endregion Movie / Keyword Many-to-Many Relationship 
 
             #region Movie / Certification Many-to-Many Relationship 
             modelBuilder.Entity<Movie>()

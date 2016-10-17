@@ -199,7 +199,7 @@ namespace GeekPeeked.Common.Configuration
             public List<int> GenreIds { get; set; }
             public List<int> PeopleIds { get; set; }
             public List<int> ProductionCompanyIds { get; set; }
-            public List<string> Keywords { get; set; }
+            public List<int> KeywordIds { get; set; }
             public int? ExactCertificationId { get; set; }
             public int? GTE_CertificationId { get; set; }
             public int? LTE_CertificationId { get; set; }
@@ -215,7 +215,7 @@ namespace GeekPeeked.Common.Configuration
                 GenreIds = new List<int>();
                 PeopleIds = new List<int>();
                 ProductionCompanyIds = new List<int>();
-                Keywords = new List<string>();
+                KeywordIds = new List<int>();
                 ExactCertificationId = null;
                 GTE_CertificationId = null;
                 LTE_CertificationId = null;
@@ -241,17 +241,17 @@ namespace GeekPeeked.Common.Configuration
                         if (Year != null && Convert.ToInt32(Year) > 0)
                             url += string.Format("&year={0}", Year);
                         if (StartDate != null)
-                            url += string.Format("&release_date.gte={0}", StartDate);
+                            url += string.Format("&primary_release_date.gte={0}", Convert.ToDateTime(StartDate).ToString("yyyy-MM-dd"));
                         if (EndDate != null)
-                            url += string.Format("&release_date.lte={0}", EndDate);
+                            url += string.Format("&primary_release_date.lte={0}", Convert.ToDateTime(EndDate).ToString("yyyy-MM-dd"));
                         if (GenreIds.Count > 0)
                             url += string.Format("&with_genres={0}", string.Join(",", GenreIds));
                         if (PeopleIds.Count > 0)
                             url += string.Format("&with_people={0}", string.Join(",", PeopleIds));
                         if (ProductionCompanyIds.Count > 0)
                             url += string.Format("&with_companies={0}", string.Join(",", ProductionCompanyIds));
-                        if (Keywords.Count > 0)
-                            url += string.Format("&with_keywords={0}", System.Web.HttpUtility.HtmlEncode(string.Join(",", Keywords)));
+                        if (KeywordIds.Count > 0)
+                            url += string.Format("&with_keywords={0}", string.Join(",", KeywordIds));
                         if (ExactCertificationId != null)
                             url += string.Format("&certification_country=US&certification={0}", ExactCertificationId);
                         if (GTE_CertificationId != null)

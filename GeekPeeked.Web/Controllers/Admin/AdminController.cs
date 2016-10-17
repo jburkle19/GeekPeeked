@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using System.Threading.Tasks;
 using GeekPeeked.Web.App_Start;
 using GeekPeeked.Web.ViewModels;
 using GeekPeeked.Common.Models;
@@ -30,11 +29,11 @@ namespace GeekPeeked.Web.Controllers.Admin
         }
 
         // GET: Admin/Jobs
-        public async Task<ActionResult> Jobs()
+        public ActionResult Jobs()
         {
             JobsViewModel viewModel = new JobsViewModel();
 
-            var jobs = await _dbJobRepo.AllJobs();
+            var jobs = _dbJobRepo.AllJobs();
 
             foreach (var job in jobs)
             {
@@ -45,11 +44,11 @@ namespace GeekPeeked.Web.Controllers.Admin
         }
 
         // GET: Admin/Genres
-        public async Task<ActionResult> Genres()
+        public ActionResult Genres()
         {
             GenresViewModel viewModel = new GenresViewModel();
 
-            var genres = await _dbGenreRepo.AllGenres();
+            var genres = _dbGenreRepo.AllGenres();
 
             foreach (var genre in genres)
             {
@@ -60,11 +59,11 @@ namespace GeekPeeked.Web.Controllers.Admin
         }
 
         // GET: Admin/Certifications
-        public async Task<ActionResult> Certifications()
+        public ActionResult Certifications()
         {
             CertificationsViewModel viewModel = new CertificationsViewModel();
 
-            var certifications = await _dbCertificationRepo.AllCertifications();
+            var certifications = _dbCertificationRepo.AllCertifications();
 
             foreach (var certification in certifications)
             {
@@ -75,9 +74,9 @@ namespace GeekPeeked.Web.Controllers.Admin
         }
 
         // GET: Admin/Movies
-        public async Task<ActionResult> Movies(MoviesViewModel viewModel)
+        public ActionResult Movies(MoviesViewModel viewModel)
         {
-            var movies = await _dbMovieRepo.AllMovies();
+            var movies = _dbMovieRepo.AllMovies();
 
             foreach (var movie in movies)
             {
@@ -88,9 +87,9 @@ namespace GeekPeeked.Web.Controllers.Admin
         }
 
         // GET: Admin/Details/[id]
-        public async Task<ActionResult> Details(int id)
+        public ActionResult Details(int id)
         {
-            var movie = await _dbMovieRepo.Find(id);
+            var movie = _dbMovieRepo.Find(id);
 
             return View(movie);
         }

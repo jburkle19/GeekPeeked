@@ -95,13 +95,9 @@
     <Compile Include="Configuration\CoreConfiguration.cs" />
     <Compile Include="Configuration\IdentityConfiguration.cs" />
     <Compile Include="Helpers\DataHelpers.cs" />
-    <Compile Include="Migrations\201610160200447_Initialization.cs" />
-    <Compile Include="Migrations\201610160200447_Initialization.Designer.cs">
-      <DependentUpon>201610160200447_Initialization.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610160347585_MovieImdbIdRequiredRemoved.cs" />
-    <Compile Include="Migrations\201610160347585_MovieImdbIdRequiredRemoved.Designer.cs">
-      <DependentUpon>201610160347585_MovieImdbIdRequiredRemoved.cs</DependentUpon>
+    <Compile Include="Migrations\201610170008497_Initialization.cs" />
+    <Compile Include="Migrations\201610170008497_Initialization.Designer.cs">
+      <DependentUpon>201610170008497_Initialization.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
@@ -112,6 +108,7 @@
     <Compile Include="Models\GeekPeekedDbContext.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\Job.cs" />
+    <Compile Include="Models\Keyword.cs" />
     <Compile Include="Models\Movie.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Image.cs" />
@@ -155,11 +152,8 @@
     <Folder Include="Models\Api\v1\Request\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610160200447_Initialization.resx">
-      <DependentUpon>201610160200447_Initialization.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610160347585_MovieImdbIdRequiredRemoved.resx">
-      <DependentUpon>201610160347585_MovieImdbIdRequiredRemoved.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610170008497_Initialization.resx">
+      <DependentUpon>201610170008497_Initialization.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

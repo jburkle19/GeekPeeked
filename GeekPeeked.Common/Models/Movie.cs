@@ -50,6 +50,7 @@ namespace GeekPeeked.Common.Models
         public virtual ICollection<Image> Images { get; set; }
         public virtual ICollection<Video> Videos { get; set; }
 
+        public virtual ICollection<Keyword> Keywords { get; set; }
         public virtual ICollection<Certification> Certifications { get; set; }
 
         //public virtual ICollection<CastCredit> Cast { get; set; }
@@ -71,6 +72,7 @@ namespace GeekPeeked.Common.Models
             this.Images = new HashSet<Image>();
             this.Videos = new HashSet<Video>();
 
+            this.Keywords = new HashSet<Keyword>();
             this.Certifications = new HashSet<Certification>();
 
             //this.Cast = new HashSet<CastCredit>();

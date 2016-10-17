@@ -9,21 +9,25 @@ namespace GeekPeeked.UtilityApplication
         {
             bool keepRunning = true;
 
-            Console.WriteLine("###########################################");
-            Console.WriteLine(string.Format("Starting the GeekPeeked Utility Application ({0})", DateTime.Now.ToShortTimeString()));
-            Console.WriteLine("###########################################");
-            Console.WriteLine(string.Empty);
+            Helpers.OutputMessage("###################################################################", ConsoleColor.Yellow);
+            Helpers.OutputMessage(string.Format("Starting the GeekPeeked Utility Application - {0}", DateTime.Now.ToString()), ConsoleColor.Yellow);
+            Helpers.OutputMessage("###################################################################", ConsoleColor.Yellow);
+            Helpers.OutputMessage();
 
             do
             {
-                Console.WriteLine("\t1: process TMDb Jobs");
-                Console.WriteLine("\t2: process TMDb Genres");
-                Console.WriteLine("\t3: process TMDb Certifications");
-                Console.WriteLine("\t4: process TMDb Movies By Year");
-                Console.WriteLine("\t0: Exit");
-                Console.Write("=> ");
+                Helpers.OutputMessage("1: process TMDb Jobs", ConsoleColor.Magenta);
+                Helpers.OutputMessage("2: process TMDb Genres", ConsoleColor.Magenta);
+                Helpers.OutputMessage("3: process TMDb Certifications", ConsoleColor.Magenta);
+                Helpers.OutputMessage("4: process TMDb Movies By Year", ConsoleColor.Magenta);
+                Helpers.OutputMessage("5: process TMDb Movies By Month", ConsoleColor.Magenta);
+                Helpers.OutputMessage("6: process TMDb Movies By Day", ConsoleColor.Magenta);
+                Helpers.OutputMessage("19: process IMDb Movies", ConsoleColor.Magenta);
+                Helpers.OutputMessage("0: Exit", ConsoleColor.Magenta);
+                Helpers.OutputMessage();
+                Helpers.RequestInput("Option", ConsoleColor.Magenta);
                 string selection = Console.ReadLine();
-                Console.WriteLine(string.Empty);
+                Helpers.OutputMessage();
 
                 TmdbProcessor processor = new TmdbProcessor();
 
@@ -31,61 +35,118 @@ namespace GeekPeeked.UtilityApplication
                 {
                     case "1": // process Jobs
 
-                        Console.WriteLine("Processing Jobs...");
-                        Console.WriteLine(string.Empty);
+                        Helpers.OutputMessage("Processing Jobs...", ConsoleColor.Yellow);
+                        Helpers.OutputMessage();
 
                         processor.ProcessTmdbJobs().Wait();
 
-                        Console.WriteLine(string.Empty);
-                        Console.WriteLine("Jobs processed!");
+                        Helpers.OutputMessage();
+                        Helpers.OutputMessage("Jobs processed!", ConsoleColor.Yellow);
 
                         break;
                     case "2": // process Genres
 
-                        Console.WriteLine("Processing Genres...");
-                        Console.WriteLine(string.Empty);
+                        Helpers.OutputMessage("Processing Genres...", ConsoleColor.Yellow);
+                        Helpers.OutputMessage();
 
                         processor.ProcessTmdbGenres().Wait();
 
-                        Console.WriteLine(string.Empty);
-                        Console.WriteLine("Genres processed!");
+                        Helpers.OutputMessage();
+                        Helpers.OutputMessage("Genres processed!", ConsoleColor.Yellow);
 
                         break;
                     case "3": // process Certifications
 
-                        Console.WriteLine("Processing Certifications...");
-                        Console.WriteLine(string.Empty);
+                        Helpers.OutputMessage("Processing Certifications...", ConsoleColor.Yellow);
+                        Helpers.OutputMessage();
 
                         processor.ProcessTmdbCertifications().Wait();
 
-                        Console.WriteLine(string.Empty);
-                        Console.WriteLine("Certifications processed!");
+                        Helpers.OutputMessage();
+                        Helpers.OutputMessage("Certifications processed!", ConsoleColor.Yellow);
 
                         break;
                     case "4": // process Movies By Year
 
-                        Console.Write("Year (yyyy) => ");
+                        Helpers.RequestInput("Year", ConsoleColor.Magenta);
                         int year = 0;
                         string yearSelection = Console.ReadLine();
                         if (Int32.TryParse(yearSelection, out year) && year > 0)
                         {
-                            Console.WriteLine(string.Empty);
-
-                            Console.WriteLine(string.Format("Processing {0} Movies...", year));
-                            Console.WriteLine(string.Empty);
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("Processing {0} Movies...", year), ConsoleColor.Yellow);
+                            Helpers.OutputMessage();
 
                             processor.ProcessTmdbMoviesByYear(year).Wait();
 
-                            Console.WriteLine(string.Empty);
-                            Console.WriteLine(string.Format("{0} Movies processed!", year));
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("{0} Movies processed!", year), ConsoleColor.Yellow);
                         }
                         else
                         {
-                            Console.WriteLine(string.Empty);
-                            Console.WriteLine("!!! Invalid Year entered !!!");
-                            Console.WriteLine(string.Empty);
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage("!!! Invalid Year entered !!!", ConsoleColor.Red);
+                            Helpers.OutputMessage();
                         }
 
+                        break;
+                    case "5": // process Movies By Month
+
+                        Helpers.RequestInput("Date", ConsoleColor.Magenta);
+                        DateTime startDate = new DateTime();
+                        string dateSelection = Console.ReadLine();
+                        if (DateTime.TryParse(dateSelection, out startDate))
+                        {
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("Processing Movies between {0} and {1}...", startDate, startDate.AddMonths(1)), ConsoleColor.Yellow);
+                            Helpers.OutputMessage();
+
+                            processor.ProcessTmdbMoviesByDates(startDate, startDate.AddMonths(1)).Wait();
+
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("Movies between {0} and {1} processed!", startDate, startDate.AddMonths(1)), ConsoleColor.Yellow);
+                        }
+                        else
+                        {
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage("!!! Invalid Date entered !!!", ConsoleColor.Red);
+                            Helpers.OutputMessage();
+                        }
+
+                        break;
+                    case "6": // process Movies By Day
+
+                        Helpers.RequestInput("Date", ConsoleColor.Magenta);
+                        DateTime dayStartDate = new DateTime();
+                        string daySelection = Console.ReadLine();
+                        if (DateTime.TryParse(daySelection, out dayStartDate))
+                        {
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("Processing Movies on {0}...", dayStartDate), ConsoleColor.Yellow);
+                            Helpers.OutputMessage();
+
+                            processor.ProcessTmdbMoviesByDates(dayStartDate, dayStartDate).Wait();
+
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage(string.Format("Movies on {0} processed!", dayStartDate), ConsoleColor.Yellow);
+                        }
+                        else
+                        {
+                            Helpers.OutputMessage();
+                            Helpers.OutputMessage("!!! Invalid Date entered !!!", ConsoleColor.Red);
+                            Helpers.OutputMessage();
+                        }
+
+                        break;
+                    case "19": // process IMDb Movies
+
+                            Helpers.OutputMessage("Processing IMDb Movies", ConsoleColor.Yellow);
+                            Helpers.OutputMessage();
+
+                            processor.ProcessImdbMovies().Wait();
+
+                            Helpers.OutputMessage();
+                        Helpers.OutputMessage("IMDb Movies Process!", ConsoleColor.Yellow);
                         break;
                     case "0":
                         keepRunning = false;
@@ -94,14 +155,14 @@ namespace GeekPeeked.UtilityApplication
                         break;
                 }
 
-                Console.WriteLine(string.Empty);
+                Helpers.OutputMessage();
 
             } while (keepRunning);
 
-            Console.WriteLine(string.Empty);
-            Console.WriteLine("###########################################");
-            Console.WriteLine(string.Format("Exiting the GeekPeeked Utility Application ({0})", DateTime.Now.ToShortTimeString()));
-            Console.WriteLine("###########################################");
+            Helpers.OutputMessage();
+            Helpers.OutputMessage("###################################################################", ConsoleColor.Yellow);
+            Helpers.OutputMessage(string.Format("Exiting the GeekPeeked Utility Application - {0}", DateTime.Now.ToString()), ConsoleColor.Yellow);
+            Helpers.OutputMessage("###################################################################", ConsoleColor.Yellow);
 
             Console.ReadLine();
         }

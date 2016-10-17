@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Movies (@Model.GeekPeekedMovies.Count results)</h2>
+            <h2>GeekPeeked Movies (@Model.GeekPeekedMovies.Where(m => m.IsVisible).Count() results)</h2>
         </div>
     </div>
     <div class="row">
@@ -29,7 +29,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var movie in Model.GeekPeekedMovies.OrderBy(m => m.ReleaseDate))
+                        @foreach (var movie in Model.GeekPeekedMovies.Where(m => m.IsVisible).OrderBy(m => m.ReleaseDate))
                         {
                             <tr>
                                 <td align="center" valign="middle">

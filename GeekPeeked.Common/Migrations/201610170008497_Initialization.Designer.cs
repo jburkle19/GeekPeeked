@@ -7,13 +7,13 @@ namespace GeekPeeked.Common.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class MovieImdbIdRequiredRemoved : IMigrationMetadata
+    public sealed partial class Initialization : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(MovieImdbIdRequiredRemoved));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initialization));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610160347585_MovieImdbIdRequiredRemoved"; }
+            get { return "201610170008497_Initialization"; }
         }
         
         string IMigrationMetadata.Source
