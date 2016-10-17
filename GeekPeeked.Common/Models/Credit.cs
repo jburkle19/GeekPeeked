@@ -4,48 +4,47 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekPeeked.Common.Models
 {
-    //public class CastCredit : Credit
-    //{
-    //    [Required]
-    //    public string CharacterName { get; set; }            // "character"
-    //}
+    public class CastCredit : Credit
+    {
+        [Required]
+        public string CharacterName { get; set; }            // "character"
+    }
 
-    //public class CrewCredit : Credit
-    //{
-    //    public int JobId { get; set; }
+    public class CrewCredit : Credit
+    {
+        public int JobId { get; set; }
 
-    //    [ForeignKey("JobId")]
-    //    public virtual Job Job { get; set; }
-    //}
+        [ForeignKey("JobId")]
+        public virtual Job Job { get; set; }
+    }
 
-    //public class Credit : ITrackable
-    //{
-    //    [Key]
-    //    [Required]
-    //    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    //    public int Id { get; set; }
+    public abstract class Credit : ITrackable
+    {
+        [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
-    //    [Key]
-    //    [Required]
-    //    public string CreditId { get; set; }            // "credit_id"
+        [Required]
+        public string CreditId { get; set; }            // "credit_id"
 
-    //    public int PersonId { get; set; }
+        public int PersonId { get; set; }
 
-    //    [ForeignKey("PersonId")]
-    //    public virtual Person Person { get; set; }
+        [ForeignKey("PersonId")]
+        public virtual Person Person { get; set; }
 
-    //    public int TmdbId { get; set; }
+        public int TmdbId { get; set; }
 
-    //    [ForeignKey("TmdbId")]
-    //    public virtual Movie Movie { get; set; }
+        [ForeignKey("TmdbId")]
+        public virtual Movie Movie { get; set; }
 
-    //    public int Sequence { get; set; }
+        public int Sequence { get; set; }
 
-    //    public DateTime? CreatedDate { get; set; }
-    //    public DateTime? ModifiedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
-    //    public Credit()
-    //    {
-    //    }
-    //}
+        public Credit()
+        {
+        }
+    }
 }

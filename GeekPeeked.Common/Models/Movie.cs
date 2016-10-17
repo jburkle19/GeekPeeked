@@ -53,8 +53,8 @@ namespace GeekPeeked.Common.Models
         public virtual ICollection<Keyword> Keywords { get; set; }
         public virtual ICollection<Certification> Certifications { get; set; }
 
-        //public virtual ICollection<CastCredit> Cast { get; set; }
-        //public virtual ICollection<CrewCredit> Crew { get; set; }
+        public virtual ICollection<CastCredit> CastCredits { get; set; }
+        public virtual ICollection<CrewCredit> CrewCredits { get; set; }
 
         public Movie()
         {
@@ -75,8 +75,8 @@ namespace GeekPeeked.Common.Models
             this.Keywords = new HashSet<Keyword>();
             this.Certifications = new HashSet<Certification>();
 
-            //this.Cast = new HashSet<CastCredit>();
-            //this.Crew = new HashSet<CrewCredit>();
+            this.CastCredits = new HashSet<CastCredit>();
+            this.CrewCredits = new HashSet<CrewCredit>();
         }
     }
 }

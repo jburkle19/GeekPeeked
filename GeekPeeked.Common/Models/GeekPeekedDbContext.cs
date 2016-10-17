@@ -21,8 +21,8 @@ namespace GeekPeeked.Common.Models
         public DbSet<Image> Images { get; set; }
         public DbSet<Video> Videos { get; set; }
 
-        //public DbSet<CastCredit> CastCredits { get; set; }
-        //public DbSet<CrewCredit> CrewCredits { get; set; }
+        public DbSet<CastCredit> CastCredits { get; set; }
+        public DbSet<CrewCredit> CrewCredits { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -111,6 +111,22 @@ namespace GeekPeeked.Common.Models
                             pi.ToTable("PersonImageRelationship");
                         });
             #endregion People / Image Many-to-Many Relationship 
+
+            #region Credit / Cast and Crew Inheritance
+            modelBuilder.Entity<CastCredit>()
+                .Map(cast =>
+                {
+                    cast.MapInheritedProperties();
+                    cast.ToTable("CastCredit");
+                });
+
+            modelBuilder.Entity<CrewCredit>()
+                .Map(crew =>
+                {
+                    crew.MapInheritedProperties();
+                    crew.ToTable("CrewCredit");
+                });
+            #endregion Credit / Cast and Crew Inheritance
         }
 
         public static GeekPeekedDbContext Create()

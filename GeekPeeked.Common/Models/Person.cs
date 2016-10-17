@@ -35,15 +35,15 @@ namespace GeekPeeked.Common.Models
 
         public virtual ICollection<Image> Images { get; set; }     // "images -> profiles"
 
-        //public virtual ICollection<CastCredit> CastCredits { get; set; }        // "movie_credits -> cast"
-        //public virtual ICollection<CrewCredit> CrewCredits { get; set; }        // "movie_credits -> crew"
+        public virtual ICollection<CastCredit> CastCredits { get; set; }        // "movie_credits -> cast"
+        public virtual ICollection<CrewCredit> CrewCredits { get; set; }        // "movie_credits -> crew"
 
         public Person()
         {
             Images = new HashSet<Image>();
 
-            //CastCredits = new HashSet<CastCredit>();
-            //CrewCredits = new HashSet<CrewCredit>();
+            CastCredits = new HashSet<CastCredit>();
+            CrewCredits = new HashSet<CrewCredit>();
         }
     }
 }
