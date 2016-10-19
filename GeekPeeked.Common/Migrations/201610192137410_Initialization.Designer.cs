@@ -13,7 +13,7 @@ namespace GeekPeeked.Common.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201610192046021_Initialization"; }
+            get { return "201610192137410_Initialization"; }
         }
         
         string IMigrationMetadata.Source

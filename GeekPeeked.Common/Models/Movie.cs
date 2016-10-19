@@ -116,6 +116,8 @@ namespace GeekPeeked.Common.Models
             this.IsAdult = tmdbMovie.adult;
             this.IsVideo = tmdbMovie.video;
 
+            this.CreatedDate = DateTime.Now;
+
             this.Genres = new HashSet<Genre>();
             this.Images = new HashSet<Image>();
             this.Videos = new HashSet<Video>();

@@ -10,16 +10,26 @@ namespace GeekPeeked.UtilityApplication
     class Program
     {
         private static TmdbRepository _tmdb { get; set; }
+        private static Repository<Movie> _movie { get; set; }
         private static Repository<Genre> _genre { get; set; }
+        private static Repository<Image> _image { get; set; }
+        private static Repository<Video> _video { get; set; }
+        private static Repository<Keyword> _keyword { get; set; }
         private static Repository<Certification> _certficiation { get; set; }
+        private static Repository<ProductionCompany> _productionCompany { get; set; }
 
         static void Main(string[] args)
         {
             using (var _context = new GeekPeekedDbContext())
             {
                 _tmdb = new TmdbRepository();
+                _movie = new Repository<Movie>(_context);
                 _genre = new Repository<Genre>(_context);
+                _image = new Repository<Image>(_context);
+                _video = new Repository<Video>(_context);
+                _keyword = new Repository<Keyword>(_context);
                 _certficiation = new Repository<Certification>(_context);
+                _productionCompany = new Repository<ProductionCompany>(_context);
 
                 bool keepRunning = true;
 
@@ -30,14 +40,10 @@ namespace GeekPeeked.UtilityApplication
 
                 do
                 {
-                    MyConsole.OutputMessage("1: process TMDb Genres", ConsoleColor.Magenta);
-                    MyConsole.OutputMessage("2: process TMDb Certifications", ConsoleColor.Magenta);
-                    //MyConsole.OutputMessage("3: process TMDb Movies By Year", ConsoleColor.Magenta);
-                    //MyConsole.OutputMessage("4: process TMDb Movies By Month", ConsoleColor.Magenta);
-                    //MyConsole.OutputMessage("5: process TMDb Movies By Day", ConsoleColor.Magenta);
-                    //MyConsole.OutputMessage("6: process IMDb Movie", ConsoleColor.Magenta);
-                    //MyConsole.OutputMessage("7: process All IMDb Movies", ConsoleColor.Magenta);
-                    //MyConsole.OutputMessage("8: process TMDb Jobs", ConsoleColor.Magenta);
+                    MyConsole.OutputMessage("1: import TMDb Genres", ConsoleColor.Magenta);
+                    MyConsole.OutputMessage("2: import TMDb Certifications", ConsoleColor.Magenta);
+                    MyConsole.OutputMessage("3: import IMDb Movie", ConsoleColor.Magenta);
+                    MyConsole.OutputMessage("-----------------------------", ConsoleColor.Magenta);
                     MyConsole.OutputMessage("0: Exit", ConsoleColor.Magenta);
                     MyConsole.OutputMessage();
 
@@ -48,9 +54,9 @@ namespace GeekPeeked.UtilityApplication
 
                     switch (selection)
                     {
-                        case "1": // process Genres
+                        case "1": // import Genres
 
-                            MyConsole.OutputMessage("Processing Genres...", ConsoleColor.Yellow);
+                            MyConsole.OutputMessage("starting TMDb Genres import...", ConsoleColor.Yellow);
                             MyConsole.OutputMessage();
 
                             var tmdbGenres = _tmdb.AllGenres().Result;
@@ -62,8 +68,11 @@ namespace GeekPeeked.UtilityApplication
                                     var genre = _genre.GetAll().FirstOrDefault(g => g.Id == tmdbGenre.id);
                                     if (genre != null)
                                     {
-                                        genre.Name = tmdbGenre.name;
-                                        genre.ModifiedDate = DateTime.Now;
+                                        if (genre.Name != tmdbGenre.name)
+                                        {
+                                            genre.Name = tmdbGenre.name;
+                                            genre.ModifiedDate = DateTime.Now;
+                                        }
                                     }
                                     else
                                     {
@@ -71,20 +80,21 @@ namespace GeekPeeked.UtilityApplication
                                         _genre.Insert(genre);
                                     }
 
-                                    MyConsole.OutputMessage(string.Format("\t{0}: {1} added!", tmdbGenre.id, tmdbGenre.name), ConsoleColor.Cyan);
+                                    MyConsole.OutputMessage(string.Format("\t{0}: {1}", tmdbGenre.id, tmdbGenre.name), ConsoleColor.Cyan);
                                     resultCount++;
                                 }
 
                                 _context.SaveChanges();
+                                MyConsole.OutputMessage(string.Format("{0} Genres imported!", resultCount), ConsoleColor.Cyan);
                             }
 
                             MyConsole.OutputMessage();
-                            MyConsole.OutputMessage(string.Format("{0} Genres processed!", resultCount), ConsoleColor.Yellow);
+                            MyConsole.OutputMessage("TMDd Genres import completed!", ConsoleColor.Yellow);
 
                             break;
-                        case "2": // process Certifications
+                        case "2": // import Certifications
 
-                            MyConsole.OutputMessage("Processing Certifications...", ConsoleColor.Yellow);
+                            MyConsole.OutputMessage("starting TMDb Certifications import...", ConsoleColor.Yellow);
                             MyConsole.OutputMessage();
 
                             var tmdbCertifications = _tmdb.AllCertifications().Result;
@@ -96,9 +106,12 @@ namespace GeekPeeked.UtilityApplication
                                     var certification = _certficiation.GetAll().FirstOrDefault(c => c.Country == "US" && c.Name.ToUpper() == tmdbCertification.certification.ToUpper());
                                     if (certification != null)
                                     {
-                                        certification.Description = tmdbCertification.meaning;
-                                        certification.Sequence = tmdbCertification.order;
-                                        certification.ModifiedDate = DateTime.Now;
+                                        if (certification.Description != tmdbCertification.meaning || certification.Sequence != tmdbCertification.order)
+                                        {
+                                            certification.Description = tmdbCertification.meaning;
+                                            certification.Sequence = tmdbCertification.order;
+                                            certification.ModifiedDate = DateTime.Now;
+                                        }
                                     }
                                     else
                                     {
@@ -106,15 +119,226 @@ namespace GeekPeeked.UtilityApplication
                                         _certficiation.Insert(certification);
                                     }
 
-                                    MyConsole.OutputMessage(string.Format("\t{0}: {1} added!", tmdbCertification.order, tmdbCertification.certification), ConsoleColor.Cyan);
+                                    MyConsole.OutputMessage(string.Format("\t{0}: {1}", tmdbCertification.order, tmdbCertification.certification), ConsoleColor.Cyan);
                                     resultCount++;
                                 }
 
                                 _context.SaveChanges();
+                                MyConsole.OutputMessage(string.Format("{0} Certifications imported!", resultCount), ConsoleColor.Cyan);
                             }
 
                             MyConsole.OutputMessage();
-                            MyConsole.OutputMessage(string.Format("{0} Certifications processed!", resultCount), ConsoleColor.Yellow);
+                            MyConsole.OutputMessage("TMDb Certifications impoty completed!", ConsoleColor.Yellow);
+
+                            break;
+                        case "3": // import IMDb Movie
+
+                            MyConsole.RequestInput("IMDb Id", ConsoleColor.Magenta);
+                            string imdbSelection = Console.ReadLine();
+                            if (!string.IsNullOrWhiteSpace(imdbSelection))
+                            {
+                                MyConsole.OutputMessage();
+                                MyConsole.OutputMessage("starting IMDb movie import...", ConsoleColor.Yellow);
+                                MyConsole.OutputMessage();
+
+                                var tmdbResult = _tmdb.MovieDetailsByImdbId(imdbSelection).Result;
+
+                                if (tmdbResult != null && tmdbResult.movie_results != null)
+                                {
+                                    var tmdbMovieResult = tmdbResult.movie_results.FirstOrDefault();
+                                    if (tmdbMovieResult != null)
+                                    {
+                                        var tmdbMovie = _tmdb.MovieDetails(tmdbMovieResult.id).Result;
+                                        if (tmdbMovie != null)
+                                        {
+                                            var movie = _movie.GetAll().FirstOrDefault(m => m.TmdbId == tmdbMovie.id);
+                                            if (movie == null)
+                                            {
+                                                movie = new Movie(tmdbMovie);
+
+                                                #region Add Genres
+
+                                                if (tmdbMovie.genres != null)
+                                                {
+                                                    foreach (var tmdbGenre in tmdbMovie.genres)
+                                                    {
+                                                        var genre = _genre.GetAll().FirstOrDefault(g => g.Id == tmdbGenre.id);
+                                                        if (genre != null)
+                                                        {
+                                                            if (genre.Name != tmdbGenre.name)
+                                                            {
+                                                                genre.Name = tmdbGenre.name;
+                                                                genre.ModifiedDate = DateTime.Now;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            genre = new Genre(tmdbGenre);
+                                                            _genre.Insert(genre);
+                                                        }
+
+                                                        movie.Genres.Add(genre);
+                                                    }
+                                                }
+
+                                                #endregion Add Genres
+
+                                                #region Add Keywords
+
+                                                if (tmdbMovie.keywords != null && tmdbMovie.keywords.keywords != null)
+                                                {
+                                                    foreach (var tmdbKeyword in tmdbMovie.keywords.keywords)
+                                                    {
+                                                        var keyword = _keyword.GetAll().FirstOrDefault(k => k.Id == tmdbKeyword.id);
+                                                        if (keyword != null)
+                                                        {
+                                                            if (keyword.Name != tmdbKeyword.name)
+                                                            {
+                                                                keyword.Name = tmdbKeyword.name;
+                                                                keyword.ModifiedDate = DateTime.Now;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            keyword = new Keyword(tmdbKeyword);
+                                                            _keyword.Insert(keyword);
+                                                        }
+
+                                                        movie.Keywords.Add(keyword);
+                                                    }
+                                                }
+
+                                                #endregion Add Keywords
+
+                                                #region Add Production Companies
+
+                                                if (tmdbMovie.production_companies != null)
+                                                {
+                                                    foreach (var tmdbProductionCompany in tmdbMovie.production_companies)
+                                                    {
+                                                        var productionCompany = _productionCompany.GetAll().FirstOrDefault(p => p.Id == tmdbProductionCompany.id);
+                                                        if (productionCompany != null)
+                                                        {
+                                                            if (productionCompany.Name != tmdbProductionCompany.name)
+                                                            {
+                                                                productionCompany.Name = tmdbProductionCompany.name;
+                                                                productionCompany.ModifiedDate = DateTime.Now;
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            productionCompany = new ProductionCompany(tmdbProductionCompany);
+                                                            _productionCompany.Insert(productionCompany);
+                                                        }
+
+                                                        movie.ProductionCompanies.Add(productionCompany);
+                                                    }
+                                                }
+
+                                                #endregion Add Production Companies
+
+                                                #region Add Certifications (US only)
+
+                                                if (tmdbMovie.release_dates != null && tmdbMovie.release_dates.results != null)
+                                                {
+                                                    foreach (var tmdbReleaseDate in tmdbMovie.release_dates.results)
+                                                    {
+                                                        if (tmdbReleaseDate.iso_3166_1 == "US")
+                                                        {
+                                                            foreach (var tmdbCertification in tmdbReleaseDate.release_dates)
+                                                            {
+                                                                var myCertification = _certficiation.GetAll().FirstOrDefault(c => c.Country == tmdbReleaseDate.iso_3166_1 && c.Name == tmdbCertification.certification);
+                                                                if (myCertification != null)
+                                                                    movie.Certifications.Add(myCertification);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                #endregion Add Certifications (US only)
+
+                                                #region Add Backdrop Images
+
+                                                if (tmdbMovie.images != null && tmdbMovie.images.backdrops != null)
+                                                {
+                                                    foreach (var tmdbBackdrop in tmdbMovie.images.backdrops)
+                                                    {
+                                                        var backdrop = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbBackdrop.file_path && i.IsBackdrop);
+                                                        if (backdrop == null)
+                                                        {
+                                                            backdrop = new Image(tmdbBackdrop);
+                                                            _image.Insert(backdrop);
+                                                        }
+
+                                                        movie.Images.Add(backdrop);
+                                                    }
+                                                }
+                                                
+                                                #endregion Add Backdrop Images
+
+                                                #region Add Poster Images
+
+                                                if (tmdbMovie.images != null && tmdbMovie.images.posters != null)
+                                                {
+                                                    foreach (var tmdbPoster in tmdbMovie.images.posters)
+                                                    {
+                                                        var poster = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbPoster.file_path && !i.IsBackdrop);
+                                                        if (poster == null)
+                                                        {
+                                                            poster = new Image(tmdbPoster);
+                                                            _image.Insert(poster);
+                                                        }
+
+                                                        movie.Images.Add(poster);
+                                                    }
+                                                }
+
+                                                #endregion Add Poster Images
+
+                                                #region Add Videos
+
+                                                if (tmdbMovie.videos != null && tmdbMovie.videos.results != null)
+                                                {
+                                                    foreach (var tmdbVideo in tmdbMovie.videos.results)
+                                                    {
+                                                        var video = _video.GetAll().FirstOrDefault(v => v.Id == tmdbVideo.id);
+                                                        if (video == null)
+                                                        {
+                                                            video = new Video(tmdbVideo);
+                                                            _video.Insert(video);
+                                                        }
+
+                                                        movie.Videos.Add(video);
+                                                    }
+                                                }
+
+                                                #endregion Add Videos
+
+                                                _movie.Insert(movie);
+
+                                                _context.SaveChanges();
+
+                                                MyConsole.OutputMessage(string.Format("Successfully imports IMDb movie {0}!", imdbSelection), ConsoleColor.Cyan);
+                                            }
+                                            else
+                                                MyConsole.OutputMessage(string.Format("IMDb movie {0} already exists!", imdbSelection), ConsoleColor.Red);
+                                        }
+                                    }
+                                    else
+                                        MyConsole.OutputMessage("IMDb Movie not found!", ConsoleColor.Red);
+                                }
+                                else
+                                    MyConsole.OutputMessage("IMDb Movie not found!", ConsoleColor.Red);
+
+                                MyConsole.OutputMessage();
+                                MyConsole.OutputMessage("IMDb movie import completed!", ConsoleColor.Yellow);
+                            }
+                            else
+                            {
+                                MyConsole.OutputMessage();
+                                MyConsole.OutputMessage("Invalid IMDb Id entered!", ConsoleColor.Red);
+                                MyConsole.OutputMessage();
+                            }
 
                             break;
                         //case "3": // process Movies By Year
@@ -192,31 +416,7 @@ namespace GeekPeeked.UtilityApplication
                         //    }
 
                         //    break;
-                        //case "6": // process IMDb Movie
-
-                        //    MyConsole.RequestInput("IMDb Movie Id", ConsoleColor.Magenta);
-                        //    string imdbId = Console.ReadLine();
-                        //    if (!string.IsNullOrWhiteSpace(imdbId))
-                        //    {
-                        //        MyConsole.OutputMessage();
-                        //        MyConsole.OutputMessage(string.Format("Processing IMDb Movie {0}...", imdbId), ConsoleColor.Yellow);
-                        //        MyConsole.OutputMessage();
-
-                        //        TmdbMovieImporter movieImporter = new TmdbMovieImporter(_tmdbRepository, _jobRepository, _imageRepository, _videoRepository, _movieRepository, _genreRepository, _personRepository, _keywordRepository, _certificationRepository, _productionCompanRepository, _castCreditRepository, _crewCreditRepository);
-                        //        resultCount = movieImporter.Import(imdbId);
-
-                        //        MyConsole.OutputMessage();
-                        //        MyConsole.OutputMessage(string.Format("{0} IMDb Movie ({1}) processed!", resultCount, imdbId), ConsoleColor.Yellow);
-                        //    }
-                        //    else
-                        //    {
-                        //        MyConsole.OutputMessage();
-                        //        MyConsole.OutputMessage("!!! Invalid IMDb Id entered !!!", ConsoleColor.Red);
-                        //        MyConsole.OutputMessage();
-                        //    }
-
-                        //    break;
-                        //case "7": // process All IMDb Movies
+                        //case "6": // process All IMDb Movies
 
                         //    List<string> imdbIds = new List<string>();
 
@@ -1654,7 +1854,7 @@ namespace GeekPeeked.UtilityApplication
                         //    MyConsole.OutputMessage(string.Format("{0} IMDb Movies Process!", resultCount), ConsoleColor.Yellow);
 
                         //    break;
-                        //case "8": // process Jobs
+                        //case "7": // process Jobs
 
                         //    MyConsole.OutputMessage("Processing Jobs...", ConsoleColor.Yellow);
                         //    MyConsole.OutputMessage();
