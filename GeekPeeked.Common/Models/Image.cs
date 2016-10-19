@@ -27,14 +27,11 @@ namespace GeekPeeked.Common.Models
         public DateTime? ModifiedDate { get; set; }
 
         public virtual ICollection<Movie> Movies { get; set; }
-        public virtual ICollection<Person> People { get; set; }
+        //public virtual ICollection<Person> People { get; set; }
 
         public Image()
         {
-            this.IsBackdrop = false;
-
-            Movies = new HashSet<Movie>();
-            People = new HashSet<Person>();
+            this.Movies = new HashSet<Movie>();
         }
 
         public Image(MovieDetails.Backdrop tmdbBackdrop)
@@ -44,6 +41,9 @@ namespace GeekPeeked.Common.Models
             this.Width = tmdbBackdrop.width;
             this.Height = tmdbBackdrop.height;
             this.AspectRatio = tmdbBackdrop.aspect_ratio;
+            this.CreatedDate = DateTime.Now;
+
+            this.Movies = new HashSet<Movie>();
         }
 
         public Image(MovieDetails.Poster tmdbPoster)
@@ -53,15 +53,19 @@ namespace GeekPeeked.Common.Models
             this.Width = tmdbPoster.width;
             this.Height = tmdbPoster.height;
             this.AspectRatio = tmdbPoster.aspect_ratio;
+            this.CreatedDate = DateTime.Now;
+
+            this.Movies = new HashSet<Movie>();
         }
 
-        public Image(PersonDetails.Profile tmdbProfile)
-        {
-            this.IsBackdrop = false;
-            this.FilePath = tmdbProfile.file_path;
-            this.Width = tmdbProfile.width;
-            this.Height = tmdbProfile.height;
-            this.AspectRatio = tmdbProfile.aspect_ratio;
-        }
+        //public Image(PersonDetails.Profile tmdbProfile)
+        //{
+        //    this.IsBackdrop = false;
+        //    this.FilePath = tmdbProfile.file_path;
+        //    this.Width = tmdbProfile.width;
+        //    this.Height = tmdbProfile.height;
+        //    this.AspectRatio = tmdbProfile.aspect_ratio;
+        //    this.CreatedDate = DateTime.Now;
+        //}
     }
 }

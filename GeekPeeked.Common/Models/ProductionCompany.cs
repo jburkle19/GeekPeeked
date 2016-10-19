@@ -23,13 +23,16 @@ namespace GeekPeeked.Common.Models
 
         public ProductionCompany()
         {
-            Movies = new HashSet<Movie>();
+            this.Movies = new HashSet<Movie>();
         }
 
         public ProductionCompany(MovieDetails.ProductionCompany tmdbProductionCompany)
         {
             this.Id = tmdbProductionCompany.id;
             this.Name = tmdbProductionCompany.name;
+            this.CreatedDate = DateTime.Now;
+
+            this.Movies = new HashSet<Movie>();
         }
     }
 }

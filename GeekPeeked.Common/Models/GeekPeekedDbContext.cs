@@ -10,19 +10,18 @@ namespace GeekPeeked.Common.Models
         }
 
         public DbSet<Movie> Movies { get; set; }
+
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Video> Videos { get; set; }
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Certification> Certifications { get; set; }
         public DbSet<ProductionCompany> ProductionCompanies { get; set; }
-
-        public DbSet<Job> Jobs { get; set; }
-        public DbSet<Person> People { get; set; }
-
-        public DbSet<Image> Images { get; set; }
-        public DbSet<Video> Videos { get; set; }
-
-        public DbSet<CastCredit> CastCredits { get; set; }
-        public DbSet<CrewCredit> CrewCredits { get; set; }
+        
+        //public DbSet<Job> Jobs { get; set; }
+        //public DbSet<Person> People { get; set; }
+        //public DbSet<CastCredit> CastCredits { get; set; }
+        //public DbSet<CrewCredit> CrewCredits { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -36,7 +35,7 @@ namespace GeekPeeked.Common.Models
                         {
                             mg.MapLeftKey("MovieId");
                             mg.MapRightKey("GenreId");
-                            mg.ToTable("MovieGenreRelationship");
+                            mg.ToTable("MovieGenreRelationships");
                         });
             #endregion Movie / Genre Many-to-Many Relationship 
 
@@ -48,7 +47,7 @@ namespace GeekPeeked.Common.Models
                         {
                             mg.MapLeftKey("MovieId");
                             mg.MapRightKey("KeywordId");
-                            mg.ToTable("MovieKeywordRelationship");
+                            mg.ToTable("MovieKeywordRelationships");
                         });
             #endregion Movie / Keyword Many-to-Many Relationship 
 
@@ -60,7 +59,7 @@ namespace GeekPeeked.Common.Models
                         {
                             mc.MapLeftKey("MovieId");
                             mc.MapRightKey("CertificationId");
-                            mc.ToTable("MovieCertificationRelationship");
+                            mc.ToTable("MovieCertificationRelationships");
                         });
             #endregion Movie / Certification Many-to-Many Relationship 
 
@@ -72,7 +71,7 @@ namespace GeekPeeked.Common.Models
                         {
                             mpc.MapLeftKey("MovieId");
                             mpc.MapRightKey("ProductionCompanyId");
-                            mpc.ToTable("MovieProductionCompanyRelationship");
+                            mpc.ToTable("MovieProductionCompanyRelationships");
                         });
             #endregion Movie / Production Company Many-to-Many Relationship 
 
@@ -83,8 +82,8 @@ namespace GeekPeeked.Common.Models
                         .Map(mi =>
                         {
                             mi.MapLeftKey("MovieId");
-                            mi.MapRightKey("PosterId");
-                            mi.ToTable("MoviePosterRelationship");
+                            mi.MapRightKey("ImageId");
+                            mi.ToTable("MovieImageRelationships");
                         });
             #endregion Movie / Image Many-to-Many Relationship 
 
@@ -96,37 +95,37 @@ namespace GeekPeeked.Common.Models
                         {
                             mv.MapLeftKey("MovieId");
                             mv.MapRightKey("VideoId");
-                            mv.ToTable("MovieVideoRelationship");
+                            mv.ToTable("MovieVideoRelationships");
                         });
             #endregion Movie / Video Many-to-Many Relationship 
 
-            #region People / Image Many-to-Many Relationship 
-            modelBuilder.Entity<Person>()
-                        .HasMany<Image>(i => i.Images)
-                        .WithMany(p => p.People)
-                        .Map(pi =>
-                        {
-                            pi.MapLeftKey("Persond");
-                            pi.MapRightKey("ImageId");
-                            pi.ToTable("PersonImageRelationship");
-                        });
-            #endregion People / Image Many-to-Many Relationship 
+            //#region People / Image Many-to-Many Relationship 
+            //modelBuilder.Entity<Person>()
+            //            .HasMany<Image>(i => i.Images)
+            //            .WithMany(p => p.People)
+            //            .Map(pi =>
+            //            {
+            //                pi.MapLeftKey("Persond");
+            //                pi.MapRightKey("ImageId");
+            //                pi.ToTable("PersonImageRelationships");
+            //            });
+            //#endregion People / Image Many-to-Many Relationship 
 
-            #region Credit / Cast and Crew Inheritance
-            modelBuilder.Entity<CastCredit>()
-                .Map(cast =>
-                {
-                    cast.MapInheritedProperties();
-                    cast.ToTable("CastCredit");
-                });
+            //#region Credit / Cast and Crew Inheritance
+            //modelBuilder.Entity<CastCredit>()
+            //    .Map(cast =>
+            //    {
+            //        cast.MapInheritedProperties();
+            //        cast.ToTable("CastCredit");
+            //    });
 
-            modelBuilder.Entity<CrewCredit>()
-                .Map(crew =>
-                {
-                    crew.MapInheritedProperties();
-                    crew.ToTable("CrewCredit");
-                });
-            #endregion Credit / Cast and Crew Inheritance
+            //modelBuilder.Entity<CrewCredit>()
+            //    .Map(crew =>
+            //    {
+            //        crew.MapInheritedProperties();
+            //        crew.ToTable("CrewCredit");
+            //    });
+            //#endregion Credit / Cast and Crew Inheritance
         }
 
         public static GeekPeekedDbContext Create()

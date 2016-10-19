@@ -9,7 +9,7 @@ using PersonDetails = GeekPeeked.Common.Models.TMDb.Response.PersonDetails;
 using DiscoverMovies = GeekPeeked.Common.Models.TMDb.Response.DiscoverMovies;
 using CertificationList = GeekPeeked.Common.Models.TMDb.Response.CertificationList;
 
-namespace GeekPeeked.Common.Repositories
+namespace GeekPeeked.Common.TMDb.Repositories
 {
     public interface ITmdbRepository
     {
@@ -21,8 +21,8 @@ namespace GeekPeeked.Common.Repositories
         Task<IEnumerable<DiscoverMovies.ResponseModel>> AllMovies(DateTime startDate, DateTime endDate);
 
         Task<MovieDetails.ResponseModel> MovieDetails(int id);
+        Task<ImdbDetails.ResponseModel> MovieDetailsByImdbId(string imdbId);
 
-        //Task<ImdbDetails.ResponseModel> MovieDetailsByImdbId(string imdbId);
-        //Task<PersonDetails.ResponseModel> PersonDetails(int personId);
+        Task<PersonDetails.ResponseModel> PersonDetails(int personId);
     }
 }

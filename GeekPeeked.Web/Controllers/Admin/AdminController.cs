@@ -8,17 +8,17 @@ namespace GeekPeeked.Web.Controllers.Admin
 {
     public class AdminController : Controller
     {
-        private JobRepository _dbJobRepo;
-        private GenreRepository _dbGenreRepo;
-        private CertificationRepository _dbCertificationRepo;
-        private MovieRepository _dbMovieRepo;
+        private Repository<Job> _dbJobRepo;
+        private Repository<Genre> _dbGenreRepo;
+        private Repository<Movie> _dbMovieRepo;
+        private Repository<Certification> _dbCertificationRepo;
 
         public AdminController()
         {
-            _dbJobRepo = new JobRepository(new GeekPeekedDbContext());
-            _dbGenreRepo = new GenreRepository(new GeekPeekedDbContext());
-            _dbCertificationRepo = new CertificationRepository(new GeekPeekedDbContext());
-            _dbMovieRepo = new MovieRepository(new GeekPeekedDbContext());
+            _dbJobRepo = new Repository<Job>(new GeekPeekedDbContext());
+            _dbGenreRepo = new Repository<Genre>(new GeekPeekedDbContext());
+            _dbMovieRepo = new Repository<Movie>(new GeekPeekedDbContext());
+            _dbCertificationRepo = new Repository<Certification>(new GeekPeekedDbContext());
         }
 
         // GET: Admin
@@ -33,7 +33,7 @@ namespace GeekPeeked.Web.Controllers.Admin
         {
             JobsViewModel viewModel = new JobsViewModel();
 
-            var jobs = _dbJobRepo.AllJobs();
+            var jobs = _dbJobRepo.GetAll();
 
             foreach (var job in jobs)
             {
@@ -48,7 +48,7 @@ namespace GeekPeeked.Web.Controllers.Admin
         {
             GenresViewModel viewModel = new GenresViewModel();
 
-            var genres = _dbGenreRepo.AllGenres();
+            var genres = _dbGenreRepo.GetAll();
 
             foreach (var genre in genres)
             {
@@ -63,7 +63,7 @@ namespace GeekPeeked.Web.Controllers.Admin
         {
             CertificationsViewModel viewModel = new CertificationsViewModel();
 
-            var certifications = _dbCertificationRepo.AllCertifications();
+            var certifications = _dbCertificationRepo.GetAll();
 
             foreach (var certification in certifications)
             {
@@ -76,7 +76,7 @@ namespace GeekPeeked.Web.Controllers.Admin
         // GET: Admin/Movies
         public ActionResult Movies(MoviesViewModel viewModel)
         {
-            var movies = _dbMovieRepo.AllMovies();
+            var movies = _dbMovieRepo.GetAll();
 
             foreach (var movie in movies)
             {
@@ -89,7 +89,7 @@ namespace GeekPeeked.Web.Controllers.Admin
         // GET: Admin/Details/[id]
         public ActionResult Details(int id)
         {
-            var movie = _dbMovieRepo.Find(id);
+            var movie = _dbMovieRepo.GetById(id);
 
             return View(movie);
         }

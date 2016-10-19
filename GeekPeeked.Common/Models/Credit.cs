@@ -1,50 +1,50 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿//using System;
+//using System.ComponentModel.DataAnnotations;
+//using System.ComponentModel.DataAnnotations.Schema;
 
-namespace GeekPeeked.Common.Models
-{
-    public class CastCredit : Credit
-    {
-        [Required]
-        public string CharacterName { get; set; }            // "character"
-    }
+//namespace GeekPeeked.Common.Models
+//{
+//    public class CastCredit : Credit
+//    {
+//        [Required]
+//        public string CharacterName { get; set; }            // "character"
 
-    public class CrewCredit : Credit
-    {
-        public int JobId { get; set; }
+//        public int Sequence { get; set; }
+//    }
 
-        [ForeignKey("JobId")]
-        public virtual Job Job { get; set; }
-    }
+//    public class CrewCredit : Credit
+//    {
+//        public int JobId { get; set; }
 
-    public abstract class Credit : ITrackable
-    {
-        [Key]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+//        [ForeignKey("JobId")]
+//        public virtual Job Job { get; set; }
+//    }
 
-        [Required]
-        public string CreditId { get; set; }            // "credit_id"
+//    public abstract class Credit : ITrackable
+//    {
+//        [Key]
+//        [Required]
+//        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+//        public int Id { get; set; }
 
-        public int PersonId { get; set; }
+//        [Required]
+//        public string CreditId { get; set; }            // "credit_id"
 
-        [ForeignKey("PersonId")]
-        public virtual Person Person { get; set; }
+//        public int PersonId { get; set; }
 
-        public int TmdbId { get; set; }
+//        [ForeignKey("PersonId")]
+//        public virtual Person Person { get; set; }
 
-        [ForeignKey("TmdbId")]
-        public virtual Movie Movie { get; set; }
+//        public int TmdbId { get; set; }
 
-        public int Sequence { get; set; }
+//        [ForeignKey("TmdbId")]
+//        public virtual Movie Movie { get; set; }
 
-        public DateTime? CreatedDate { get; set; }
-        public DateTime? ModifiedDate { get; set; }
+//        public DateTime? CreatedDate { get; set; }
+//        public DateTime? ModifiedDate { get; set; }
 
-        public Credit()
-        {
-        }
-    }
-}
+//        public Credit()
+//        {
+//        }
+//    }
+//}

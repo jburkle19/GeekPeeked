@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace GeekPeeked.UtilityApplication
+namespace GeekPeeked.UtilityApplication.Helpers
 {
-    public static class Helpers
+    public static class MyConsole
     {
         public static void OutputMessage(string message = "", ConsoleColor color = ConsoleColor.White)
         {

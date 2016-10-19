@@ -6,7 +6,7 @@ using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
 
 namespace GeekPeeked.Common.Models
 {
-    public class Video //: ITrackable
+    public class Video : ITrackable
     {
         [Key]
         [Required]
@@ -26,7 +26,7 @@ namespace GeekPeeked.Common.Models
 
         public Video()
         {
-            Movies = new HashSet<Movie>();
+            this.Movies = new HashSet<Movie>();
         }
 
         public Video(MovieDetails.VideoResult tmdbVideo)
@@ -37,6 +37,9 @@ namespace GeekPeeked.Common.Models
             this.Site = tmdbVideo.site;
             this.Size = tmdbVideo.size;
             this.Type = tmdbVideo.type;
+            this.CreatedDate = DateTime.Now;
+
+            this.Movies = new HashSet<Movie>();
         }
     }
 }

@@ -96,9 +96,9 @@
     <Compile Include="Configuration\CoreConfiguration.cs" />
     <Compile Include="Configuration\IdentityConfiguration.cs" />
     <Compile Include="Helpers\DataHelpers.cs" />
-    <Compile Include="Migrations\201610171509069_Initialization.cs" />
-    <Compile Include="Migrations\201610171509069_Initialization.Designer.cs">
-      <DependentUpon>201610171509069_Initialization.cs</DependentUpon>
+    <Compile Include="Migrations\201610192046021_Initialization.cs" />
+    <Compile Include="Migrations\201610192046021_Initialization.Designer.cs">
+      <DependentUpon>201610192046021_Initialization.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
@@ -127,12 +127,12 @@
     <Compile Include="Repositories\LegacyGeekPeeked\MovieRepository.cs" />
     <Compile Include="Repositories\LegacyGeekPeeked\_BaseRepository.cs" />
     <Compile Include="Repositories\LegacyGeekPeeked\_Interfaces\IMovieRepository.cs" />
-    <Compile Include="Repositories\MovieRepositories.cs" />
-    <Compile Include="Repositories\TmdbRepository.cs" />
-    <Compile Include="Repositories\_Interfaces\ITmdbRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\TMDb\TmdbRepository.cs" />
     <Compile Include="Repositories\_BaseRepository.cs" />
+    <Compile Include="Repositories\_Interfaces\IRepository.cs" />
+    <Compile Include="Repositories\TMDb\Interfaces\ITmdbRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Repositories\_Interfaces\IMovieRepositories.cs" />
     <Compile Include="Repositories\_Interfaces\IUserRepository.cs" />
     <Compile Include="Repositories\_Interfaces\_IBaseRepository.cs" />
     <Compile Include="Services\EmailService.cs" />
@@ -153,8 +153,8 @@
     <Folder Include="Models\Api\v1\Request\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610171509069_Initialization.resx">
-      <DependentUpon>201610171509069_Initialization.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610192046021_Initialization.resx">
+      <DependentUpon>201610192046021_Initialization.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

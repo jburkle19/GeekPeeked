@@ -14,10 +14,12 @@ using PersonDetails = GeekPeeked.Common.Models.TMDb.Response.PersonDetails;
 using DiscoverMovies = GeekPeeked.Common.Models.TMDb.Response.DiscoverMovies;
 using CertificationList = GeekPeeked.Common.Models.TMDb.Response.CertificationList;
 
-namespace GeekPeeked.Common.Repositories
+namespace GeekPeeked.Common.TMDb.Repositories
 {
-    public class TmdbRepository : BaseRepository, ITmdbRepository
+    public class TmdbRepository : ITmdbRepository
     {
+        private static string TMDbApiKey = TMDbCoreConfiguration.TmdbApiKey;
+
         private async Task<T> CallTmdbApi<T>(string url)
         {
             T result = default(T);
@@ -156,6 +158,11 @@ namespace GeekPeeked.Common.Repositories
         public async Task<ImdbDetails.ResponseModel> MovieDetailsByImdbId(string imdbId)
         {
             return await CallTmdbApi<ImdbDetails.ResponseModel>(TMDbCoreConfiguration.FindImdbObjectTmdbUrl(imdbId));
+        }
+
+        public async Task<PersonDetails.ResponseModel> PersonDetails(int personId)
+        {
+            return await CallTmdbApi<PersonDetails.ResponseModel>(TMDbCoreConfiguration.PersonDetailsTmdbUrl(personId));
         }
     }
 }

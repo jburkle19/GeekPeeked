@@ -16,12 +16,11 @@ namespace GeekPeeked.Common.Models
         public string Country { get; set; }
 
         [Required]
-        public int TypeId { get; set; }
-
-        [Required]
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public int Sequence { get; set; }
 
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
@@ -30,15 +29,18 @@ namespace GeekPeeked.Common.Models
 
         public Certification()
         {
-            Movies = new HashSet<Movie>();
+            this.Movies = new HashSet<Movie>();
         }
 
         public Certification(CertificationList.US tmdbUSCertifiction)
         {
             this.Country = "US";
-            this.TypeId = tmdbUSCertifiction.order;
             this.Name = tmdbUSCertifiction.certification;
             this.Description = tmdbUSCertifiction.meaning;
+            this.Sequence = tmdbUSCertifiction.order;
+            this.CreatedDate = DateTime.Now;
+
+            this.Movies = new HashSet<Movie>();
         }
     }
 }

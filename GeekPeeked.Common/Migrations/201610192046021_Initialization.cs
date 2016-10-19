@@ -8,23 +8,18 @@ namespace GeekPeeked.Common.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.CastCredit",
+                "dbo.Certifications",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        CharacterName = c.String(nullable: false),
-                        CreditId = c.String(nullable: false),
-                        PersonId = c.Int(nullable: false),
-                        TmdbId = c.Int(nullable: false),
+                        Country = c.String(nullable: false),
+                        Name = c.String(nullable: false),
+                        Description = c.String(),
                         Sequence = c.Int(nullable: false),
                         CreatedDate = c.DateTime(),
                         ModifiedDate = c.DateTime(),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Movies", t => t.TmdbId, cascadeDelete: true)
-                .ForeignKey("dbo.People", t => t.PersonId, cascadeDelete: true)
-                .Index(t => t.PersonId)
-                .Index(t => t.TmdbId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Movies",
@@ -54,69 +49,11 @@ namespace GeekPeeked.Common.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.Certifications",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Country = c.String(nullable: false),
-                        TypeId = c.Int(nullable: false),
-                        Name = c.String(nullable: false),
-                        Description = c.String(),
-                        CreatedDate = c.DateTime(),
-                        ModifiedDate = c.DateTime(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.CrewCredit",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        JobId = c.Int(nullable: false),
-                        CreditId = c.String(nullable: false),
-                        PersonId = c.Int(nullable: false),
-                        TmdbId = c.Int(nullable: false),
-                        Sequence = c.Int(nullable: false),
-                        CreatedDate = c.DateTime(),
-                        ModifiedDate = c.DateTime(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Jobs", t => t.JobId, cascadeDelete: true)
-                .ForeignKey("dbo.Movies", t => t.TmdbId, cascadeDelete: true)
-                .ForeignKey("dbo.People", t => t.PersonId, cascadeDelete: true)
-                .Index(t => t.JobId)
-                .Index(t => t.PersonId)
-                .Index(t => t.TmdbId);
-            
-            CreateTable(
-                "dbo.Jobs",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Department = c.String(nullable: false),
-                        JobTitle = c.String(nullable: false),
-                        CreatedDate = c.DateTime(),
-                        ModifiedDate = c.DateTime(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.People",
+                "dbo.Genres",
                 c => new
                     {
                         Id = c.Int(nullable: false),
                         Name = c.String(nullable: false),
-                        Birthday = c.DateTime(nullable: false),
-                        Deathday = c.DateTime(nullable: false),
-                        Biography = c.String(),
-                        Gender = c.Int(nullable: false),
-                        HomePage = c.String(),
-                        ImdbId = c.String(),
-                        FacebookId = c.String(),
-                        InstagramId = c.String(),
-                        TwitterId = c.String(),
-                        BirthPlace = c.String(),
-                        ProfilePath = c.String(),
                         CreatedDate = c.DateTime(),
                         ModifiedDate = c.DateTime(),
                     })
@@ -132,17 +69,6 @@ namespace GeekPeeked.Common.Migrations
                         Width = c.Int(nullable: false),
                         Height = c.Int(nullable: false),
                         AspectRatio = c.Double(nullable: false),
-                        CreatedDate = c.DateTime(),
-                        ModifiedDate = c.DateTime(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Genres",
-                c => new
-                    {
-                        Id = c.Int(nullable: false),
-                        Name = c.String(nullable: false),
                         CreatedDate = c.DateTime(),
                         ModifiedDate = c.DateTime(),
                     })
@@ -260,7 +186,7 @@ namespace GeekPeeked.Common.Migrations
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.MovieCertificationRelationship",
+                "dbo.MovieCertificationRelationships",
                 c => new
                     {
                         MovieId = c.Int(nullable: false),
@@ -273,20 +199,7 @@ namespace GeekPeeked.Common.Migrations
                 .Index(t => t.CertificationId);
             
             CreateTable(
-                "dbo.PersonImageRelationship",
-                c => new
-                    {
-                        Persond = c.Int(nullable: false),
-                        ImageId = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Persond, t.ImageId })
-                .ForeignKey("dbo.People", t => t.Persond, cascadeDelete: true)
-                .ForeignKey("dbo.Images", t => t.ImageId, cascadeDelete: true)
-                .Index(t => t.Persond)
-                .Index(t => t.ImageId);
-            
-            CreateTable(
-                "dbo.MovieGenreRelationship",
+                "dbo.MovieGenreRelationships",
                 c => new
                     {
                         MovieId = c.Int(nullable: false),
@@ -299,20 +212,20 @@ namespace GeekPeeked.Common.Migrations
                 .Index(t => t.GenreId);
             
             CreateTable(
-                "dbo.MoviePosterRelationship",
+                "dbo.MovieImageRelationships",
                 c => new
                     {
                         MovieId = c.Int(nullable: false),
-                        PosterId = c.Int(nullable: false),
+                        ImageId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.MovieId, t.PosterId })
+                .PrimaryKey(t => new { t.MovieId, t.ImageId })
                 .ForeignKey("dbo.Movies", t => t.MovieId, cascadeDelete: true)
-                .ForeignKey("dbo.Images", t => t.PosterId, cascadeDelete: true)
+                .ForeignKey("dbo.Images", t => t.ImageId, cascadeDelete: true)
                 .Index(t => t.MovieId)
-                .Index(t => t.PosterId);
+                .Index(t => t.ImageId);
             
             CreateTable(
-                "dbo.MovieKeywordRelationship",
+                "dbo.MovieKeywordRelationships",
                 c => new
                     {
                         MovieId = c.Int(nullable: false),
@@ -325,7 +238,7 @@ namespace GeekPeeked.Common.Migrations
                 .Index(t => t.KeywordId);
             
             CreateTable(
-                "dbo.MovieProductionCompanyRelationship",
+                "dbo.MovieProductionCompanyRelationships",
                 c => new
                     {
                         MovieId = c.Int(nullable: false),
@@ -338,7 +251,7 @@ namespace GeekPeeked.Common.Migrations
                 .Index(t => t.ProductionCompanyId);
             
             CreateTable(
-                "dbo.MovieVideoRelationship",
+                "dbo.MovieVideoRelationships",
                 c => new
                     {
                         MovieId = c.Int(nullable: false),
@@ -358,57 +271,42 @@ namespace GeekPeeked.Common.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.MovieVideoRelationship", "VideoId", "dbo.Videos");
-            DropForeignKey("dbo.MovieVideoRelationship", "MovieId", "dbo.Movies");
-            DropForeignKey("dbo.MovieProductionCompanyRelationship", "ProductionCompanyId", "dbo.ProductionCompanies");
-            DropForeignKey("dbo.MovieProductionCompanyRelationship", "MovieId", "dbo.Movies");
-            DropForeignKey("dbo.MovieKeywordRelationship", "KeywordId", "dbo.Keywords");
-            DropForeignKey("dbo.MovieKeywordRelationship", "MovieId", "dbo.Movies");
-            DropForeignKey("dbo.MoviePosterRelationship", "PosterId", "dbo.Images");
-            DropForeignKey("dbo.MoviePosterRelationship", "MovieId", "dbo.Movies");
-            DropForeignKey("dbo.MovieGenreRelationship", "GenreId", "dbo.Genres");
-            DropForeignKey("dbo.MovieGenreRelationship", "MovieId", "dbo.Movies");
-            DropForeignKey("dbo.PersonImageRelationship", "ImageId", "dbo.Images");
-            DropForeignKey("dbo.PersonImageRelationship", "Persond", "dbo.People");
-            DropForeignKey("dbo.CrewCredit", "PersonId", "dbo.People");
-            DropForeignKey("dbo.CastCredit", "PersonId", "dbo.People");
-            DropForeignKey("dbo.CrewCredit", "TmdbId", "dbo.Movies");
-            DropForeignKey("dbo.CrewCredit", "JobId", "dbo.Jobs");
-            DropForeignKey("dbo.MovieCertificationRelationship", "CertificationId", "dbo.Certifications");
-            DropForeignKey("dbo.MovieCertificationRelationship", "MovieId", "dbo.Movies");
-            DropForeignKey("dbo.CastCredit", "TmdbId", "dbo.Movies");
-            DropIndex("dbo.MovieVideoRelationship", new[] { "VideoId" });
-            DropIndex("dbo.MovieVideoRelationship", new[] { "MovieId" });
-            DropIndex("dbo.MovieProductionCompanyRelationship", new[] { "ProductionCompanyId" });
-            DropIndex("dbo.MovieProductionCompanyRelationship", new[] { "MovieId" });
-            DropIndex("dbo.MovieKeywordRelationship", new[] { "KeywordId" });
-            DropIndex("dbo.MovieKeywordRelationship", new[] { "MovieId" });
-            DropIndex("dbo.MoviePosterRelationship", new[] { "PosterId" });
-            DropIndex("dbo.MoviePosterRelationship", new[] { "MovieId" });
-            DropIndex("dbo.MovieGenreRelationship", new[] { "GenreId" });
-            DropIndex("dbo.MovieGenreRelationship", new[] { "MovieId" });
-            DropIndex("dbo.PersonImageRelationship", new[] { "ImageId" });
-            DropIndex("dbo.PersonImageRelationship", new[] { "Persond" });
-            DropIndex("dbo.MovieCertificationRelationship", new[] { "CertificationId" });
-            DropIndex("dbo.MovieCertificationRelationship", new[] { "MovieId" });
+            DropForeignKey("dbo.MovieVideoRelationships", "VideoId", "dbo.Videos");
+            DropForeignKey("dbo.MovieVideoRelationships", "MovieId", "dbo.Movies");
+            DropForeignKey("dbo.MovieProductionCompanyRelationships", "ProductionCompanyId", "dbo.ProductionCompanies");
+            DropForeignKey("dbo.MovieProductionCompanyRelationships", "MovieId", "dbo.Movies");
+            DropForeignKey("dbo.MovieKeywordRelationships", "KeywordId", "dbo.Keywords");
+            DropForeignKey("dbo.MovieKeywordRelationships", "MovieId", "dbo.Movies");
+            DropForeignKey("dbo.MovieImageRelationships", "ImageId", "dbo.Images");
+            DropForeignKey("dbo.MovieImageRelationships", "MovieId", "dbo.Movies");
+            DropForeignKey("dbo.MovieGenreRelationships", "GenreId", "dbo.Genres");
+            DropForeignKey("dbo.MovieGenreRelationships", "MovieId", "dbo.Movies");
+            DropForeignKey("dbo.MovieCertificationRelationships", "CertificationId", "dbo.Certifications");
+            DropForeignKey("dbo.MovieCertificationRelationships", "MovieId", "dbo.Movies");
+            DropIndex("dbo.MovieVideoRelationships", new[] { "VideoId" });
+            DropIndex("dbo.MovieVideoRelationships", new[] { "MovieId" });
+            DropIndex("dbo.MovieProductionCompanyRelationships", new[] { "ProductionCompanyId" });
+            DropIndex("dbo.MovieProductionCompanyRelationships", new[] { "MovieId" });
+            DropIndex("dbo.MovieKeywordRelationships", new[] { "KeywordId" });
+            DropIndex("dbo.MovieKeywordRelationships", new[] { "MovieId" });
+            DropIndex("dbo.MovieImageRelationships", new[] { "ImageId" });
+            DropIndex("dbo.MovieImageRelationships", new[] { "MovieId" });
+            DropIndex("dbo.MovieGenreRelationships", new[] { "GenreId" });
+            DropIndex("dbo.MovieGenreRelationships", new[] { "MovieId" });
+            DropIndex("dbo.MovieCertificationRelationships", new[] { "CertificationId" });
+            DropIndex("dbo.MovieCertificationRelationships", new[] { "MovieId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.CrewCredit", new[] { "TmdbId" });
-            DropIndex("dbo.CrewCredit", new[] { "PersonId" });
-            DropIndex("dbo.CrewCredit", new[] { "JobId" });
-            DropIndex("dbo.CastCredit", new[] { "TmdbId" });
-            DropIndex("dbo.CastCredit", new[] { "PersonId" });
-            DropTable("dbo.MovieVideoRelationship");
-            DropTable("dbo.MovieProductionCompanyRelationship");
-            DropTable("dbo.MovieKeywordRelationship");
-            DropTable("dbo.MoviePosterRelationship");
-            DropTable("dbo.MovieGenreRelationship");
-            DropTable("dbo.PersonImageRelationship");
-            DropTable("dbo.MovieCertificationRelationship");
+            DropTable("dbo.MovieVideoRelationships");
+            DropTable("dbo.MovieProductionCompanyRelationships");
+            DropTable("dbo.MovieKeywordRelationships");
+            DropTable("dbo.MovieImageRelationships");
+            DropTable("dbo.MovieGenreRelationships");
+            DropTable("dbo.MovieCertificationRelationships");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
@@ -417,14 +315,10 @@ namespace GeekPeeked.Common.Migrations
             DropTable("dbo.Videos");
             DropTable("dbo.ProductionCompanies");
             DropTable("dbo.Keywords");
-            DropTable("dbo.Genres");
             DropTable("dbo.Images");
-            DropTable("dbo.People");
-            DropTable("dbo.Jobs");
-            DropTable("dbo.CrewCredit");
-            DropTable("dbo.Certifications");
+            DropTable("dbo.Genres");
             DropTable("dbo.Movies");
-            DropTable("dbo.CastCredit");
+            DropTable("dbo.Certifications");
         }
     }
 }

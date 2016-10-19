@@ -31,7 +31,7 @@ namespace GeekPeeked.Common.Models
         public double Revenue { get; set; }                                 // "revenue"
 
         [Required]
-        public DateTime ReleaseDate { get; set; }                           // "release_date"
+        public DateTime? ReleaseDate { get; set; }                           // "release_date"
 
         public string Status { get; set; }                                  // "status"
 
@@ -54,10 +54,20 @@ namespace GeekPeeked.Common.Models
         public virtual ICollection<Keyword> Keywords { get; set; }
         public virtual ICollection<Certification> Certifications { get; set; }
 
-        public virtual ICollection<CastCredit> CastCredits { get; set; }
-        public virtual ICollection<CrewCredit> CrewCredits { get; set; }
+        //public virtual ICollection<CastCredit> CastCredits { get; set; }
+        //public virtual ICollection<CrewCredit> CrewCredits { get; set; }
 
         public Movie()
+        {
+            this.Genres = new HashSet<Genre>();
+            this.Images = new HashSet<Image>();
+            this.Videos = new HashSet<Video>();
+            this.Keywords = new HashSet<Keyword>();
+            this.Certifications = new HashSet<Certification>();
+            this.ProductionCompanies = new HashSet<ProductionCompany>();
+        }
+
+        public Movie(MovieDetails.ResponseModel tmdbMovie)
         {
             this.Runtime = 0;
             this.Budget = 0;
@@ -66,22 +76,7 @@ namespace GeekPeeked.Common.Models
             this.IsVisible = false;
             this.IsAdult = false;
             this.IsVideo = false;
-            
-            this.Genres = new HashSet<Genre>();
-            this.ProductionCompanies = new HashSet<ProductionCompany>();
 
-            this.Images = new HashSet<Image>();
-            this.Videos = new HashSet<Video>();
-
-            this.Keywords = new HashSet<Keyword>();
-            this.Certifications = new HashSet<Certification>();
-
-            this.CastCredits = new HashSet<CastCredit>();
-            this.CrewCredits = new HashSet<CrewCredit>();
-        }
-
-        public Movie(MovieDetails.ResponseModel tmdbMovie)
-        {
             this.TmdbId = tmdbMovie.id;
             this.ImdbId = tmdbMovie.imdb_id;
             this.Title = tmdbMovie.title;
@@ -104,8 +99,8 @@ namespace GeekPeeked.Common.Models
             this.Revenue = tempRevenue;
 
             DateTime releaseDate = new DateTime();
-            DateTime.TryParse(tmdbMovie.release_date, out releaseDate);
-            this.ReleaseDate = releaseDate;
+            if (DateTime.TryParse(tmdbMovie.release_date, out releaseDate))
+                this.ReleaseDate = releaseDate;
 
             this.Status = tmdbMovie.status;
 
@@ -120,6 +115,13 @@ namespace GeekPeeked.Common.Models
 
             this.IsAdult = tmdbMovie.adult;
             this.IsVideo = tmdbMovie.video;
+
+            this.Genres = new HashSet<Genre>();
+            this.Images = new HashSet<Image>();
+            this.Videos = new HashSet<Video>();
+            this.Keywords = new HashSet<Keyword>();
+            this.Certifications = new HashSet<Certification>();
+            this.ProductionCompanies = new HashSet<ProductionCompany>();
         }
     }
 }

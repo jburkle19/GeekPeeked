@@ -23,13 +23,16 @@ namespace GeekPeeked.Common.Models
 
         public Keyword()
         {
-            Movies = new HashSet<Movie>();
+            this.Movies = new HashSet<Movie>();
         }
 
         public Keyword(MovieDetails.Keyword tmdbKeyword)
         {
             this.Id = tmdbKeyword.id;
             this.Name = tmdbKeyword.name;
+            this.CreatedDate = DateTime.Now;
+
+            this.Movies = new HashSet<Movie>();
         }
     }
 }
