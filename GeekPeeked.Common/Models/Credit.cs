@@ -1,50 +1,46 @@
-﻿//using System;
-//using System.ComponentModel.DataAnnotations;
-//using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-//namespace GeekPeeked.Common.Models
-//{
-//    public class CastCredit : Credit
-//    {
-//        [Required]
-//        public string CharacterName { get; set; }            // "character"
+namespace GeekPeeked.Common.Models
+{
+    public class Credit : ITrackable
+    {
+        [Key, Column(Order = 0)]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
-//        public int Sequence { get; set; }
-//    }
+        [Key, Column(Order = 1)]
+        [Required]
+        public int PersonId { get; set; }
 
-//    public class CrewCredit : Credit
-//    {
-//        public int JobId { get; set; }
+        [ForeignKey("PersonId")]
+        public virtual Person Person { get; set; }
 
-//        [ForeignKey("JobId")]
-//        public virtual Job Job { get; set; }
-//    }
+        [Key, Column(Order = 2)]
+        [Required]
+        public int MovieId { get; set; }
 
-//    public abstract class Credit : ITrackable
-//    {
-//        [Key]
-//        [Required]
-//        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-//        public int Id { get; set; }
+        [ForeignKey("MovieId")]
+        public virtual Movie Movie { get; set; }
 
-//        [Required]
-//        public string CreditId { get; set; }            // "credit_id"
+        [Required]
+        public string CreditId { get; set; }            // "credit_id"
 
-//        public int PersonId { get; set; }
+        public string Department { get; set; }          // "department"
+        public string JobTitle { get; set; }            // "job"
 
-//        [ForeignKey("PersonId")]
-//        public virtual Person Person { get; set; }
+        public string CharacterName { get; set; }       // "character"
+        public int Sequence { get; set; }               // "order"
 
-//        public int TmdbId { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
-//        [ForeignKey("TmdbId")]
-//        public virtual Movie Movie { get; set; }
-
-//        public DateTime? CreatedDate { get; set; }
-//        public DateTime? ModifiedDate { get; set; }
-
-//        public Credit()
-//        {
-//        }
-//    }
-//}
+        public Credit()
+        {
+            this.Sequence = 0;
+            this.CreatedDate = DateTime.Now;
+        }
+    }
+}

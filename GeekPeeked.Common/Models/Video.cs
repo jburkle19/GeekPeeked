@@ -26,6 +26,8 @@ namespace GeekPeeked.Common.Models
 
         public Video()
         {
+            this.CreatedDate = DateTime.Now;
+
             this.Movies = new HashSet<Movie>();
         }
 

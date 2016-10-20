@@ -23,6 +23,8 @@ namespace GeekPeeked.Common.Models
 
         public Keyword()
         {
+            this.CreatedDate = DateTime.Now;
+
             this.Movies = new HashSet<Movie>();
         }
 

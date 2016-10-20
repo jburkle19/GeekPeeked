@@ -27,10 +27,12 @@ namespace GeekPeeked.Common.Models
         public DateTime? ModifiedDate { get; set; }
 
         public virtual ICollection<Movie> Movies { get; set; }
-        //public virtual ICollection<Person> People { get; set; }
+        public virtual ICollection<Person> People { get; set; }
 
         public Image()
         {
+            this.CreatedDate = DateTime.Now;
+
             this.Movies = new HashSet<Movie>();
         }
 
@@ -58,14 +60,14 @@ namespace GeekPeeked.Common.Models
             this.Movies = new HashSet<Movie>();
         }
 
-        //public Image(PersonDetails.Profile tmdbProfile)
-        //{
-        //    this.IsBackdrop = false;
-        //    this.FilePath = tmdbProfile.file_path;
-        //    this.Width = tmdbProfile.width;
-        //    this.Height = tmdbProfile.height;
-        //    this.AspectRatio = tmdbProfile.aspect_ratio;
-        //    this.CreatedDate = DateTime.Now;
-        //}
+        public Image(PersonDetails.Profile tmdbProfile)
+        {
+            this.IsBackdrop = false;
+            this.FilePath = tmdbProfile.file_path;
+            this.Width = tmdbProfile.width;
+            this.Height = tmdbProfile.height;
+            this.AspectRatio = tmdbProfile.aspect_ratio;
+            this.CreatedDate = DateTime.Now;
+        }
     }
 }

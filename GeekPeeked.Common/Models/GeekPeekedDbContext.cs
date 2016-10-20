@@ -18,10 +18,8 @@ namespace GeekPeeked.Common.Models
         public DbSet<Certification> Certifications { get; set; }
         public DbSet<ProductionCompany> ProductionCompanies { get; set; }
         
-        //public DbSet<Job> Jobs { get; set; }
-        //public DbSet<Person> People { get; set; }
-        //public DbSet<CastCredit> CastCredits { get; set; }
-        //public DbSet<CrewCredit> CrewCredits { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<Credit> Credits { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -99,33 +97,29 @@ namespace GeekPeeked.Common.Models
                         });
             #endregion Movie / Video Many-to-Many Relationship 
 
-            //#region People / Image Many-to-Many Relationship 
-            //modelBuilder.Entity<Person>()
-            //            .HasMany<Image>(i => i.Images)
-            //            .WithMany(p => p.People)
-            //            .Map(pi =>
-            //            {
-            //                pi.MapLeftKey("Persond");
-            //                pi.MapRightKey("ImageId");
-            //                pi.ToTable("PersonImageRelationships");
-            //            });
-            //#endregion People / Image Many-to-Many Relationship 
+            #region People / Image Many-to-Many Relationship 
+            modelBuilder.Entity<Person>()
+                        .HasMany<Image>(i => i.Images)
+                        .WithMany(p => p.People)
+                        .Map(pi =>
+                        {
+                            pi.MapLeftKey("Persond");
+                            pi.MapRightKey("ImageId");
+                            pi.ToTable("PersonImageRelationships");
+                        });
+            #endregion People / Image Many-to-Many Relationship 
 
-            //#region Credit / Cast and Crew Inheritance
-            //modelBuilder.Entity<CastCredit>()
-            //    .Map(cast =>
-            //    {
-            //        cast.MapInheritedProperties();
-            //        cast.ToTable("CastCredit");
-            //    });
+            #region Movie / Person MovieCredit Many-to-Many Relationship 
+            modelBuilder.Entity<Credit>()
+                        .HasRequired(c => c.Person)
+                        .WithMany()
+                        .HasForeignKey(c => c.PersonId);
 
-            //modelBuilder.Entity<CrewCredit>()
-            //    .Map(crew =>
-            //    {
-            //        crew.MapInheritedProperties();
-            //        crew.ToTable("CrewCredit");
-            //    });
-            //#endregion Credit / Cast and Crew Inheritance
+            modelBuilder.Entity<Credit>()
+                        .HasRequired(c => c.Movie)
+                        .WithMany()
+                        .HasForeignKey(c => c.MovieId);
+            #endregion Movie / Person MovieCredit Many-to-Many Relationship 
         }
 
         public static GeekPeekedDbContext Create()

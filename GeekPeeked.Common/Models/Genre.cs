@@ -24,6 +24,8 @@ namespace GeekPeeked.Common.Models
 
         public Genre()
         {
+            this.CreatedDate = DateTime.Now;
+
             this.Movies = new HashSet<Movie>();
         }
 

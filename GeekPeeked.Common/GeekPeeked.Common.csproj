@@ -96,21 +96,20 @@
     <Compile Include="Configuration\CoreConfiguration.cs" />
     <Compile Include="Configuration\IdentityConfiguration.cs" />
     <Compile Include="Helpers\DataHelpers.cs" />
-    <Compile Include="Migrations\201610192137410_Initialization.cs" />
-    <Compile Include="Migrations\201610192137410_Initialization.Designer.cs">
-      <DependentUpon>201610192137410_Initialization.cs</DependentUpon>
+    <Compile Include="Migrations\201610201823275_Initialization.cs" />
+    <Compile Include="Migrations\201610201823275_Initialization.Designer.cs">
+      <DependentUpon>201610201823275_Initialization.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
     <Compile Include="Models\Api\v1\_BaseApiModel.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\Credit.cs" />
     <Compile Include="Models\Certification.cs" />
     <Compile Include="Models\GeekPeekedDbContext.cs" />
     <Compile Include="Models\Genre.cs" />
-    <Compile Include="Models\Job.cs" />
     <Compile Include="Models\Keyword.cs" />
     <Compile Include="Models\Movie.cs" />
+    <Compile Include="Models\Credit.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ProductionCompany.cs" />
@@ -118,7 +117,6 @@
     <Compile Include="Models\TMDb\Response\DiscoverMoviesResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\GenreListResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\ImdbDetailsResponseModel.cs" />
-    <Compile Include="Models\TMDb\Response\JobListResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\MovieDetailsResponseModel.cs" />
     <Compile Include="Models\TMDb\Response\PersonDetailsResponseModel.cs" />
     <Compile Include="Models\Video.cs" />
@@ -153,8 +151,8 @@
     <Folder Include="Models\Api\v1\Request\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610192137410_Initialization.resx">
-      <DependentUpon>201610192137410_Initialization.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610201823275_Initialization.resx">
+      <DependentUpon>201610201823275_Initialization.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

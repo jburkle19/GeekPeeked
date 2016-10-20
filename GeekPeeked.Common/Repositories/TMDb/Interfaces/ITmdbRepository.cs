@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using JobList = GeekPeeked.Common.Models.TMDb.Response.JobList;
 using GenreList = GeekPeeked.Common.Models.TMDb.Response.GenreList;
 using ImdbDetails = GeekPeeked.Common.Models.TMDb.Response.ImdbDetails;
 using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
@@ -13,7 +12,6 @@ namespace GeekPeeked.Common.TMDb.Repositories
 {
     public interface ITmdbRepository
     {
-        Task<JobList.ResponseModel> AllJobs();
         Task<GenreList.ResponseModel> AllGenres();
         Task<CertificationList.ResponseModel> AllCertifications();
 

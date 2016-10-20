@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using GeekPeeked.Common.Configuration;
-using JobList = GeekPeeked.Common.Models.TMDb.Response.JobList;
 using GenreList = GeekPeeked.Common.Models.TMDb.Response.GenreList;
 using ImdbDetails = GeekPeeked.Common.Models.TMDb.Response.ImdbDetails;
 using MovieDetails = GeekPeeked.Common.Models.TMDb.Response.MovieDetails;
@@ -114,10 +113,6 @@ namespace GeekPeeked.Common.TMDb.Repositories
             return result;
         }
 
-        public async Task<JobList.ResponseModel> AllJobs()
-        {
-            return await CallTmdbApi<JobList.ResponseModel>(TMDbCoreConfiguration.JobListTmdbUrl);
-        }
         public async Task<GenreList.ResponseModel> AllGenres()
         {
             return await CallTmdbApi<GenreList.ResponseModel>(TMDbCoreConfiguration.GenreListTmdbUrl);

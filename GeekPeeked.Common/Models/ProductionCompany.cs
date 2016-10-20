@@ -23,6 +23,8 @@ namespace GeekPeeked.Common.Models
 
         public ProductionCompany()
         {
+            this.CreatedDate = DateTime.Now;
+
             this.Movies = new HashSet<Movie>();
         }
 

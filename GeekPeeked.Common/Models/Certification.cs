@@ -29,6 +29,8 @@ namespace GeekPeeked.Common.Models
 
         public Certification()
         {
+            this.CreatedDate = DateTime.Now;
+
             this.Movies = new HashSet<Movie>();
         }
 

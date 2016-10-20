@@ -54,17 +54,20 @@ namespace GeekPeeked.Common.Models
         public virtual ICollection<Keyword> Keywords { get; set; }
         public virtual ICollection<Certification> Certifications { get; set; }
 
-        //public virtual ICollection<CastCredit> CastCredits { get; set; }
-        //public virtual ICollection<CrewCredit> CrewCredits { get; set; }
+        public virtual ICollection<Credit> Credits { get; set; }        // "movie_credits -> cast" && "movie_credits -> crew"
 
         public Movie()
         {
+            this.CreatedDate = DateTime.Now;
+
             this.Genres = new HashSet<Genre>();
             this.Images = new HashSet<Image>();
             this.Videos = new HashSet<Video>();
             this.Keywords = new HashSet<Keyword>();
             this.Certifications = new HashSet<Certification>();
             this.ProductionCompanies = new HashSet<ProductionCompany>();
+
+            this.Credits = new HashSet<Credit>();
         }
 
         public Movie(MovieDetails.ResponseModel tmdbMovie)
@@ -124,6 +127,8 @@ namespace GeekPeeked.Common.Models
             this.Keywords = new HashSet<Keyword>();
             this.Certifications = new HashSet<Certification>();
             this.ProductionCompanies = new HashSet<ProductionCompany>();
+
+            this.Credits = new HashSet<Credit>();
         }
     }
 }

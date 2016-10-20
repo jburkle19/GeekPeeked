@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using GeekPeeked.Common.Models;
 using GeekPeeked.UtilityApplication.Helpers;
 using GeekPeeked.Common.Repositories;
@@ -9,7 +10,10 @@ namespace GeekPeeked.UtilityApplication
 {
     class Program
     {
+        #region Repositories
+
         private static TmdbRepository _tmdb { get; set; }
+
         private static Repository<Movie> _movie { get; set; }
         private static Repository<Genre> _genre { get; set; }
         private static Repository<Image> _image { get; set; }
@@ -18,11 +22,19 @@ namespace GeekPeeked.UtilityApplication
         private static Repository<Certification> _certficiation { get; set; }
         private static Repository<ProductionCompany> _productionCompany { get; set; }
 
+        private static Repository<Person> _person { get; set; }
+        private static Repository<Credit> _credit { get; set; }
+
+        #endregion Repositories
+
         static void Main(string[] args)
         {
             using (var _context = new GeekPeekedDbContext())
             {
+                #region Initialize Repositories
+
                 _tmdb = new TmdbRepository();
+
                 _movie = new Repository<Movie>(_context);
                 _genre = new Repository<Genre>(_context);
                 _image = new Repository<Image>(_context);
@@ -30,6 +42,11 @@ namespace GeekPeeked.UtilityApplication
                 _keyword = new Repository<Keyword>(_context);
                 _certficiation = new Repository<Certification>(_context);
                 _productionCompany = new Repository<ProductionCompany>(_context);
+
+                _person = new Repository<Person>(_context);
+                _credit = new Repository<Credit>(_context);
+
+                #endregion Initialize Repositories
 
                 bool keepRunning = true;
 
@@ -40,6 +57,8 @@ namespace GeekPeeked.UtilityApplication
 
                 do
                 {
+                    #region Main Menu 
+
                     MyConsole.OutputMessage("1: import TMDb Genres", ConsoleColor.Magenta);
                     MyConsole.OutputMessage("2: import TMDb Certifications", ConsoleColor.Magenta);
                     MyConsole.OutputMessage("3: import IMDb Movie", ConsoleColor.Magenta);
@@ -52,12 +71,16 @@ namespace GeekPeeked.UtilityApplication
                     MyConsole.OutputMessage();
                     int resultCount = 0;
 
+                    #endregion Main Menu 
+
                     switch (selection)
                     {
                         case "1": // import Genres
 
                             MyConsole.OutputMessage("starting TMDb Genres import...", ConsoleColor.Yellow);
                             MyConsole.OutputMessage();
+
+                            #region Import Genres
 
                             var tmdbGenres = _tmdb.AllGenres().Result;
 
@@ -81,12 +104,15 @@ namespace GeekPeeked.UtilityApplication
                                     }
 
                                     MyConsole.OutputMessage(string.Format("\t{0}: {1}", tmdbGenre.id, tmdbGenre.name), ConsoleColor.Cyan);
+                                    _context.SaveChanges();
                                     resultCount++;
                                 }
 
-                                _context.SaveChanges();
+                                //_context.SaveChanges();
                                 MyConsole.OutputMessage(string.Format("{0} Genres imported!", resultCount), ConsoleColor.Cyan);
                             }
+
+                            #endregion Import Genres
 
                             MyConsole.OutputMessage();
                             MyConsole.OutputMessage("TMDd Genres import completed!", ConsoleColor.Yellow);
@@ -96,6 +122,8 @@ namespace GeekPeeked.UtilityApplication
 
                             MyConsole.OutputMessage("starting TMDb Certifications import...", ConsoleColor.Yellow);
                             MyConsole.OutputMessage();
+
+                            #region Import Certifications (US only)
 
                             var tmdbCertifications = _tmdb.AllCertifications().Result;
 
@@ -120,12 +148,15 @@ namespace GeekPeeked.UtilityApplication
                                     }
 
                                     MyConsole.OutputMessage(string.Format("\t{0}: {1}", tmdbCertification.order, tmdbCertification.certification), ConsoleColor.Cyan);
+                                    _context.SaveChanges();
                                     resultCount++;
                                 }
 
-                                _context.SaveChanges();
+                                //_context.SaveChanges();
                                 MyConsole.OutputMessage(string.Format("{0} Certifications imported!", resultCount), ConsoleColor.Cyan);
                             }
+
+                            #endregion Import Certifications (US only)
 
                             MyConsole.OutputMessage();
                             MyConsole.OutputMessage("TMDb Certifications impoty completed!", ConsoleColor.Yellow);
@@ -154,6 +185,8 @@ namespace GeekPeeked.UtilityApplication
                                             var movie = _movie.GetAll().FirstOrDefault(m => m.TmdbId == tmdbMovie.id);
                                             if (movie == null)
                                             {
+                                                #region Import Movie Details (Genres, Keywords, Production Companies, Images, Videos, and Ceritifications)
+
                                                 movie = new Movie(tmdbMovie);
 
                                                 #region Add Genres
@@ -178,6 +211,7 @@ namespace GeekPeeked.UtilityApplication
                                                         }
 
                                                         movie.Genres.Add(genre);
+                                                        _context.SaveChanges();
                                                     }
                                                 }
 
@@ -205,6 +239,7 @@ namespace GeekPeeked.UtilityApplication
                                                         }
 
                                                         movie.Keywords.Add(keyword);
+                                                        _context.SaveChanges();
                                                     }
                                                 }
 
@@ -232,6 +267,7 @@ namespace GeekPeeked.UtilityApplication
                                                         }
 
                                                         movie.ProductionCompanies.Add(productionCompany);
+                                                        _context.SaveChanges();
                                                     }
                                                 }
 
@@ -249,7 +285,10 @@ namespace GeekPeeked.UtilityApplication
                                                             {
                                                                 var myCertification = _certficiation.GetAll().FirstOrDefault(c => c.Country == tmdbReleaseDate.iso_3166_1 && c.Name == tmdbCertification.certification);
                                                                 if (myCertification != null)
+                                                                {
                                                                     movie.Certifications.Add(myCertification);
+                                                                    _context.SaveChanges();
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -271,9 +310,10 @@ namespace GeekPeeked.UtilityApplication
                                                         }
 
                                                         movie.Images.Add(backdrop);
+                                                        _context.SaveChanges();
                                                     }
                                                 }
-                                                
+
                                                 #endregion Add Backdrop Images
 
                                                 #region Add Poster Images
@@ -290,6 +330,7 @@ namespace GeekPeeked.UtilityApplication
                                                         }
 
                                                         movie.Images.Add(poster);
+                                                        _context.SaveChanges();
                                                     }
                                                 }
 
@@ -309,16 +350,128 @@ namespace GeekPeeked.UtilityApplication
                                                         }
 
                                                         movie.Videos.Add(video);
+                                                        _context.SaveChanges();
                                                     }
                                                 }
 
                                                 #endregion Add Videos
 
                                                 _movie.Insert(movie);
-
                                                 _context.SaveChanges();
 
-                                                MyConsole.OutputMessage(string.Format("Successfully imports IMDb movie {0}!", imdbSelection), ConsoleColor.Cyan);
+                                                MyConsole.OutputMessage(string.Format("Successfully imported IMDb movie {0}!", imdbSelection), ConsoleColor.Cyan);
+
+                                                #endregion Import Movie Details (Genres, Keywords, Production Companies, Images, Videos, and Ceritifications)
+
+                                                #region Import People (Images) and Movie Credits
+
+                                                if (tmdbMovie.credits != null)
+                                                {
+                                                    #region Import Cast Credits 
+
+                                                    if (tmdbMovie.credits.cast != null)
+                                                    {
+                                                        foreach (var tmdbCast in tmdbMovie.credits.cast)
+                                                        {
+                                                            var person = _person.GetAll().FirstOrDefault(p => p.Id == tmdbCast.id);
+                                                            if (person == null)
+                                                            {
+                                                                Task.Delay(251); // TMDb Api limits to 40 requests / 10 seconds so we need to throttle and TMDb Api calls within loops
+                                                                var tmdbPerson = _tmdb.PersonDetails(tmdbCast.id).Result;
+                                                                if (tmdbPerson != null)
+                                                                {
+                                                                    person = new Person(tmdbPerson);
+
+                                                                    #region Add Profile Images
+
+                                                                    if (tmdbPerson.images != null && tmdbPerson.images.profiles != null)
+                                                                    {
+                                                                        foreach (var tmdbProfile in tmdbPerson.images.profiles)
+                                                                        {
+                                                                            var profile = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbProfile.file_path && !i.IsBackdrop);
+                                                                            if (profile == null)
+                                                                            {
+                                                                                profile = new Image(tmdbProfile);
+                                                                                _image.Insert(profile);
+                                                                            }
+
+                                                                            person.Images.Add(profile);
+                                                                            _context.SaveChanges();
+                                                                        }
+                                                                    }
+
+                                                                    #endregion Add Profile Images
+
+                                                                    _person.Insert(person);
+                                                                    _context.SaveChanges();
+                                                                }
+                                                            }
+
+                                                            if (person != null)
+                                                            {
+                                                                _credit.Insert(new Credit() { Movie = movie, Person = person, CreditId = tmdbCast.credit_id, CharacterName = tmdbCast.character, Department = "Cast", JobTitle = "Actor", Sequence = tmdbCast.order });
+                                                                _context.SaveChanges();
+                                                            }
+                                                        }
+                                                    }
+
+                                                    #endregion Import Cast Credits 
+
+                                                    #region Import Crew Credits 
+
+                                                    if (tmdbMovie.credits.crew != null)
+                                                    {
+                                                        foreach (var tmdbCrew in tmdbMovie.credits.crew)
+                                                        {
+                                                            var person = _person.GetAll().FirstOrDefault(p => p.Id == tmdbCrew.id);
+                                                            if (person == null)
+                                                            {
+                                                                Task.Delay(251); // TMDb Api limits to 40 requests / 10 seconds so we need to throttle and TMDb Api calls within loops
+                                                                var tmdbPerson = _tmdb.PersonDetails(tmdbCrew.id).Result;
+                                                                if (tmdbPerson != null)
+                                                                {
+                                                                    person = new Person(tmdbPerson);
+
+                                                                    #region Add Profile Images
+
+                                                                    if (tmdbPerson.images != null && tmdbPerson.images.profiles != null)
+                                                                    {
+                                                                        foreach (var tmdbProfile in tmdbPerson.images.profiles)
+                                                                        {
+                                                                            var profile = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbProfile.file_path && !i.IsBackdrop);
+                                                                            if (profile == null)
+                                                                            {
+                                                                                profile = new Image(tmdbProfile);
+                                                                                _image.Insert(profile);
+                                                                            }
+
+                                                                            person.Images.Add(profile);
+                                                                            _context.SaveChanges();
+                                                                        }
+                                                                    }
+
+                                                                    #endregion Add Profile Images
+
+                                                                    _person.Insert(person);
+                                                                    _context.SaveChanges();
+                                                                }
+                                                            }
+
+                                                            if (person != null)
+                                                            {
+                                                                _credit.Insert(new Credit() { Movie = movie, Person = person, CreditId = tmdbCrew.credit_id, Department = tmdbCrew.department, JobTitle = tmdbCrew.job });
+                                                                _context.SaveChanges();
+                                                            }
+                                                        }
+                                                    }
+
+                                                    #endregion Import Crew Credits 
+
+                                                    //_context.SaveChanges();
+                                                    MyConsole.OutputMessage(string.Format("Successfully imported Cast & Crew of IMDb movie {0}!", imdbSelection), ConsoleColor.Cyan);
+                                                }
+
+                                                #endregion Import People (Images) and Movie Credits
                                             }
                                             else
                                                 MyConsole.OutputMessage(string.Format("IMDb movie {0} already exists!", imdbSelection), ConsoleColor.Red);
@@ -341,6 +494,10 @@ namespace GeekPeeked.UtilityApplication
                             }
 
                             break;
+
+
+
+                        #region Old Code
                         //case "3": // process Movies By Year
 
                         //    MyConsole.RequestInput("Year", ConsoleColor.Magenta);
@@ -1866,6 +2023,10 @@ namespace GeekPeeked.UtilityApplication
                         //    MyConsole.OutputMessage(string.Format("{0} Jobs processed!", resultCount), ConsoleColor.Yellow);
 
                         //    break;
+                        #endregion Old Code
+
+
+
                         case "0":
                             keepRunning = false;
                             break;
