@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using GeekPeeked.Web.App_Start;
 using GeekPeeked.Web.ViewModels;
 using GeekPeeked.Common.Models;
@@ -8,17 +9,32 @@ namespace GeekPeeked.Web.Controllers.Admin
 {
     public class AdminController : Controller
     {
-        private Repository<Job> _dbJobRepo;
-        private Repository<Genre> _dbGenreRepo;
-        private Repository<Movie> _dbMovieRepo;
-        private Repository<Certification> _dbCertificationRepo;
+        private GeekPeekedDbContext _context;
+
+        private Repository<Movie> _movie;
+        private Repository<Genre> _genre;
+        private Repository<Image> _image;
+        private Repository<Video> _video;
+        private Repository<Credit> _credit;
+        private Repository<Person> _person;
+        private Repository<Keyword> _keyword;
+        private Repository<Certification> _certification;
+        private Repository<ProductionCompany> _productionCompany;
 
         public AdminController()
         {
-            _dbJobRepo = new Repository<Job>(new GeekPeekedDbContext());
-            _dbGenreRepo = new Repository<Genre>(new GeekPeekedDbContext());
-            _dbMovieRepo = new Repository<Movie>(new GeekPeekedDbContext());
-            _dbCertificationRepo = new Repository<Certification>(new GeekPeekedDbContext());
+            _context = new GeekPeekedDbContext();
+
+            _movie = new Repository<Movie>(_context);
+            _genre = new Repository<Genre>(_context);
+            _image = new Repository<Image>(_context);
+            _video = new Repository<Video>(_context);
+            _credit = new Repository<Credit>(_context);
+            _person = new Repository<Person>(_context);
+            _keyword = new Repository<Keyword>(_context);
+            _certification = new Repository<Certification>(_context);
+            _productionCompany = new Repository<ProductionCompany>(_context);
+
         }
 
         // GET: Admin
@@ -28,32 +44,32 @@ namespace GeekPeeked.Web.Controllers.Admin
             return View();
         }
 
-        // GET: Admin/Jobs
-        public ActionResult Jobs()
-        {
-            JobsViewModel viewModel = new JobsViewModel();
-
-            var jobs = _dbJobRepo.GetAll();
-
-            foreach (var job in jobs)
-            {
-                viewModel.GeekPeekedJobs.Add(job);
-            }
-
-            return View(viewModel);
-        }
-
         // GET: Admin/Genres
         public ActionResult Genres()
         {
             GenresViewModel viewModel = new GenresViewModel();
 
-            var genres = _dbGenreRepo.GetAll();
+            viewModel.Genres = _genre.GetAll().ToList();
 
-            foreach (var genre in genres)
-            {
-                viewModel.GeekPeekedGenres.Add(genre);
-            }
+            return View(viewModel);
+        }
+
+        // GET: Admin/Keywords
+        public ActionResult Keywords()
+        {
+            KeywordsViewModel viewModel = new KeywordsViewModel();
+
+            viewModel.Keywords = _keyword.GetAll().ToList();
+            
+            return View(viewModel);
+        }
+
+        // GET: Admin/ProductionCompanies
+        public ActionResult ProductionCompanies()
+        {
+            ProductionCompaniesViewModel viewModel = new ProductionCompaniesViewModel();
+
+            viewModel.ProductionCompanies = _productionCompany.GetAll().ToList();
 
             return View(viewModel);
         }
@@ -63,12 +79,47 @@ namespace GeekPeeked.Web.Controllers.Admin
         {
             CertificationsViewModel viewModel = new CertificationsViewModel();
 
-            var certifications = _dbCertificationRepo.GetAll();
+            viewModel.Certifications = _certification.GetAll().ToList();
 
-            foreach (var certification in certifications)
-            {
-                viewModel.GeekPeekedCertifications.Add(certification);
-            }
+            return View(viewModel);
+        }
+
+        // GET: Admin/Credits
+        public ActionResult Credits()
+        {
+            CreditsViewModel viewModel = new CreditsViewModel();
+
+            viewModel.Credits = _credit.GetAll().ToList();
+
+            return View(viewModel);
+        }
+
+        // GET: Admin/Images
+        public ActionResult Images()
+        {
+            ImagesViewModel viewModel = new ImagesViewModel();
+
+            viewModel.Images = _image.GetAll().ToList();
+
+            return View(viewModel);
+        }
+
+        // GET: Admin/People
+        public ActionResult People()
+        {
+            PeopleViewModel viewModel = new PeopleViewModel();
+
+            viewModel.People = _person.GetAll().ToList();
+
+            return View(viewModel);
+        }
+
+        // GET: Admin/Videos
+        public ActionResult Videos()
+        {
+            VideosViewModel viewModel = new VideosViewModel();
+
+            viewModel.Videos = _video.GetAll().ToList();
 
             return View(viewModel);
         }
@@ -76,12 +127,7 @@ namespace GeekPeeked.Web.Controllers.Admin
         // GET: Admin/Movies
         public ActionResult Movies(MoviesViewModel viewModel)
         {
-            var movies = _dbMovieRepo.GetAll();
-
-            foreach (var movie in movies)
-            {
-                viewModel.GeekPeekedMovies.Add(movie);
-            }
+            viewModel.Movies = _movie.GetAll().ToList();
 
             return View(viewModel);
         }
@@ -89,28 +135,9 @@ namespace GeekPeeked.Web.Controllers.Admin
         // GET: Admin/Details/[id]
         public ActionResult Details(int id)
         {
-            var movie = _dbMovieRepo.GetById(id);
+            var movie = _movie.GetById(id);
 
             return View(movie);
         }
-
-        //// POST: Admin/AddMovie/[id]
-        //[HttpPost]
-        //public async Task<ActionResult> AddMovie(string id)
-        //{
-        //    var tmdbMovie = await _tmdbMovieRepo.Find(id);
-
-        //    try
-        //    {
-        //        Movie movie = await _dbMovieRepo.CreateMovie(tmdbMovie);
-        //        _dbMovieRepo.Save();
-
-        //        return Json(string.Format("Successfully created GeekPeeked Db Movie {0}", movie.Id));
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(ex.ToString());
-        //    }
-        //}
     }
 }

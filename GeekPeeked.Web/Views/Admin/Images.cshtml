@@ -1,0 +1,69 @@
+﻿@model ImagesViewModel
+
+@{
+    ViewBag.Title = "Images List";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 pull-right">
+            <a href="@Url.Action("Index")" class="btn btn-block btn-default">Back to Admin</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>GeekPeeked Images List (@Model.Images.Count results)</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-striped results">
+                    <thead>
+                        <tr>
+                            <th>File Path</th>
+                            <th>Aspect Ratio</th>
+                            <th>Height</th>
+                            <th>Width</th>
+                            <th>Is Backdrop?</th>
+                            <th>Movie Count</th>
+                            <th>People Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var image in Model.Images.OrderByDescending(c => c.Movies.Count))
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(image.FilePath))
+                                    {
+                                        <img src="@GeekPeeked.Common.Configuration.TMDbCoreConfiguration.ImageTmdbUrlFormatString(image.FilePath)" />
+                                    }
+                                </td>
+                                <td>
+                                    @image.AspectRatio
+                                </td>
+                                <td>
+                                    @image.Height
+                                </td>
+                                <td>
+                                    @image.Width
+                                </td>
+                                <td>
+                                    @image.IsBackdrop
+                                </td>
+                                <td>
+                                    @image.Movies.Count
+                                </td>
+                                <td>
+                                    @image.People.Count
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

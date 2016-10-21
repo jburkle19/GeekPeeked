@@ -1,7 +1,7 @@
-﻿@model CertificationsViewModel
+﻿@model ProductionCompaniesViewModel
 
 @{
-    ViewBag.Title = "Certifications List";
+    ViewBag.Title = "Production Companies List";
 }
 
 <div class="container-fluid">
@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Certifications List (@Model.Certifications.Count results)</h2>
+            <h2>GeekPeeked Production Companies List (@Model.ProductionCompanies.Count results)</h2>
         </div>
     </div>
     <div class="row">
@@ -22,30 +22,22 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Country</th>
                             <th>Name</th>
-                            <th>Description</th>
                             <th>Movie Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var cert in Model.Certifications.OrderByDescending(c => c.Movies.Count))
+                        @foreach (var productionCompany in Model.ProductionCompanies.OrderByDescending(c => c.Movies.Count))
                         {
                             <tr>
                                 <td>
-                                    @cert.Id
+                                    @productionCompany.Id
                                 </td>
                                 <td>
-                                    @cert.Country
+                                    @productionCompany.Name
                                 </td>
                                 <td>
-                                    @cert.Name
-                                </td>
-                                <td>
-                                    @cert.Description
-                                </td>
-                                <td>
-                                    @cert.Movies.Count
+                                    @productionCompany.Movies.Count
                                 </td>
                             </tr>
                         }

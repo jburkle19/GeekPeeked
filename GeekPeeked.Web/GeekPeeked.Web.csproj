@@ -191,7 +191,7 @@
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\MovieViewModels.cs" />
+    <Compile Include="ViewModels\AdminViewModels.cs" />
     <Compile Include="ViewModels\_Alert.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -284,7 +284,12 @@
     <Content Include="Views\Admin\Genres.cshtml" />
     <Content Include="Views\Shared\_Alerts.cshtml" />
     <Content Include="Views\Admin\Movies.cshtml" />
-    <Content Include="Views\Admin\Jobs.cshtml" />
+    <Content Include="Views\Admin\Credits.cshtml" />
+    <Content Include="Views\Admin\ProductionCompanies.cshtml" />
+    <Content Include="Views\Admin\Keywords.cshtml" />
+    <Content Include="Views\Admin\Images.cshtml" />
+    <Content Include="Views\Admin\Videos.cshtml" />
+    <Content Include="Views\Admin\People.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

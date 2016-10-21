@@ -1,7 +1,7 @@
-﻿@model CertificationsViewModel
+﻿@model PeopleViewModel
 
 @{
-    ViewBag.Title = "Certifications List";
+    ViewBag.Title = "People List";
 }
 
 <div class="container-fluid">
@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Certifications List (@Model.Certifications.Count results)</h2>
+            <h2>GeekPeeked People List (@Model.People.Count results)</h2>
         </div>
     </div>
     <div class="row">
@@ -21,31 +21,38 @@
                 <table class="table table-striped results">
                     <thead>
                         <tr>
-                            <th>Id</th>
-                            <th>Country</th>
+                            <th>Profile</th>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>Movie Count</th>
+                            <th>Birthday</th>
+                            <th>Birth Place</th>
+                            <th>Deathday</th>
+                            <th>Credit Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var cert in Model.Certifications.OrderByDescending(c => c.Movies.Count))
+                        @foreach (var person in Model.People.OrderBy(p => p.Id))
                         {
                             <tr>
                                 <td>
-                                    @cert.Id
+                                    @if (!string.IsNullOrWhiteSpace(person.ProfilePath))
+                                    {
+                                        <img src="@GeekPeeked.Common.Configuration.TMDbCoreConfiguration.ImageTmdbUrlFormatString(person.ProfilePath)" />
+                                    }
                                 </td>
                                 <td>
-                                    @cert.Country
+                                    @person.Name
                                 </td>
                                 <td>
-                                    @cert.Name
+                                    @person.Birthday
                                 </td>
                                 <td>
-                                    @cert.Description
+                                    @person.BirthPlace
                                 </td>
                                 <td>
-                                    @cert.Movies.Count
+                                    @person.Deathday
+                                </td>
+                                <td>
+                                    @person.Credits.Count
                                 </td>
                             </tr>
                         }

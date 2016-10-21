@@ -1,7 +1,7 @@
-﻿@model JobsViewModel
+﻿@model KeywordsViewModel
 
 @{
-    ViewBag.Title = "Jobs List";
+    ViewBag.Title = "Keywords List";
 }
 
 <div class="container-fluid">
@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Jobs List (@Model.GeekPeekedJobs.Count results)</h2>
+            <h2>GeekPeeked Keywords List (@Model.Keywords.Count results)</h2>
         </div>
     </div>
     <div class="row">
@@ -21,19 +21,23 @@
                 <table class="table table-striped results">
                     <thead>
                         <tr>
-                            <th>Department</th>
-                            <th>Job Title</th>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Movie Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var job in Model.GeekPeekedJobs.OrderBy(j => j.Department))
+                        @foreach (var keyword in Model.Keywords.OrderByDescending(c => c.Movies.Count))
                         {
                             <tr>
                                 <td>
-                                    @job.Department
+                                    @keyword.Id
                                 </td>
                                 <td>
-                                    @job.JobTitle
+                                    @keyword.Name
+                                </td>
+                                <td>
+                                    @keyword.Movies.Count
                                 </td>
                             </tr>
                         }

@@ -1,7 +1,7 @@
-﻿@model CertificationsViewModel
+﻿@model CreditsViewModel
 
 @{
-    ViewBag.Title = "Certifications List";
+    ViewBag.Title = "Credits List";
 }
 
 <div class="container-fluid">
@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Certifications List (@Model.Certifications.Count results)</h2>
+            <h2>GeekPeeked Credits List (@Model.Credits.Count results)</h2>
         </div>
     </div>
     <div class="row">
@@ -22,30 +22,38 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Country</th>
                             <th>Name</th>
-                            <th>Description</th>
-                            <th>Movie Count</th>
+                            <th>Movie</th>
+                            <th>Character</th>
+                            <th>Department</th>
+                            <th>Job Title</th>
+                            <th>Credit Id</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var cert in Model.Certifications.OrderByDescending(c => c.Movies.Count))
+                        @foreach (var credit in Model.Credits.OrderBy(c => c.Sequence))
                         {
                             <tr>
                                 <td>
-                                    @cert.Id
+                                    @credit.Id
                                 </td>
                                 <td>
-                                    @cert.Country
+                                    @credit.Person.Name
                                 </td>
                                 <td>
-                                    @cert.Name
+                                    @credit.Movie.Title
                                 </td>
                                 <td>
-                                    @cert.Description
+                                    @credit.CharacterName
                                 </td>
                                 <td>
-                                    @cert.Movies.Count
+                                    @credit.Department
+                                </td>
+                                <td>
+                                    @credit.JobTitle
+                                </td>
+                                <td>
+                                    @credit.CreditId
                                 </td>
                             </tr>
                         }

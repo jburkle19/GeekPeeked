@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Movies (@Model.GeekPeekedMovies.Where(m => m.IsVisible).Count() results)</h2>
+            <h2>GeekPeeked Movies (@Model.Movies.Where(m => m.IsVisible).Count() results)</h2>
         </div>
     </div>
     <div class="row">
@@ -26,10 +26,13 @@
                             <th>Title</th>
                             <th>Release Date</th>
                             <th>Is Visible?</th>
+                            <th>Credit Count</th>
+                            <th>Image Count</th>
+                            <th>Video Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var movie in Model.GeekPeekedMovies.Where(m => m.IsVisible).OrderBy(m => m.ReleaseDate))
+                        @foreach (var movie in Model.Movies.Where(m => m.IsVisible).OrderBy(m => m.ReleaseDate))
                         {
                             <tr>
                                 <td align="center" valign="middle">
@@ -45,10 +48,22 @@
                                     @movie.Title
                                 </td>
                                 <td>
-                                    @movie.ReleaseDate.ToShortDateString()
+                                    @if (movie.ReleaseDate != null)
+                                    {
+                                        Convert.ToDateTime(movie.ReleaseDate).ToShortDateString();
+                                    }
                                 </td>
                                 <td>
                                     @movie.IsVisible
+                                </td>
+                                <td>
+                                    @movie.Credits.Count
+                                </td>
+                                <td>
+                                    @movie.Images.Count
+                                </td>
+                                <td>
+                                    @movie.Videos.Count
                                 </td>
                             </tr>
                         }

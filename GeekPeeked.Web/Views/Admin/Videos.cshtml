@@ -1,7 +1,7 @@
-﻿@model CertificationsViewModel
+﻿@model VideosViewModel
 
 @{
-    ViewBag.Title = "Certifications List";
+    ViewBag.Title = "Genres List";
 }
 
 <div class="container-fluid">
@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Certifications List (@Model.Certifications.Count results)</h2>
+            <h2>GeekPeeked Videos List (@Model.Videos.Count results)</h2>
         </div>
     </div>
     <div class="row">
@@ -22,30 +22,38 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Country</th>
+                            <th>Key</th>
                             <th>Name</th>
-                            <th>Description</th>
+                            <th>Site</th>
+                            <th>Size</th>
+                            <th>Type</th>
                             <th>Movie Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var cert in Model.Certifications.OrderByDescending(c => c.Movies.Count))
+                        @foreach (var video in Model.Videos.OrderByDescending(c => c.Movies.Count))
                         {
                             <tr>
                                 <td>
-                                    @cert.Id
+                                    @video.Id
                                 </td>
                                 <td>
-                                    @cert.Country
+                                    @video.Key
                                 </td>
                                 <td>
-                                    @cert.Name
+                                    @video.Name
                                 </td>
                                 <td>
-                                    @cert.Description
+                                    @video.Site
                                 </td>
                                 <td>
-                                    @cert.Movies.Count
+                                    @video.Size
+                                </td>
+                                <td>
+                                    @video.Type
+                                </td>
+                                <td>
+                                    @video.Movies.Count
                                 </td>
                             </tr>
                         }

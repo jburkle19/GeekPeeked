@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>GeekPeeked Genres List (@Model.GeekPeekedGenres.Count results)</h2>
+            <h2>GeekPeeked Genres List (@Model.Genres.Count results)</h2>
         </div>
     </div>
     <div class="row">
@@ -21,20 +21,20 @@
                 <table class="table table-striped results">
                     <thead>
                         <tr>
-                            <th>Name</th>
                             <th>Id</th>
+                            <th>Name</th>
                             <th>Movie Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var genre in Model.GeekPeekedGenres.OrderBy(g => g.Name))
+                        @foreach (var genre in Model.Genres.OrderByDescending(c => c.Movies.Count))
                         {
                             <tr>
                                 <td>
-                                    @genre.Name
+                                    @genre.Id
                                 </td>
                                 <td>
-                                    @genre.Id
+                                    @genre.Name
                                 </td>
                                 <td>
                                     @genre.Movies.Count
