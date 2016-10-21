@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using GeekPeeked.Common.Models.LegacyGeekPeeked;
 
-namespace GeekPeeked.Common.Repositories.LegacyGeekPeeked
+namespace GeekPeeked.Common.LegacyGeekPeeked.Repositories
 {
-    public interface IMovieRepository
+    public interface ILegacyMovieRepository
     {
-        // TODO
+        ICollection<LegacyMovie> AllMovies();
     }
 }

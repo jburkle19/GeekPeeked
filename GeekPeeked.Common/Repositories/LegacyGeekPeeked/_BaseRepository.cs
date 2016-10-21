@@ -1,6 +1,6 @@
 ﻿using GeekPeeked.Common.Configuration;
 
-namespace GeekPeeked.Common.Repositories.LegacyGeekPeeked
+namespace GeekPeeked.Common.LegacyGeekPeeked.Repositories
 {
     public class BaseRepository
     {
