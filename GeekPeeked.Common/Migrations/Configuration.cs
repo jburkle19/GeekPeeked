@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Diagnostics;
 using System.Data.Entity.Migrations;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -53,7 +54,7 @@ namespace GeekPeeked.Common.Migrations
             }
             catch (Exception e)
             {
-                Console.WriteLine(string.Format("Failed to run Seeds: {0}", e.Message));
+                Debug.WriteLine(string.Format("Failed to run Seeds: {0}", e.Message));
             }
         }
     }

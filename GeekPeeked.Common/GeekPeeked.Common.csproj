@@ -96,9 +96,9 @@
     <Compile Include="Configuration\CoreConfiguration.cs" />
     <Compile Include="Configuration\IdentityConfiguration.cs" />
     <Compile Include="Helpers\DataHelpers.cs" />
-    <Compile Include="Migrations\201610201823275_Initialization.cs" />
-    <Compile Include="Migrations\201610201823275_Initialization.Designer.cs">
-      <DependentUpon>201610201823275_Initialization.cs</DependentUpon>
+    <Compile Include="Migrations\201610211357350_Initialization.cs" />
+    <Compile Include="Migrations\201610211357350_Initialization.Designer.cs">
+      <DependentUpon>201610211357350_Initialization.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Api\v1\Response\_BaseResponseModel.cs" />
@@ -151,8 +151,8 @@
     <Folder Include="Models\Api\v1\Request\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610201823275_Initialization.resx">
-      <DependentUpon>201610201823275_Initialization.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610211357350_Initialization.resx">
+      <DependentUpon>201610211357350_Initialization.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

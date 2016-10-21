@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -44,17 +45,17 @@ namespace GeekPeeked.Common.TMDb.Repositories
                             }
                             catch (JsonSerializationException jsex)
                             {
-                                Console.WriteLine(jsex.ToString());
+                                Debug.WriteLine(jsex.ToString());
                             }
                         }
                     }
                     else
-                        Console.WriteLine(response.ReasonPhrase);
+                        Debug.WriteLine(response.ReasonPhrase);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
             }
 
             return result;
@@ -94,17 +95,17 @@ namespace GeekPeeked.Common.TMDb.Repositories
                                 }
                                 catch (JsonSerializationException jsex)
                                 {
-                                    Console.WriteLine(jsex.ToString());
+                                    Debug.WriteLine(jsex.ToString());
                                 }
                             }
                         }
                         else
-                            Console.WriteLine(response.ReasonPhrase);
+                            Debug.WriteLine(response.ReasonPhrase);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Debug.WriteLine(ex.ToString());
                 }
 
                 options.PageNumber++;

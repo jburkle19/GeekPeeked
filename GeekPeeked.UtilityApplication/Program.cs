@@ -77,6 +77,8 @@ namespace GeekPeeked.UtilityApplication
                     {
                         case "1": // import Genres
 
+                            resultCount = 0;
+
                             MyConsole.OutputMessage("starting TMDb Genres import...", ConsoleColor.Yellow);
                             MyConsole.OutputMessage();
 
@@ -101,24 +103,32 @@ namespace GeekPeeked.UtilityApplication
                                     {
                                         genre = new Genre(tmdbGenre);
                                         _genre.Insert(genre);
-                                    }
 
-                                    MyConsole.OutputMessage(string.Format("\t{0}: {1}", tmdbGenre.id, tmdbGenre.name), ConsoleColor.Cyan);
-                                    _context.SaveChanges();
-                                    resultCount++;
+                                        MyConsole.OutputMessage(string.Format("\t {0}: {1}", tmdbGenre.id, tmdbGenre.name), ConsoleColor.Cyan);
+                                        resultCount++;
+                                    }
                                 }
 
-                                //_context.SaveChanges();
-                                MyConsole.OutputMessage(string.Format("{0} Genres imported!", resultCount), ConsoleColor.Cyan);
+                                try
+                                {
+                                    _context.SaveChanges();
+                                    MyConsole.OutputMessage(string.Format("\t {0} genres imported", resultCount), ConsoleColor.Cyan);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MyConsole.OutputMessage(string.Format("\t Failed to import genres! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
+                                }
                             }
 
                             #endregion Import Genres
 
                             MyConsole.OutputMessage();
-                            MyConsole.OutputMessage("TMDd Genres import completed!", ConsoleColor.Yellow);
+                            MyConsole.OutputMessage("TMDd Genres import completed", ConsoleColor.Yellow);
 
                             break;
                         case "2": // import Certifications
+
+                            resultCount = 0;
 
                             MyConsole.OutputMessage("starting TMDb Certifications import...", ConsoleColor.Yellow);
                             MyConsole.OutputMessage();
@@ -145,24 +155,34 @@ namespace GeekPeeked.UtilityApplication
                                     {
                                         certification = new Certification(tmdbCertification);
                                         _certficiation.Insert(certification);
-                                    }
 
-                                    MyConsole.OutputMessage(string.Format("\t{0}: {1}", tmdbCertification.order, tmdbCertification.certification), ConsoleColor.Cyan);
-                                    _context.SaveChanges();
-                                    resultCount++;
+                                        MyConsole.OutputMessage(string.Format("\t {0}: {1}", tmdbCertification.order, tmdbCertification.certification), ConsoleColor.Cyan);
+                                        resultCount++;
+                                    }
                                 }
 
-                                //_context.SaveChanges();
-                                MyConsole.OutputMessage(string.Format("{0} Certifications imported!", resultCount), ConsoleColor.Cyan);
+                                try
+                                {
+                                    _context.SaveChanges();
+                                    MyConsole.OutputMessage();
+                                    MyConsole.OutputMessage(string.Format("\t {0} certifications imported", resultCount), ConsoleColor.Cyan);
+                                }
+                                catch (Exception ex)
+                                {
+                                    MyConsole.OutputMessage();
+                                    MyConsole.OutputMessage(string.Format("\t Failed to import certifications! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
+                                }
                             }
 
                             #endregion Import Certifications (US only)
 
                             MyConsole.OutputMessage();
-                            MyConsole.OutputMessage("TMDb Certifications impoty completed!", ConsoleColor.Yellow);
+                            MyConsole.OutputMessage("TMDb Certifications import completed", ConsoleColor.Yellow);
 
                             break;
                         case "3": // import IMDb Movie
+
+                            resultCount = 0;
 
                             MyConsole.RequestInput("IMDb Id", ConsoleColor.Magenta);
                             string imdbSelection = Console.ReadLine();
@@ -193,6 +213,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                 if (tmdbMovie.genres != null)
                                                 {
+                                                    resultCount = 0;
                                                     foreach (var tmdbGenre in tmdbMovie.genres)
                                                     {
                                                         var genre = _genre.GetAll().FirstOrDefault(g => g.Id == tmdbGenre.id);
@@ -208,10 +229,20 @@ namespace GeekPeeked.UtilityApplication
                                                         {
                                                             genre = new Genre(tmdbGenre);
                                                             _genre.Insert(genre);
+                                                            resultCount++;
                                                         }
 
                                                         movie.Genres.Add(genre);
+                                                    }
+
+                                                    try
+                                                    {
                                                         _context.SaveChanges();
+                                                        MyConsole.OutputMessage(string.Format("\t {0} genres imported", resultCount), ConsoleColor.Cyan);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MyConsole.OutputMessage(string.Format("\t Failed to import genres! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                     }
                                                 }
 
@@ -221,6 +252,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                 if (tmdbMovie.keywords != null && tmdbMovie.keywords.keywords != null)
                                                 {
+                                                    resultCount = 0;
                                                     foreach (var tmdbKeyword in tmdbMovie.keywords.keywords)
                                                     {
                                                         var keyword = _keyword.GetAll().FirstOrDefault(k => k.Id == tmdbKeyword.id);
@@ -236,10 +268,20 @@ namespace GeekPeeked.UtilityApplication
                                                         {
                                                             keyword = new Keyword(tmdbKeyword);
                                                             _keyword.Insert(keyword);
+                                                            resultCount++;
                                                         }
 
                                                         movie.Keywords.Add(keyword);
+                                                    }
+
+                                                    try
+                                                    {
                                                         _context.SaveChanges();
+                                                        MyConsole.OutputMessage(string.Format("\t {0} keywords imported", resultCount), ConsoleColor.Cyan);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MyConsole.OutputMessage(string.Format("\t Failed to import keywords! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                     }
                                                 }
 
@@ -249,6 +291,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                 if (tmdbMovie.production_companies != null)
                                                 {
+                                                    resultCount = 0;
                                                     foreach (var tmdbProductionCompany in tmdbMovie.production_companies)
                                                     {
                                                         var productionCompany = _productionCompany.GetAll().FirstOrDefault(p => p.Id == tmdbProductionCompany.id);
@@ -264,10 +307,20 @@ namespace GeekPeeked.UtilityApplication
                                                         {
                                                             productionCompany = new ProductionCompany(tmdbProductionCompany);
                                                             _productionCompany.Insert(productionCompany);
+                                                            resultCount++;
                                                         }
 
                                                         movie.ProductionCompanies.Add(productionCompany);
+                                                    }
+
+                                                    try
+                                                    {
                                                         _context.SaveChanges();
+                                                        MyConsole.OutputMessage(string.Format("\t {0} production companies imported", resultCount), ConsoleColor.Cyan);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MyConsole.OutputMessage(string.Format("\t Failed to import production companies! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                     }
                                                 }
 
@@ -287,8 +340,17 @@ namespace GeekPeeked.UtilityApplication
                                                                 if (myCertification != null)
                                                                 {
                                                                     movie.Certifications.Add(myCertification);
-                                                                    _context.SaveChanges();
                                                                 }
+                                                            }
+
+                                                            try
+                                                            {
+                                                                _context.SaveChanges();
+                                                                MyConsole.OutputMessage(string.Format("\t {0} certifications saved", resultCount), ConsoleColor.Cyan);
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+                                                                MyConsole.OutputMessage(string.Format("\t Failed to save certifications! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                             }
                                                         }
                                                     }
@@ -300,6 +362,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                 if (tmdbMovie.images != null && tmdbMovie.images.backdrops != null)
                                                 {
+                                                    resultCount = 0;
                                                     foreach (var tmdbBackdrop in tmdbMovie.images.backdrops)
                                                     {
                                                         var backdrop = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbBackdrop.file_path && i.IsBackdrop);
@@ -307,10 +370,20 @@ namespace GeekPeeked.UtilityApplication
                                                         {
                                                             backdrop = new Image(tmdbBackdrop);
                                                             _image.Insert(backdrop);
+                                                            resultCount++;
                                                         }
 
                                                         movie.Images.Add(backdrop);
+                                                    }
+
+                                                    try
+                                                    {
                                                         _context.SaveChanges();
+                                                        MyConsole.OutputMessage(string.Format("\t {0} backdrop images imported", resultCount), ConsoleColor.Cyan);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MyConsole.OutputMessage(string.Format("\t Failed to import backdrop images! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                     }
                                                 }
 
@@ -320,6 +393,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                 if (tmdbMovie.images != null && tmdbMovie.images.posters != null)
                                                 {
+                                                    resultCount = 0;
                                                     foreach (var tmdbPoster in tmdbMovie.images.posters)
                                                     {
                                                         var poster = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbPoster.file_path && !i.IsBackdrop);
@@ -327,10 +401,20 @@ namespace GeekPeeked.UtilityApplication
                                                         {
                                                             poster = new Image(tmdbPoster);
                                                             _image.Insert(poster);
+                                                            resultCount++;
                                                         }
 
                                                         movie.Images.Add(poster);
+                                                    }
+
+                                                    try
+                                                    {
                                                         _context.SaveChanges();
+                                                        MyConsole.OutputMessage(string.Format("\t {0} poster images imported", resultCount), ConsoleColor.Cyan);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MyConsole.OutputMessage(string.Format("\tFailed to import poster images! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                     }
                                                 }
 
@@ -340,6 +424,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                 if (tmdbMovie.videos != null && tmdbMovie.videos.results != null)
                                                 {
+                                                    resultCount = 0;
                                                     foreach (var tmdbVideo in tmdbMovie.videos.results)
                                                     {
                                                         var video = _video.GetAll().FirstOrDefault(v => v.Id == tmdbVideo.id);
@@ -347,19 +432,36 @@ namespace GeekPeeked.UtilityApplication
                                                         {
                                                             video = new Video(tmdbVideo);
                                                             _video.Insert(video);
+                                                            resultCount++;
                                                         }
 
                                                         movie.Videos.Add(video);
+                                                    }
+
+                                                    try
+                                                    {
                                                         _context.SaveChanges();
+                                                        MyConsole.OutputMessage(string.Format("\t {0} videos imported!", resultCount), ConsoleColor.Cyan);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MyConsole.OutputMessage(string.Format("\t Failed to import videos! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                     }
                                                 }
 
                                                 #endregion Add Videos
 
                                                 _movie.Insert(movie);
-                                                _context.SaveChanges();
 
-                                                MyConsole.OutputMessage(string.Format("Successfully imported IMDb movie {0}!", imdbSelection), ConsoleColor.Cyan);
+                                                try
+                                                {
+                                                    _context.SaveChanges();
+                                                    MyConsole.OutputMessage(string.Format("\t IMDb movie {0} imported", imdbSelection), ConsoleColor.Cyan);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    MyConsole.OutputMessage(string.Format("\t Failed to import IMDb movie {0}! Exception: {1}", imdbSelection, ex.Message.ToString()), ConsoleColor.Red);
+                                                }
 
                                                 #endregion Import Movie Details (Genres, Keywords, Production Companies, Images, Videos, and Ceritifications)
 
@@ -367,6 +469,10 @@ namespace GeekPeeked.UtilityApplication
 
                                                 if (tmdbMovie.credits != null)
                                                 {
+                                                    MyConsole.OutputMessage();
+                                                    MyConsole.OutputMessage(string.Format("\t starting import of {0} credits...", tmdbMovie.title), ConsoleColor.Yellow);
+                                                    MyConsole.OutputMessage();
+
                                                     #region Import Cast Credits 
 
                                                     if (tmdbMovie.credits.cast != null)
@@ -386,6 +492,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                                     if (tmdbPerson.images != null && tmdbPerson.images.profiles != null)
                                                                     {
+                                                                        resultCount = 0;
                                                                         foreach (var tmdbProfile in tmdbPerson.images.profiles)
                                                                         {
                                                                             var profile = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbProfile.file_path && !i.IsBackdrop);
@@ -393,24 +500,53 @@ namespace GeekPeeked.UtilityApplication
                                                                             {
                                                                                 profile = new Image(tmdbProfile);
                                                                                 _image.Insert(profile);
+                                                                                resultCount++;
                                                                             }
 
                                                                             person.Images.Add(profile);
+                                                                        }
+
+                                                                        try
+                                                                        {
                                                                             _context.SaveChanges();
+                                                                            MyConsole.OutputMessage(string.Format("\t {0} profile images imported", resultCount), ConsoleColor.Cyan);
+                                                                        }
+                                                                        catch (Exception ex)
+                                                                        {
+                                                                            MyConsole.OutputMessage(string.Format("\t Failed to import profile images! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
                                                                         }
                                                                     }
 
                                                                     #endregion Add Profile Images
 
                                                                     _person.Insert(person);
-                                                                    _context.SaveChanges();
+
+                                                                    try
+                                                                    {
+                                                                        _context.SaveChanges();
+                                                                        MyConsole.OutputMessage(string.Format("\t {0} imported", person.Name), ConsoleColor.Cyan);
+                                                                    }
+                                                                    catch (Exception ex)
+                                                                    {
+                                                                        MyConsole.OutputMessage(string.Format("\t Failed to import {0}! Exception: {1}", person.Name, ex.Message.ToString()), ConsoleColor.Red);
+                                                                    }
                                                                 }
                                                             }
 
                                                             if (person != null)
                                                             {
                                                                 _credit.Insert(new Credit() { Movie = movie, Person = person, CreditId = tmdbCast.credit_id, CharacterName = tmdbCast.character, Department = "Cast", JobTitle = "Actor", Sequence = tmdbCast.order });
-                                                                _context.SaveChanges();
+
+                                                                try
+                                                                {
+                                                                    _context.SaveChanges();
+                                                                    MyConsole.OutputMessage(string.Format("\t {0} imported", tmdbCast.character), ConsoleColor.Cyan);
+                                                                    MyConsole.OutputMessage();
+                                                                }
+                                                                catch (Exception ex)
+                                                                {
+                                                                    MyConsole.OutputMessage(string.Format("\t Failed to import character credit {0}! Exception: {1}", tmdbCast.character, ex.Message.ToString()), ConsoleColor.Red);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -436,6 +572,7 @@ namespace GeekPeeked.UtilityApplication
 
                                                                     if (tmdbPerson.images != null && tmdbPerson.images.profiles != null)
                                                                     {
+                                                                        resultCount = 0;
                                                                         foreach (var tmdbProfile in tmdbPerson.images.profiles)
                                                                         {
                                                                             var profile = _image.GetAll().FirstOrDefault(i => i.FilePath == tmdbProfile.file_path && !i.IsBackdrop);
@@ -443,32 +580,61 @@ namespace GeekPeeked.UtilityApplication
                                                                             {
                                                                                 profile = new Image(tmdbProfile);
                                                                                 _image.Insert(profile);
+                                                                                resultCount++;
                                                                             }
 
                                                                             person.Images.Add(profile);
-                                                                            _context.SaveChanges();
                                                                         }
+                                                                        try
+                                                                        {
+                                                                            _context.SaveChanges();
+                                                                            MyConsole.OutputMessage(string.Format("\t {0} profile images imported", resultCount), ConsoleColor.Cyan);
+                                                                        }
+                                                                        catch (Exception ex)
+                                                                        {
+                                                                            MyConsole.OutputMessage(string.Format("\t Failed to import profile images! Exception: {0}", ex.Message.ToString()), ConsoleColor.Red);
+                                                                        }
+
                                                                     }
 
                                                                     #endregion Add Profile Images
 
                                                                     _person.Insert(person);
-                                                                    _context.SaveChanges();
+
+                                                                    try
+                                                                    {
+                                                                        _context.SaveChanges();
+                                                                        MyConsole.OutputMessage(string.Format("\t {0} imported", person.Name), ConsoleColor.Cyan);
+                                                                    }
+                                                                    catch (Exception ex)
+                                                                    {
+                                                                        MyConsole.OutputMessage(string.Format("\t Failed to import {0}! Exception: {1}", person.Name, ex.Message.ToString()), ConsoleColor.Red);
+                                                                    }
                                                                 }
                                                             }
 
                                                             if (person != null)
                                                             {
                                                                 _credit.Insert(new Credit() { Movie = movie, Person = person, CreditId = tmdbCrew.credit_id, Department = tmdbCrew.department, JobTitle = tmdbCrew.job });
-                                                                _context.SaveChanges();
+
+                                                                try
+                                                                {
+                                                                    _context.SaveChanges();
+                                                                    MyConsole.OutputMessage(string.Format("\t {0} ({1}) imported", tmdbCrew.name, tmdbCrew.job), ConsoleColor.Cyan);
+                                                                    MyConsole.OutputMessage();
+                                                                }
+                                                                catch (Exception ex)
+                                                                {
+                                                                    MyConsole.OutputMessage(string.Format("\t Failed to import character credit {0} ({1} - {2})! Exception: {3}", tmdbCrew.name, tmdbCrew.department, tmdbCrew.job, ex.Message.ToString()), ConsoleColor.Red);
+                                                                }
                                                             }
                                                         }
                                                     }
 
                                                     #endregion Import Crew Credits 
 
-                                                    //_context.SaveChanges();
-                                                    MyConsole.OutputMessage(string.Format("Successfully imported Cast & Crew of IMDb movie {0}!", imdbSelection), ConsoleColor.Cyan);
+                                                    MyConsole.OutputMessage();
+                                                    MyConsole.OutputMessage(string.Format("\t {0} credits import completed", tmdbMovie.title), ConsoleColor.Yellow);
                                                 }
 
                                                 #endregion Import People (Images) and Movie Credits
@@ -494,7 +660,6 @@ namespace GeekPeeked.UtilityApplication
                             }
 
                             break;
-
 
 
                         #region Old Code
@@ -2024,7 +2189,6 @@ namespace GeekPeeked.UtilityApplication
 
                         //    break;
                         #endregion Old Code
-
 
 
                         case "0":
